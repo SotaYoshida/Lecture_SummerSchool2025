@@ -377,6 +377,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#p-spaceq-space">5.2. P-spaceとQ-space</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pairing-hamiltonianpt2-3">5.3. pairing Hamiltonianの場合のPT2&amp;3の表式</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">5.4. 結果の考察</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">5.5. 発展的な注</a></li>
 </ul>
             </nav>
         </div>
@@ -392,10 +393,11 @@
 <h1><span class="section-number">5. </span>Many-Body Perturbation Theory (MBPT)<a class="headerlink" href="#many-body-perturbation-theory-mbpt" title="Link to this heading">#</a></h1>
 <p>多体摂動論は、量子力学における摂動論の一つである。
 量子化学ではとくにMøller–Plesset法などとしてひろく知られている。</p>
-<p>より詳細な説明については、以下の参考文献(Coupled Clusterの文献でもあるので、この資料では&quot;黒い本&quot;と呼称する)などを参照: Isaiah Shavitt and Rodney J. Bartlett, Many-Body Methods in Chemistry and Physics: MBPT and Coupled-Cluster Theory</p>
-<p>原子核物理により即した解説としては、Morten Hjorth-Jensen氏の各種Lecture Noteが参考になる。GitHubのアカウントは<a class="reference external" href="https://github.com/mhjensen">こちら</a>。</p>
-<p>以下では、MBPTの一般論からスタートして、基底状態の2次・3次の補正項などの説明を行う。</p>
-<p><a class="reference external" href="https://github.com/SotaYoshida/PairingHamiltonian.jl">PairingHamiltonian.jl</a>では、pairing Hamiltonianの性質から、多くの項が簡略化されることを積極的に活用して実装を行っている。</p>
+<p>より詳細な説明については、以下の参考文献(Coupled Clusterの文献でもあるので、この資料では&quot;黒い本&quot;と呼称する)などを参照:<br />
+Isaiah Shavitt and Rodney J. Bartlett, <a class="reference external" href="https://doi.org/10.1017/CBO9780511596834">Many-Body Methods in Chemistry and Physics: MBPT and Coupled-Cluster Theory</a><br />
+原子核物理により即した解説としては、Morten Hjorth-Jensen氏の各種Lecture Noteが参考になる。GitHubのアカウントは<a class="reference external" href="https://github.com/mhjensen">こちら</a>。</p>
+<p>以下では、MBPTの一般論からスタートして、基底状態の2次・3次の補正項などの説明を行う。<br />
+ちなみに、<a class="reference external" href="https://github.com/SotaYoshida/PairingHamiltonian.jl">PairingHamiltonian.jl</a>では、pairing Hamiltonianの性質から、多くの項が簡略化されることを積極的に活用して実装を行っていることも断っておく。</p>
 <section id="id1">
 <h2><span class="section-number">5.1. </span>多体摂動論の一般論<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <p>以下では、非縮退した基底状態を考え、以下のように、スレーター行列式の列で基底状態を表すことを考える:</p>
@@ -591,6 +593,13 @@ PT3ではこの項の評価が最も大変なので、globalなpairing Hamiltoni
 また、<span class="math notranslate nohighlight">\(g\)</span>が大きく配位が混ざることを好む領域では、次数を上げた摂動論により相関をよく取り込めていることもわかる。
 一方で、<span class="math notranslate nohighlight">\(g\)</span>が負に大きい領域では、摂動論の収束が悪く、PT3は特にその傾向が強いことも見て取れる。</p>
 </section>
+<section id="id3">
+<h2><span class="section-number">5.5. </span>発展的な注<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>MBPTは、(sub-shell closed核などの)基底状態を計算するための強力な手法である。<br />
+より一般に、open-shell系を考える場合には、Effective interactionを導出する応用や、Bogoliubov MBPT (BMBPT)などの拡張も考えられる。</p>
+<p>BMBPTでは、比較的少ない計算量ながらSCGFのADC(2)やIMSRG(2)などと高々2%程度の差で基底状態エネルギーを再現できることが知られている。
+A. Tichai et al., <a class="reference external" href="https://doi.org/10.1016/j.physletb.2018.09.044">Phys. Lett. B 786, 195 (2018)</a>などが参考になる。</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -662,6 +671,7 @@ PT3ではこの項の評価が最も大変なので、globalなpairing Hamiltoni
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#p-spaceq-space">5.2. P-spaceとQ-space</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pairing-hamiltonianpt2-3">5.3. pairing Hamiltonianの場合のPT2&amp;3の表式</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">5.4. 結果の考察</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">5.5. 発展的な注</a></li>
 </ul>
   </nav></div>
 
