@@ -1,0 +1,700 @@
+
+<!DOCTYPE html>
+
+
+<html lang="ja" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>9. Quantum Computing &#8212; Julia言語による原子核構造計算入門</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=1cf7f4d9"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/translations.js?v=91613774"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/QuantumComputing';</script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="10. Pairing Hamiltonianの量子計算 (Pennylane)" href="Pairing_QC_pennylane.html" />
+    <link rel="prev" title="8. Emulator/Surrogate model" href="EC.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="ja"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">本文へスキップ</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>トップに戻る</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="バージョン警告"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../home.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Julia言語による原子核構造計算入門</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">検索</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../home.html">
+                    講義の狙いと資料の概要
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">pairing Hamiltonianと多体計算手法</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Hamiltonian.html">1. pairing Hamiltonian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FullCI.html">2. Full-CI/厳密対角化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HartreeFock.html">3. Hartree-Fock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BCS.html">4. BCS (Bardeen-Cooper-Schrieffer)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MBPT.html">5. Many-Body Perturbation Theory (MBPT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CoupledCluster.html">6. Coupled Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="IMSRG.html">7. In-medium Similarity Renormalization Group (IM-SRG)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EC.html">8. Emulator/Surrogate model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">量子計算</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">9. Quantum Computing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Pairing_QC_pennylane.html">10. Pairing Hamiltonianの量子計算 (Pennylane)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Pairing_QC_pytket.html">11. Pairing Hamiltonianの量子計算 (pytket)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/SotaYoshida/Lecture_SummerSchool2025" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="ソースリポジトリ"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/SotaYoshida/Lecture_SummerSchool2025/issues/new?title=Issue%20on%20page%20%2Fnotebooks/QuantumComputing.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="問題を報告"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="このページをダウンロード">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/QuantumComputing.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="ソースファイルをダウンロード"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="PDFに印刷"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全画面モード"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="ライト"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="ダーク"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Quantum Computing</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目次 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">9.1. 基本的な量子ゲート</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qubit">9.1.1. 1-qubit ゲート</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">9.1.2. 2-qubit ゲート</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#universal-gate-set">9.1.3. universal gate set</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">9.2. 重ね合わせ状態</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">9.3. 量子テレポーテーション</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">9.4. 量子コンピュータを用いた量子多体系の計算</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vqe-variational-quantum-eigensolver">9.4.1. VQE (Variational Quantum Eigensolver)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hadamard-test-quantum-phase-estimation-qpe">9.4.2. Hadamard test/Quantum phase estimation (QPE)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#hadamard-test">9.4.2.1. Hadamard test</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#quantum-phase-estimation-qpe">9.4.2.2. Quantum phase estimation (QPE)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-framework-for-quantum-computing">9.5. Python framework for Quantum Computing</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="quantum-computing">
+<h1><span class="section-number">9. </span>Quantum Computing<a class="headerlink" href="#quantum-computing" title="Link to this heading">#</a></h1>
+<p>筆者には量子計算のgeneralな説明をするような能力は無いが、必要な最低限の情報をまとめておく。</p>
+<p>より詳細が知りたい場合は、様々なTutorialがあるので、そちらを参照してほしい。</p>
+<ul class="simple">
+<li><p>Qiskit/IBM: <a class="reference external" href="https://learning.quantum.ibm.com/">IBM Quantum Learning</a></p></li>
+<li><p>Pennylane/Xanadu: <a class="reference external" href="https://pennylane.ai/qml">Learn quantum programming with PennyLane</a></p></li>
+<li><p>Quantum Native Dojo by Qunasys: <a class="reference external" href="https://dojo.qulacs.org/ja/latest/index.html">Quantum Native Dojo</a></p></li>
+</ul>
+<p>また、筆者が学習に用いた書籍は...</p>
+<section id="id1">
+<h2><span class="section-number">9.1. </span>基本的な量子ゲート<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<section id="qubit">
+<h3><span class="section-number">9.1.1. </span>1-qubit ゲート<a class="headerlink" href="#qubit" title="Link to this heading">#</a></h3>
+<p>1-qubitゲートは、1つの量子ビットに作用するゲートである。</p>
+<p><span class="math notranslate nohighlight">\(\| 0 \rangle\)</span>と<span class="math notranslate nohighlight">\(\| 1 \rangle\)</span>を基底とする1-qubitの状態ベクトルを<span class="math notranslate nohighlight">\(\| \psi \rangle = \alpha \| 0 \rangle + \beta \| 1 \rangle\)</span>とする。</p>
+<p>qubitに対する演算はノルムを保存するユニタリ行列で表される。最も重要なものがパウリ行列である。</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+X = \left[ \begin{array}{cc} 0 &amp; 1 \\ 1 &amp; 0 \end{array} \right], \quad
+Y = \left[ \begin{array}{cc} 0 &amp; -i \\ i &amp; 0 \end{array} \right], \quad
+Z = \left[ \begin{array}{cc} 1 &amp; 0 \\ 0 &amp; -1 \end{array} \right], \quad
+\end{split}\]</div>
+<p>また、下記に示すようなHadamardゲート(<span class="math notranslate nohighlight">\(H\)</span>), 位相ゲート(<span class="math notranslate nohighlight">\(S\)</span>), <span class="math notranslate nohighlight">\(\pi/8\)</span>ゲート(<span class="math notranslate nohighlight">\(T\)</span>)もよく使われる。</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+H = \frac{1}{\sqrt{2}} \left[ \begin{array}{cc} 1 &amp; 1 \\ 1 &amp; -1 \end{array} \right], \quad
+S = \left[ \begin{array}{cc} 1 &amp; 0 \\ 0 &amp; i \end{array} \right], \quad
+T = \left[ \begin{array}{cc} 1 &amp; 0 \\ 0 &amp; \exp(i \pi /4) \end{array} \right]
+\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(H = (X+Z)/\sqrt{2}, \quad S = T^2\)</span>といった関係が成り立つ。</p>
+<p>Pauli行列を指数関数の肩に乗せたもの(各軸周りの回転)もよく使われる。</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+R_x(\theta) = \exp(-i \theta X/2) = \left[ \begin{array}{cc} \cos(\theta/2) &amp; -i \sin(\theta/2) \\ -i \sin(\theta/2) &amp; \cos(\theta/2) \end{array} \right], \quad
+R_y(\theta) = \exp(-i \theta Y/2) = \left[ \begin{array}{cc} \cos(\theta/2) &amp; -\sin(\theta/2) \\ \sin(\theta/2) &amp; \cos(\theta/2) \end{array} \right], \quad
+R_z(\theta) = \exp(-i \theta Z/2) = \left[ \begin{array}{cc} \exp(-i \theta/2) &amp; 0 \\ 0 &amp; \exp(i \theta/2) \end{array} \right]
+\end{split}\]</div>
+<p>この回転ゲートを用いた重要な定理を示す。</p>
+<div class="admonition- admonition">
+<p class="admonition-title">定理</p>
+<p>単一qubitに対する任意のユニタリ変換があるとき、<span class="math notranslate nohighlight">\(U= \exp(i \alpha) R_z(\beta) R_y(\gamma) R_z(\delta)\)</span>を満たす<span class="math notranslate nohighlight">\(\alpha, \beta, \gamma, \delta\)</span>が存在する。</p>
+</div>
+</section>
+<section id="id2">
+<h3><span class="section-number">9.1.2. </span>2-qubit ゲート<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+</section>
+<section id="universal-gate-set">
+<h3><span class="section-number">9.1.3. </span>universal gate set<a class="headerlink" href="#universal-gate-set" title="Link to this heading">#</a></h3>
+</section>
+</section>
+<section id="id3">
+<h2><span class="section-number">9.2. </span>重ね合わせ状態<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<div class="math notranslate nohighlight">
+\[
+\ket{0} \xrightarrow{H} \frac{1}{\sqrt{2}}(\ket{0} + \ket{1})
+\]</div>
+<p><span class="math notranslate nohighlight">\(\ket{0}\)</span>で初期化された<span class="math notranslate nohighlight">\(N\)</span>個のqubitについて、Hadamard gateを適用してみよう。</p>
+<div class="math notranslate nohighlight">
+\[
+\ket{0}^{\otimes N} 
+\xrightarrow{H^{\otimes N}}
+\left( \frac{\ket{0} + \ket{1}}{\sqrt{2}} \right) \otimes \cdots \otimes \left( \frac{\ket{0} + \ket{1}}{\sqrt{2}} \right)
+= 
+\frac{1}{\sqrt{2^N}}\sum_{x=0}^{2^N-1}\ket{x}
+\]</div>
+<p>最後の等式では、整数値<span class="math notranslate nohighlight">\(0\)</span>から<span class="math notranslate nohighlight">\(2^N-1\)</span>がビット列と対応することを用いた。</p>
+</section>
+<section id="id4">
+<h2><span class="section-number">9.3. </span>量子テレポーテーション<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>ある量子ビットの状態を量子のもつれを用いて別の量子ビットに移すことを量子テレポーテーションという。</p>
+<p>Alice と Bob がいるとする。Alice が持っている量子ビットの状態を Bob に送ることを考える。
+Alice と Bob は、物理的には離れていて、両者は古典的な通信しかできない一方で、
+Alice と Bob は、量子もつれを共有している(もつれのある量子ビットを１つずつ持っている)とする。</p>
+<p>このとき、Alice が持っている量子ビットの状態を Bob に送ることができる。
+量子テレポーテーションの手順は以下の通りである。</p>
+<ol class="arabic simple">
+<li><p>Alice と Bob は、もつれの量子ビットを共有し分け合う(<span class="math notranslate nohighlight">\(q_1, q_2\)</span>)<br />
+<span class="math notranslate nohighlight">\( |q_1 q_2 \rangle \equiv \frac{1}{\sqrt{2}} (|00\rangle + |11\rangle)\)</span></p></li>
+<li><p>Alice が送りたい量子ビットを<span class="math notranslate nohighlight">\(q_0\)</span>とする。
+<span class="math notranslate nohighlight">\( |q_0 \rangle = \alpha |0\rangle + \beta |1 \rangle\)</span></p></li>
+<li><p>Alice は、<span class="math notranslate nohighlight">\(q_0 \to q_1\)</span> に CNOT ゲートを適用する。<br />
+<span class="math notranslate nohighlight">\( | \psi \rangle = (\alpha |0\rangle + \beta |1 \rangle) \frac{1}{\sqrt{2}} (|00\rangle + |11\rangle) = \frac{\alpha}{\sqrt{2}} (|000\rangle + |011\rangle) + \frac{\beta}{\sqrt{2}} (|110\rangle + |101\rangle)  \)</span></p></li>
+<li><p>Alice は、<span class="math notranslate nohighlight">\(q_0\)</span> に Hadamard ゲートを適用する。<br />
+<span class="math notranslate nohighlight">\( | \psi \rangle = \frac{\alpha}{2} \left( |000\rangle + |011\rangle + |100\rangle + |111\rangle \right) + \frac{\beta}{2} \left( |010\rangle + |001\rangle - |110\rangle - |101\rangle \right)  \)</span></p></li>
+<li><p>Alice は、<span class="math notranslate nohighlight">\(q_0\)</span> と <span class="math notranslate nohighlight">\(q_1\)</span> を測定し、測定結果を Bob に送る。</p></li>
+<li><p>Bob は、受け取った測定結果に応じて、<span class="math notranslate nohighlight">\(q_2\)</span> に X ゲート、Z ゲートを適用することで、<span class="math notranslate nohighlight">\(q_2\)</span> に <span class="math notranslate nohighlight">\(q_0\)</span> の状態を再現することができる。</p></li>
+</ol>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Aliceの5.の測定結果</p></th>
+<th class="head text-center"><p>Bobの持つ量子ビット<span class="math notranslate nohighlight">\(q_2\)</span>の状態</p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\(q_0\)</span>を再現するための操作</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>00</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\alpha |0\rangle + \beta |1\rangle\)</span></p></td>
+<td class="text-center"><p>なし</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>01</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\alpha |1\rangle + \beta |0\rangle\)</span></p></td>
+<td class="text-center"><p>X ゲート</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>10</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\alpha |0\rangle - \beta |1\rangle\)</span></p></td>
+<td class="text-center"><p>Z ゲート</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>11</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\alpha |1\rangle - \beta |0\rangle\)</span></p></td>
+<td class="text-center"><p>X ゲート, Z ゲート</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id5">
+<h2><span class="section-number">9.4. </span>量子コンピュータを用いた量子多体系の計算<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<aside class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>何回でも書きますが、筆者は網羅的にレビューなどできません！</p>
+</aside>
+<p>代表的な量子系に対するアルゴリズムについて説明する。</p>
+<section id="vqe-variational-quantum-eigensolver">
+<h3><span class="section-number">9.4.1. </span>VQE (Variational Quantum Eigensolver)<a class="headerlink" href="#vqe-variational-quantum-eigensolver" title="Link to this heading">#</a></h3>
+</section>
+<section id="hadamard-test-quantum-phase-estimation-qpe">
+<h3><span class="section-number">9.4.2. </span>Hadamard test/Quantum phase estimation (QPE)<a class="headerlink" href="#hadamard-test-quantum-phase-estimation-qpe" title="Link to this heading">#</a></h3>
+<section id="hadamard-test">
+<h4><span class="section-number">9.4.2.1. </span>Hadamard test<a class="headerlink" href="#hadamard-test" title="Link to this heading">#</a></h4>
+</section>
+<section id="quantum-phase-estimation-qpe">
+<h4><span class="section-number">9.4.2.2. </span>Quantum phase estimation (QPE)<a class="headerlink" href="#quantum-phase-estimation-qpe" title="Link to this heading">#</a></h4>
+</section>
+</section>
+</section>
+<section id="python-framework-for-quantum-computing">
+<h2><span class="section-number">9.5. </span>Python framework for Quantum Computing<a class="headerlink" href="#python-framework-for-quantum-computing" title="Link to this heading">#</a></h2>
+<aside class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>正確に言うと、pytketを使ったことはなかったが、QuantinuumのH-seriesを使ってみたいと思っていたところ、
+この夏学の講師依頼があり、講義資料を作るのを機にpytketを使ってみることにした。</p>
+</aside>
+<p>Pythonで量子計算を行うためのフレームワークはいくつかあるが、ここでは筆者が使用経験のあるものを紹介する。
+特徴などの説明については、あくまで筆者の非常に限られた経験に基づくもので誤りである可能性は大いにある。
+その際は、そっと教えていただけると幸いである。
+フレームワーク間を行き来する機能なども其々のフレームワークに用意されていたりもするが、
+後述のように、ソフトウェア面においても発展が急速すぎるため、必ずしもうまく行き来できるとは限らない。</p>
+<p>したがって、(とくに実機利用を行う場合には)自身の解きたい問題や使いたいハードウェアにあわせて、フレームワークを選択することが重要である。</p>
+<ul class="simple">
+<li><p>Qiskit (IBM)
+言わずとしれた、IBMが開発している量子計算用のPythonフレームワーク。<br />
+2024年2月のメジャーバージョンアップデート以降、APIやDocumentが大幅に破壊的な変更を受け、古いコードが動かなくなることがある。
+筆者はやや脱落気味である。
+<a class="reference external" href="https://qiita.com/notori48/items/da4e2c298c3cd804867c">Qiskit1.0チートシート</a>など、有志による情報も参考になる。</p></li>
+<li><p>Pennylane (Xanadu)
+量子計算と機械学習を統合したフレームワーク。<br />
+OpenFermionとの連携が強く、量子化学計算などで用いられる実装が利用できる他、量子機械学習のアルゴリズムも実装されている(筆者は使ったことがない)。
+また、いろいろなタッチの回路を描くことができる点も気に入っている。</p></li>
+<li><p>pytket (Quantinuum)
+Quantinuum社が開発している量子計算用のPython モジュール。筆者は絶賛勉強中。</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "julia-1.10"
+        },
+        kernelOptions: {
+            name: "julia-1.10",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'julia-1.10'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="EC.html"
+       title="前のページ">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">前へ</p>
+        <p class="prev-next-title"><span class="section-number">8. </span>Emulator/Surrogate model</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Pairing_QC_pennylane.html"
+       title="次ページ">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">次へ</p>
+        <p class="prev-next-title"><span class="section-number">10. </span>Pairing Hamiltonianの量子計算 (Pennylane)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目次
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">9.1. 基本的な量子ゲート</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qubit">9.1.1. 1-qubit ゲート</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">9.1.2. 2-qubit ゲート</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#universal-gate-set">9.1.3. universal gate set</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">9.2. 重ね合わせ状態</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">9.3. 量子テレポーテーション</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">9.4. 量子コンピュータを用いた量子多体系の計算</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vqe-variational-quantum-eigensolver">9.4.1. VQE (Variational Quantum Eigensolver)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hadamard-test-quantum-phase-estimation-qpe">9.4.2. Hadamard test/Quantum phase estimation (QPE)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#hadamard-test">9.4.2.1. Hadamard test</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#quantum-phase-estimation-qpe">9.4.2.2. Quantum phase estimation (QPE)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-framework-for-quantum-computing">9.5. Python framework for Quantum Computing</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  © Copyright 2025-present by 吉田 聡太 (Sota Yoshida). 本コンテンツは<a rel="license" href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0 ライセンス</a>の下に提供されています。 <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="クリエイティブ・コモンズ・ライセンス" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a>　ただし、資料中のコードセル部分は<a rel="license" href="https://opensource.org/licenses/MIT">MITライセンス</a>の下に提供されています。
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
