@@ -1,0 +1,28 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+ 
+format: jb-book
+root: home
+
+defaults:  # The defaults key will be applied to all chapters and sub-sections
+  titlesonly: True
+
+parts: 
+- caption: pairing Hamiltonianと多体計算手法
+  numbered: true
+  chapters:  
+  - file: notebooks/Hamiltonian
+  - file: notebooks/FullCI
+  - file: notebooks/HartreeFock
+  - file: notebooks/BCS
+  - file: notebooks/MBPT
+  - file: notebooks/CoupledCluster
+  - file: notebooks/IMSRG
+  - file: notebooks/EC
+- caption: 量子計算
+  numbered: true
+  chapters:  
+  - file: notebooks/QuantumComputing
+  - file: notebooks/Pairing_QC_pennylane
+  - file: notebooks/Pairing_QC_pytket
+
