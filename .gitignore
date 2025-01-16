@@ -4,3 +4,4 @@ ref
 _build
 *~
 *.sh
+myenv
