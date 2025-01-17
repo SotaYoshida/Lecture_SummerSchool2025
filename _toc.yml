@@ -24,5 +24,6 @@ parts:
   chapters:  
   - file: notebooks/QuantumComputing
   - file: notebooks/Pairing_VQE_pennylane
+  - file: notebooks/qpe_pennylane
   - file: notebooks/Pairing_VQE_pytket
 
