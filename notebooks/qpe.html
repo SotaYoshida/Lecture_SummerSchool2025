@@ -1,0 +1,1399 @@
+
+<!DOCTYPE html>
+
+
+<html lang="ja" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Pairing HamiltonianのQPE計算 (Pennylane) &#8212; Julia言語による原子核構造計算入門</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=1cf7f4d9"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/translations.js?v=91613774"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/qpe';</script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="ja"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">本文へスキップ</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>トップに戻る</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="バージョン警告"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../home.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Julia言語による原子核構造計算入門</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">検索</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../home.html">
+                    講義の狙いと資料の概要
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">pairing Hamiltonianと多体計算手法</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Hamiltonian.html">1. pairing Hamiltonian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FullCI.html">2. Full-CI/厳密対角化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HartreeFock.html">3. Hartree-Fock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BCS.html">4. BCS (Bardeen-Cooper-Schrieffer)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MBPT.html">5. Many-Body Perturbation Theory (MBPT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CoupledCluster.html">6. Coupled Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="IMSRG.html">7. In-medium Similarity Renormalization Group (IM-SRG)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EC.html">8. Emulator/Surrogate model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">量子計算</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="QuantumComputing.html">9. Quantum Computing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Pairing_VQE_pennylane.html">10. Pairing HamiltonianのVQE計算 (Pennylane)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Pairing_VQE_pytket.html">11. Pairing Hamiltonianの量子計算 (pytket)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/SotaYoshida/Lecture_SummerSchool2025" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="ソースリポジトリ"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/SotaYoshida/Lecture_SummerSchool2025/issues/new?title=Issue%20on%20page%20%2Fnotebooks/qpe.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="問題を報告"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="このページをダウンロード">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/qpe.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="ソースファイルをダウンロード"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="PDFに印刷"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全画面モード"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="ライト"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="ダーク"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Pairing HamiltonianのQPE計算 (Pennylane)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目次 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#u-exp-i-hat-h-t">時間発展演算子: <span class="math notranslate nohighlight">\(U=\exp{(-i\hat{H}t)}\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hadamard-test">Hadamard test</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#qpe">QPE</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#document">Documentを参考に再考...</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">正しい結果を得るために...</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="pairing-hamiltonianqpe-pennylane">
+<h1>Pairing HamiltonianのQPE計算 (Pennylane)<a class="headerlink" href="#pairing-hamiltonianqpe-pennylane" title="Link to this heading">#</a></h1>
+<p>この章では、pennylaneを使って、long-term algorithmである量子位相推定(QPE)の実装を行う。
+まずは、ancilla qubitが1つの場合としてHadamard testを実装し、その後、QPEへと拡張する。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">o_np</span> <span class="c1">#pennylaneのnumpyと被らないように</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">combinations</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pennylane</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qml</span> 
+<span class="kn">from</span><span class="w"> </span><span class="nn">pennylane</span><span class="w"> </span><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pennylane.templates</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumPhaseEstimation</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Hamiltonianを再掲しておこう:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+P^{\dagger}_p &amp; = \frac{1}{2} (X_p - iY_p) \\
+P_p &amp; = \frac{1}{2} (X_p + iY_p) \\
+N_p &amp; = \frac{1}{2} ( 1  - Z_p) \\
+H &amp; = \sum_{p} \epsilon_p N_p - g \sum_{pq} P^{\dagger}_p P_q \\
+&amp; = \sum_{p} \epsilon_p \frac{1}{2} ( 1  - Z_p) - g \sum_{pq} \frac{1}{4} (X_p - iY_p)(X_q + iY_q) \\
+&amp; = \sum_{p} \frac{\epsilon_p - g}{2} (1 - Z_p ) - \frac{g}{4} \sum_{p \neq q} (X_pX_q + Y_pY_q) \\
+\end{align}
+\end{split}\]</div>
+<p>以下では、<span class="math notranslate nohighlight">\(N_\mathrm{orb}=4, N_\mathrm{occ}=2, g = 0.33\)</span>にとって考えることにする。
+ansatz(状態作成)部分は<span class="math notranslate nohighlight">\(N_\mathrm{orb}=4, N_\mathrm{occ}=2\)</span>を、
+角度パラメータは<span class="math notranslate nohighlight">\(g=0.33\)</span>のもとでの厳密解を与える値をそれぞれ仮定した実装である点を断っておく。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Norb</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">Nocc</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">gval</span> <span class="o">=</span> <span class="mf">0.33</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">PairingHamiltonian</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">Nocc</span><span class="p">,</span> <span class="n">gval</span><span class="p">,</span> <span class="n">delta_eps</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Norb</span> <span class="o">=</span> <span class="n">Norb</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Nocc</span> <span class="o">=</span> <span class="n">Nocc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delta_eps</span> <span class="o">=</span> <span class="n">delta_eps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gval</span> <span class="o">=</span> <span class="n">gval</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">basis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_basis</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_epsilon</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Hmat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_Hmat</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_basis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">basis</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">occ</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Norb</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nocc</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">occ</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">basis</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">eval_epsilon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_eps</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Norb</span><span class="p">)</span> <span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">eval_Hmat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Hmat</span> <span class="o">=</span> <span class="n">o_np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">bra_idx</span><span class="p">,</span> <span class="n">bra</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">ket_idx</span><span class="p">,</span> <span class="n">ket</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="p">):</span>
+                <span class="c1"># Hamming distance</span>
+                <span class="n">diff</span> <span class="o">=</span> <span class="p">[</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">bra</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ket</span> <span class="p">]</span>
+                <span class="n">same</span> <span class="o">=</span> <span class="p">[</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">bra</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ket</span> <span class="p">]</span>
+                <span class="c1"># for SPE term</span>
+                <span class="k">if</span> <span class="n">bra_idx</span> <span class="o">==</span> <span class="n">ket_idx</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">Hmat</span><span class="p">[</span><span class="n">bra_idx</span><span class="p">,</span> <span class="n">ket_idx</span><span class="p">]</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">same</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">Hmat</span><span class="p">[</span><span class="n">bra_idx</span><span class="p">,</span> <span class="n">ket_idx</span><span class="p">]</span> <span class="o">+=</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gval</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">same</span><span class="p">)</span> 
+                <span class="c1"># for pairing term</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">Hmat</span><span class="p">[</span><span class="n">bra_idx</span><span class="p">,</span> <span class="n">ket_idx</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gval</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Hmat</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">tuple_to_bitstring</span><span class="p">(</span><span class="n">tup</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">rev</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">bitint</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tup</span><span class="p">:</span>
+        <span class="n">bitint</span> <span class="o">+=</span> <span class="mi">2</span><span class="o">**</span><span class="n">i</span>
+    <span class="k">if</span> <span class="n">rev</span><span class="p">:</span>
+        <span class="n">bitstring</span> <span class="o">=</span> <span class="s2">&quot;|&quot;</span><span class="o">+</span><span class="nb">format</span><span class="p">(</span><span class="n">bitint</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;0</span><span class="si">{</span><span class="n">Norb</span><span class="si">}</span><span class="s1">b&#39;</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;&gt;&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">bitstring</span> <span class="o">=</span> <span class="s2">&quot;|&quot;</span><span class="o">+</span><span class="nb">format</span><span class="p">(</span><span class="n">bitint</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;0</span><span class="si">{</span><span class="n">Norb</span><span class="si">}</span><span class="s1">b&#39;</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;&gt;&quot;</span>        
+    <span class="k">return</span> <span class="n">bitstring</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ij_tuple_to_AdagA_str</span><span class="p">(</span><span class="n">tuple_in</span><span class="p">):</span>
+    <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">tuple_in</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">^ </span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">&quot;</span>
+
+
+<span class="n">Hamil</span> <span class="o">=</span> <span class="n">PairingHamiltonian</span><span class="p">(</span><span class="n">Norb</span><span class="p">,</span> <span class="n">Nocc</span><span class="p">,</span> <span class="n">gval</span><span class="p">)</span>
+<span class="n">evals</span><span class="p">,</span> <span class="n">evecs</span> <span class="o">=</span> <span class="n">o_np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">Hamil</span><span class="o">.</span><span class="n">Hmat</span><span class="p">)</span>
+<span class="n">evals</span> <span class="o">=</span> <span class="n">o_np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvalsh</span><span class="p">(</span><span class="n">Hamil</span><span class="o">.</span><span class="n">Hmat</span><span class="p">)</span>
+<span class="n">Egs_exact</span> <span class="o">=</span> <span class="n">evals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">E_HF</span> <span class="o">=</span> <span class="n">Hamil</span><span class="o">.</span><span class="n">Hmat</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;basis:&quot;</span><span class="p">,</span> <span class="n">Hamil</span><span class="o">.</span><span class="n">basis</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">([</span><span class="n">tuple_to_bitstring</span><span class="p">(</span><span class="n">tup</span><span class="p">,</span> <span class="n">Norb</span><span class="p">)</span> <span class="k">for</span> <span class="n">tup</span> <span class="ow">in</span> <span class="n">Hamil</span><span class="o">.</span><span class="n">basis</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;eps: &quot;</span><span class="p">,</span> <span class="n">Hamil</span><span class="o">.</span><span class="n">epsilon</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hmat: &quot;</span><span class="p">,</span> <span class="n">Hamil</span><span class="o">.</span><span class="n">Hmat</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;evals: &quot;</span><span class="p">,</span> <span class="n">evals</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Egs_exact: &quot;</span><span class="p">,</span> <span class="n">Egs_exact</span><span class="p">,</span> <span class="s2">&quot; E_HF&quot;</span><span class="p">,</span> <span class="n">E_HF</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;gs evec&quot;</span><span class="p">,</span> <span class="n">evecs</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># Qubit Hamiltonian</span>
+<span class="n">SPEs</span> <span class="o">=</span> <span class="n">Hamil</span><span class="o">.</span><span class="n">epsilon</span>
+<span class="n">obs</span> <span class="o">=</span> <span class="p">[</span> <span class="p">]</span>
+<span class="n">coeffs</span> <span class="o">=</span> <span class="p">[</span> <span class="p">]</span>
+
+<span class="c1"># 1-Zp term</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Hamil</span><span class="o">.</span><span class="n">Norb</span><span class="p">):</span>
+    <span class="n">op</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">-</span> <span class="n">qml</span><span class="o">.</span><span class="n">PauliZ</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">obs</span> <span class="o">+=</span> <span class="p">[</span> <span class="n">op</span> <span class="p">]</span>
+    <span class="n">coeffs</span> <span class="o">+=</span> <span class="p">[</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">SPEs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">Hamil</span><span class="o">.</span><span class="n">gval</span><span class="p">)</span> <span class="p">]</span>
+<span class="c1"># XX+YY term</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Hamil</span><span class="o">.</span><span class="n">Norb</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Hamil</span><span class="o">.</span><span class="n">Norb</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="o">-</span> <span class="n">Hamil</span><span class="o">.</span><span class="n">gval</span> <span class="o">/</span> <span class="mi">4</span>
+        <span class="n">XX</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">PauliX</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">@</span> <span class="n">qml</span><span class="o">.</span><span class="n">PauliX</span><span class="p">(</span><span class="n">j</span><span class="p">);</span> <span class="n">obs</span> <span class="o">+=</span> <span class="p">[</span> <span class="n">XX</span> <span class="p">];</span> <span class="n">coeffs</span><span class="o">+=</span> <span class="p">[</span> <span class="n">factor</span> <span class="p">]</span>
+        <span class="n">YY</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">PauliY</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">@</span> <span class="n">qml</span><span class="o">.</span><span class="n">PauliY</span><span class="p">(</span><span class="n">j</span><span class="p">);</span> <span class="n">obs</span> <span class="o">+=</span> <span class="p">[</span> <span class="n">YY</span> <span class="p">];</span> <span class="n">coeffs</span><span class="o">+=</span> <span class="p">[</span> <span class="n">factor</span> <span class="p">]</span>
+<span class="n">H_qubit</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">Hamiltonian</span><span class="p">(</span><span class="n">coeffs</span><span class="p">,</span> <span class="n">obs</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;H_qubit: &quot;</span><span class="p">,</span> <span class="n">H_qubit</span><span class="p">)</span>
+
+<span class="n">params_exact</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">0.24052408031489098</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5198881673506184</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.49481759937881004</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5924147175751697</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.27420571516474473</span><span class="p">]</span>
+<span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>basis: [(0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)]
+[&#39;|1100&gt;&#39;, &#39;|1010&gt;&#39;, &#39;|1001&gt;&#39;, &#39;|0110&gt;&#39;, &#39;|0101&gt;&#39;, &#39;|0011&gt;&#39;]
+eps:  [0.0, 2.0, 4.0, 6.0]
+Hmat:  [[ 1.34 -0.33 -0.33 -0.33 -0.33  0.  ]
+ [-0.33  3.34 -0.33 -0.33  0.   -0.33]
+ [-0.33 -0.33  5.34  0.   -0.33 -0.33]
+ [-0.33 -0.33  0.    5.34 -0.33 -0.33]
+ [-0.33  0.   -0.33 -0.33  7.34 -0.33]
+ [ 0.   -0.33 -0.33 -0.33 -0.33  9.34]]
+evals:  [1.18985184 3.29649666 5.34       5.34       7.42853393 9.44511758]
+Egs_exact:  1.1898518351360725  E_HF 1.3399999999999999
+gs evec [0.97121327 0.18194077 0.09817385 0.09817385 0.06360816 0.01789242]
+H_qubit:  -0.165 * (I(0) + -1 * Z(0)) + 0.835 * (I(1) + -1 * Z(1)) + 1.835 * (I(2) + -1 * Z(2)) + 2.835 * (I(3) + -1 * Z(3)) + -0.0825 * (X(0) @ X(1)) + -0.0825 * (Y(0) @ Y(1)) + -0.0825 * (X(0) @ X(2)) + -0.0825 * (Y(0) @ Y(2)) + -0.0825 * (X(0) @ X(3)) + -0.0825 * (Y(0) @ Y(3)) + -0.0825 * (X(1) @ X(0)) + -0.0825 * (Y(1) @ Y(0)) + -0.0825 * (X(1) @ X(2)) + -0.0825 * (Y(1) @ Y(2)) + -0.0825 * (X(1) @ X(3)) + -0.0825 * (Y(1) @ Y(3)) + -0.0825 * (X(2) @ X(0)) + -0.0825 * (Y(2) @ Y(0)) + -0.0825 * (X(2) @ X(1)) + -0.0825 * (Y(2) @ Y(1)) + -0.0825 * (X(2) @ X(3)) + -0.0825 * (Y(2) @ Y(3)) + -0.0825 * (X(3) @ X(0)) + -0.0825 * (Y(3) @ Y(0)) + -0.0825 * (X(3) @ X(1)) + -0.0825 * (Y(3) @ Y(1)) + -0.0825 * (X(3) @ X(2)) + -0.0825 * (Y(3) @ Y(2))
+</pre></div>
+</div>
+</div>
+</div>
+<section id="u-exp-i-hat-h-t">
+<h2>時間発展演算子: <span class="math notranslate nohighlight">\(U=\exp{(-i\hat{H}t)}\)</span><a class="headerlink" href="#u-exp-i-hat-h-t" title="Link to this heading">#</a></h2>
+<p>上のHamiltonianを少し整理して、１,2-body termで整理する:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{align}
+\hat{H} &amp;= 
+\sum_{p} \frac{\epsilon_p - g}{2} (I_p - Z_p ) - \frac{g}{2} \sum_{p &gt; q} (X_pX_q + Y_pY_q)
+\equiv H_\epsilon + H_g
+\end{align}
+\]</div>
+<p>また、以下ではPythonでの実装を想定して<span class="math notranslate nohighlight">\(N\)</span>量子ビット系を<span class="math notranslate nohighlight">\(0\)</span> ~ <span class="math notranslate nohighlight">\(N-1\)</span>でラベルすることにする。</p>
+<p>すると、first-orderのTrotter-Suzuki分解<a class="reference internal" href="../old_qpe_pennylane.html#equation-suzukitrotter-1">()</a>は以下のようにかける:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{align}
+e^{-i \hat{H} t} &amp; = 
+\left(
+e^{-iH_\epsilon t /r }
+\prod^{N-1}_{p&gt;q=0}
+e^{\frac{igt}{2r} (X_pX_q+Y_pY_q)}
+\right)^r
++\mathcal{O}\left( \left( \frac{N(N-1)}{2}+1 \right) t^2/r \right)
+\end{align}
+\]</div>
+<div class="tip admonition">
+<p class="admonition-title">Trotter-Suzuki approximation</p>
+<p><span class="math notranslate nohighlight">\(H=\sum^m_{i=1} h_i\)</span>と非可換な項に分解できるとき、trotter-step <span class="math notranslate nohighlight">\(r\)</span>に対して、以下のように近似できる:</p>
+<p>First-order:</p>
+<div class="math notranslate nohighlight" id="equation-suzukitrotter-1">
+<span class="eqno">()<a class="headerlink" href="#equation-suzukitrotter-1" title="Link to this equation">#</a></span>\[
+\begin{align}
+e^{iHt} &amp; = \left( e^{-i h_j t /r} \right)^r + \mathcal{O}(m^2t^2/r)
+\end{align}
+\]</div>
+<p>Second-order:</p>
+<div class="math notranslate nohighlight" id="equation-suzukitrotter-2">
+<span class="eqno">()<a class="headerlink" href="#equation-suzukitrotter-2" title="Link to this equation">#</a></span>\[
+\begin{align}
+e^{iHt} &amp; = \left( e^{-i h_j t /2r}  \prod^1_{j=m} e^{-ih_jt/2r} \right)^r + \mathcal{O}(m^3t^3/r^2)
+\end{align}
+\]</div>
+</div>
+<p>また、一体項部分はPhase shift gateを用いて以下のようにまとめてかける:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+e^{-iH_\epsilon t } &amp; 
+= \bigotimes^{N-1}_{p=0} 
+\begin{pmatrix}
+1 &amp; 0 \\
+0 &amp; \exp(-i\epsilon_p t)
+\end{pmatrix}
+= \bigotimes^{N-1}_{p=0} P(-\epsilon_p t)
+\end{align}
+\end{split}\]</div>
+<p>pennylenでは、Trotter分解を行うには、<code class="docutils literal notranslate"><span class="pre">TrotterProduct</span></code>メソッドを用いて演算子とステップ数, 時間<span class="math notranslate nohighlight">\(t\)</span>, 次数(order)を指定してやれば良い。</p>
+</section>
+<section id="hadamard-test">
+<h2>Hadamard test<a class="headerlink" href="#hadamard-test" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_ancilla</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">dev</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;default.qubit&quot;</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="n">n_ancilla</span><span class="o">+</span><span class="n">Hamil</span><span class="o">.</span><span class="n">Norb</span><span class="p">)</span>
+
+<span class="nd">@qml</span><span class="o">.</span><span class="n">qnode</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">circuit_HadamardTest</span><span class="p">(</span><span class="n">H_qubit</span><span class="p">):</span>
+    <span class="n">q_ancilla</span> <span class="o">=</span> <span class="n">Norb</span>
+    <span class="c1"># State preparation</span>
+    <span class="k">if</span> <span class="n">method_state</span> <span class="o">==</span> <span class="s2">&quot;HF&quot;</span><span class="p">:</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">PauliX</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">PauliX</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">method_state</span> <span class="o">==</span> <span class="s2">&quot;ansatz&quot;</span><span class="p">:</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">PauliX</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">PauliX</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">ctrl</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">])(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">ctrl</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">])(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">ctrl</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">])(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+
+    <span class="c1"># Time Evolution</span>
+    <span class="n">iHt</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">TrotterProduct</span><span class="p">(</span><span class="n">H_qubit</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">trotter_step</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">time_step</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Hadamard test</span>
+    <span class="n">qml</span><span class="o">.</span><span class="n">Hadamard</span><span class="p">(</span><span class="n">wires</span><span class="o">=</span><span class="n">q_ancilla</span><span class="p">)</span>
+    <span class="n">qml</span><span class="o">.</span><span class="n">ControlledQubitUnitary</span><span class="p">(</span><span class="n">iHt</span><span class="p">,</span> <span class="n">control_wires</span><span class="o">=</span><span class="p">[</span><span class="n">q_ancilla</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Norb</span><span class="p">))</span>
+    <span class="n">qml</span><span class="o">.</span><span class="n">Hadamard</span><span class="p">(</span><span class="n">wires</span><span class="o">=</span><span class="n">q_ancilla</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">qml</span><span class="o">.</span><span class="n">expval</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">PauliZ</span><span class="p">(</span><span class="n">q_ancilla</span><span class="p">))</span>
+
+
+<span class="n">trotter_step</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">time_step</span> <span class="o">=</span> <span class="mf">2.e-3</span>
+<span class="n">method_state</span> <span class="o">=</span> <span class="s2">&quot;ansatz&quot;</span>
+<span class="n">method_state</span> <span class="o">=</span> <span class="s2">&quot;HF&quot;</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">circuit_HadamardTest</span><span class="p">(</span><span class="n">H_qubit</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="n">p0</span><span class="p">,</span> <span class="n">p1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">res</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">res</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">Et</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="n">E</span> <span class="o">=</span> <span class="n">Et</span> <span class="o">/</span> <span class="n">time_step</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;initial state&quot;</span><span class="p">,</span> <span class="n">method_state</span><span class="p">,</span> <span class="s2">&quot;trotter_step </span><span class="si">%3d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">trotter_step</span><span class="p">,</span>
+    <span class="s2">&quot;time_step </span><span class="si">%3.1e</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">time_step</span><span class="p">,</span> <span class="s2">&quot;E </span><span class="si">%12.9f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">E</span><span class="p">,</span> <span class="s2">&quot;error </span><span class="si">%3.1e</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">E</span> <span class="o">-</span> <span class="n">Egs_exact</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>initial state HF trotter_step  10 time_step 2.0e-03 E  1.493718325 error 3.0e-01
+</pre></div>
+</div>
+</div>
+</div>
+<p>厳密解から<span class="math notranslate nohighlight">\(\exp(-iEt)\)</span>を計算するなどして検算してみよう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># exp(-iEt)</span>
+<span class="n">Uex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">Egs_exact</span> <span class="o">*</span> <span class="n">time_step</span><span class="p">))</span>
+
+<span class="n">p0_exact</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">Uex</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">p1_exact</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">Uex</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Uex&quot;</span><span class="p">,</span> <span class="n">Uex</span><span class="p">,</span> <span class="s2">&quot;p0_exact&quot;</span><span class="p">,</span> <span class="n">p0_exact</span><span class="p">,</span> <span class="s2">&quot;p1_exact&quot;</span><span class="p">,</span> <span class="n">p1_exact</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Et&quot;</span><span class="p">,</span> <span class="n">Egs_exact</span> <span class="o">*</span> <span class="n">time_step</span> <span class="p">,</span> <span class="s2">&quot;cos(Et)&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">Egs_exact</span> <span class="o">*</span> <span class="n">time_step</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Egs_exact&quot;</span><span class="p">,</span> <span class="n">Egs_exact</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="s2">&quot;Diff.&quot;</span><span class="p">,</span> <span class="n">E</span> <span class="o">-</span> <span class="n">Egs_exact</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uex 0.9999999929212631 p0_exact 0.9999999964606315 p1_exact 3.539368464977599e-09
+Et 0.00011898518351360725 cos(Et) 0.9999999929212631
+Egs_exact 1.1898518351360725 E 1.1898516757081505 Diff. -1.5942792197520816e-07
+</pre></div>
+</div>
+</div>
+</div>
+<p>初期状態やtrotter step, time stepなどを変えて試してみよう:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">method_state</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;HF&quot;</span><span class="p">,</span> <span class="s2">&quot;ansatz&quot;</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">trotter_step</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">p_time_step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+            <span class="n">time_step</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">p_time_step</span><span class="p">)</span> 
+            <span class="n">res</span> <span class="o">=</span> <span class="n">circuit_HadamardTest</span><span class="p">(</span><span class="n">H_qubit</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">res</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">res</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="n">Et</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+            <span class="n">E</span> <span class="o">=</span> <span class="n">Et</span> <span class="o">/</span> <span class="n">time_step</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;initial state </span><span class="si">%6s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">method_state</span><span class="p">,</span> 
+                  <span class="s2">&quot;trotter_step </span><span class="si">%3d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">trotter_step</span><span class="p">,</span>
+                  <span class="s2">&quot;time_step </span><span class="si">%3.1e</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">time_step</span><span class="p">,</span> <span class="s2">&quot;E </span><span class="si">%12.9f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">E</span><span class="p">,</span> <span class="s2">&quot;error </span><span class="si">%3.1e</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">E</span> <span class="o">-</span> <span class="n">Egs_exact</span><span class="p">))</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">method_state</span><span class="p">,</span> <span class="n">trotter_step</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">time_step</span><span class="p">),</span> <span class="n">E</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">E</span> <span class="o">-</span> <span class="n">Egs_exact</span><span class="p">))])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/sym4p/my_python3_env_forQC/lib/python3.13/site-packages/pennylane/ops/op_math/controlled_ops.py:163: UserWarning: base operator already has wires; values specified through wires kwarg will be ignored.
+  warnings.warn(
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>initial state     HF trotter_step   1 time_step 1.2e+00 E  1.368558476 error 1.8e-01
+initial state     HF trotter_step   1 time_step 1.2e-01 E  1.492766438 error 3.0e-01
+initial state     HF trotter_step   1 time_step 1.2e-02 E  1.493710674 error 3.0e-01
+initial state     HF trotter_step   1 time_step 1.2e-03 E  1.493720094 error 3.0e-01
+initial state     HF trotter_step   1 time_step 1.2e-04 E  1.493720296 error 3.0e-01
+initial state     HF trotter_step  10 time_step 1.2e+00 E  1.209617754 error 2.0e-02
+initial state     HF trotter_step  10 time_step 1.2e-01 E  1.486706331 error 3.0e-01
+initial state     HF trotter_step  10 time_step 1.2e-02 E  1.493649255 error 3.0e-01
+initial state     HF trotter_step  10 time_step 1.2e-03 E  1.493719483 error 3.0e-01
+initial state     HF trotter_step  10 time_step 1.2e-04 E  1.493720974 error 3.0e-01
+initial state     HF trotter_step 100 time_step 1.2e+00 E  1.207398092 error 1.8e-02
+initial state     HF trotter_step 100 time_step 1.2e-01 E  1.486646377 error 3.0e-01
+initial state     HF trotter_step 100 time_step 1.2e-02 E  1.493648641 error 3.0e-01
+initial state     HF trotter_step 100 time_step 1.2e-03 E  1.493719548 error 3.0e-01
+initial state     HF trotter_step 100 time_step 1.2e-04 E  1.493720203 error 3.0e-01
+initial state ansatz trotter_step   1 time_step 1.2e+00 E  1.284682840 error 9.5e-02
+initial state ansatz trotter_step   1 time_step 1.2e-01 E  1.213272980 error 2.3e-02
+initial state ansatz trotter_step   1 time_step 1.2e-02 E  1.190094935 error 2.4e-04
+initial state ansatz trotter_step   1 time_step 1.2e-03 E  1.189854268 error 2.4e-06
+initial state ansatz trotter_step   1 time_step 1.2e-04 E  1.189852010 error 1.8e-07
+initial state ansatz trotter_step  10 time_step 1.2e+00 E  1.192258766 error 2.4e-03
+initial state ansatz trotter_step  10 time_step 1.2e-01 E  1.190086398 error 2.3e-04
+initial state ansatz trotter_step  10 time_step 1.2e-02 E  1.189854266 error 2.4e-06
+initial state ansatz trotter_step  10 time_step 1.2e-03 E  1.189851863 error 2.8e-08
+initial state ansatz trotter_step  10 time_step 1.2e-04 E  1.189852770 error 9.4e-07
+initial state ansatz trotter_step 100 time_step 1.2e+00 E  1.189875866 error 2.4e-05
+initial state ansatz trotter_step 100 time_step 1.2e-01 E  1.189854181 error 2.3e-06
+initial state ansatz trotter_step 100 time_step 1.2e-02 E  1.189851860 error 2.5e-08
+initial state ansatz trotter_step 100 time_step 1.2e-03 E  1.189851931 error 9.6e-08
+initial state ansatz trotter_step 100 time_step 1.2e-04 E  1.189851324 error 5.1e-07
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">o_np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">method_state</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;HF&quot;</span><span class="p">,</span> <span class="s2">&quot;ansatz&quot;</span><span class="p">]:</span>
+    <span class="n">tm</span> <span class="o">=</span> <span class="s2">&quot;o&quot;</span> <span class="k">if</span> <span class="n">method_state</span> <span class="o">==</span> <span class="s2">&quot;HF&quot;</span> <span class="k">else</span> <span class="s2">&quot;D&quot;</span>
+    <span class="k">for</span> <span class="n">trotter_step</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">]:</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">results</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">method_state</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">results</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">trotter_step</span><span class="p">)</span> <span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="n">mask</span><span class="p">,</span> <span class="mi">2</span><span class="p">]))</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="n">mask</span><span class="p">,</span> <span class="mi">4</span><span class="p">]))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="n">tm</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">method_state</span><span class="si">}</span><span class="s2">, r=</span><span class="si">{</span><span class="n">trotter_step</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="c1">#ax.set_xscale(&quot;log&quot;)</span>
+<span class="c1">#ax.set_yscale(&quot;log&quot;)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;log10(time_step)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/7adfbb49e2bdc34485b8bdb5cbcee89452e32354a9aca37775427d1dcf0506c8.png" src="../_images/7adfbb49e2bdc34485b8bdb5cbcee89452e32354a9aca37775427d1dcf0506c8.png" />
+</div>
+</div>
+</section>
+<section id="qpe">
+<h2>QPE<a class="headerlink" href="#qpe" title="Link to this heading">#</a></h2>
+<p>pennylaneの<a class="reference external" href="https://pennylane.ai/qml/demos/tutorial_qpe">Intro to Quantum Phase Estimation</a>も参考にしてみよう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">float_from_binary</span><span class="p">(</span><span class="n">binary</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">binary</span><span class="p">[</span><span class="mi">2</span><span class="p">:])])</span>
+
+<span class="n">n_ancilla</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">dev</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;default.qubit&quot;</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="n">n_ancilla</span><span class="o">+</span><span class="n">Hamil</span><span class="o">.</span><span class="n">Norb</span><span class="p">)</span>
+
+<span class="nd">@qml</span><span class="o">.</span><span class="n">qnode</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">circuit_QPE</span><span class="p">(</span><span class="n">H_qubit</span><span class="p">,</span> <span class="n">method_state</span><span class="o">=</span><span class="s2">&quot;HF&quot;</span><span class="p">,</span> <span class="n">operator</span><span class="o">=</span><span class="s2">&quot;iHt&quot;</span><span class="p">):</span>
+    <span class="n">ancilla_wires</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">Norb</span><span class="p">,</span> <span class="n">Norb</span><span class="o">+</span><span class="n">n_ancilla</span><span class="p">))</span>
+    <span class="c1"># State preparation</span>
+    <span class="k">if</span> <span class="n">method_state</span> <span class="o">==</span> <span class="s2">&quot;HF&quot;</span> <span class="ow">or</span> <span class="n">method_state</span> <span class="o">==</span> <span class="s2">&quot;ansatz&quot;</span><span class="p">:</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">PauliX</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">PauliX</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">method_state</span> <span class="o">==</span> <span class="s2">&quot;Hadamard&quot;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Norb</span><span class="p">):</span>
+            <span class="n">qml</span><span class="o">.</span><span class="n">Hadamard</span><span class="p">(</span><span class="n">wires</span><span class="o">=</span><span class="n">q</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;method_state &quot;</span><span class="o">+</span> <span class="n">method_state</span> <span class="o">+</span><span class="s2">&quot; not implemented&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">method_state</span> <span class="o">==</span> <span class="s2">&quot;ansatz&quot;</span><span class="p">:</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">ctrl</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">])(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">ctrl</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">])(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">ctrl</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">])(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+
+    <span class="c1"># Time Evolution </span>
+    <span class="k">if</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;iHt&quot;</span><span class="p">:</span>
+        <span class="n">iHt</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">TrotterProduct</span><span class="p">(</span><span class="n">H_qubit</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">trotter_step</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">time_step</span><span class="p">)</span>
+        <span class="n">Op</span> <span class="o">=</span> <span class="n">iHt</span>
+    <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;N_0&quot;</span><span class="p">:</span>
+        <span class="n">op0</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">qml</span><span class="o">.</span><span class="n">PauliZ</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> 
+        <span class="n">Op</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">op0</span><span class="p">,</span> <span class="n">coeff</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span><span class="n">j</span> <span class="o">*</span> <span class="n">time_step</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;Z_0&quot;</span><span class="p">:</span>
+        <span class="n">op0</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">PauliZ</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> 
+        <span class="n">Op</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">op0</span><span class="p">,</span> <span class="n">coeff</span> <span class="o">=</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">time_step</span> <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;N_2&quot;</span><span class="p">:</span>
+        <span class="n">op0</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">qml</span><span class="o">.</span><span class="n">PauliZ</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> 
+        <span class="n">Op</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">op0</span><span class="p">,</span> <span class="n">coeff</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span><span class="n">j</span> <span class="o">*</span> <span class="n">time_step</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;N_0N_1&quot;</span><span class="p">:</span>
+        <span class="n">op0</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">qml</span><span class="o">.</span><span class="n">PauliZ</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> 
+        <span class="n">op1</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">qml</span><span class="o">.</span><span class="n">PauliZ</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="n">op0</span> <span class="o">@</span> <span class="n">op1</span>
+        <span class="n">Op</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">coeff</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.</span><span class="n">j</span> <span class="o">*</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">time_step</span><span class="p">,</span> <span class="n">num_steps</span><span class="o">=</span><span class="n">trotter_step</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;N_2N_3&quot;</span><span class="p">:</span>
+        <span class="n">op2</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">qml</span><span class="o">.</span><span class="n">PauliZ</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> 
+        <span class="n">op3</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">-</span> <span class="n">qml</span><span class="o">.</span><span class="n">PauliZ</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="n">op2</span> <span class="o">@</span> <span class="n">op3</span>
+        <span class="n">Op</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">coeff</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.</span><span class="n">j</span> <span class="o">*</span> <span class="mf">0.25</span> <span class="o">*</span>  <span class="n">time_step</span><span class="p">,</span> <span class="n">num_steps</span><span class="o">=</span><span class="n">trotter_step</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;operator &quot;</span><span class="o">+</span> <span class="n">operator</span> <span class="o">+</span><span class="s2">&quot; not implemented&quot;</span><span class="p">)</span>
+
+    <span class="n">QuantumPhaseEstimation</span><span class="p">(</span>
+        <span class="n">Op</span><span class="p">,</span>
+        <span class="n">estimation_wires</span><span class="o">=</span><span class="n">ancilla_wires</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">qml</span><span class="o">.</span><span class="n">probs</span><span class="p">(</span><span class="n">wires</span><span class="o">=</span><span class="n">ancilla_wires</span><span class="p">)</span>
+
+<span class="n">operator</span> <span class="o">=</span> <span class="s2">&quot;iHt&quot;</span><span class="p">;</span> <span class="n">operator</span> <span class="o">=</span> <span class="s2">&quot;N_0&quot;</span>
+<span class="c1">#fig, ax  = qml.draw_mpl(circuit_QPE)(H_qubit)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># method_state = &quot;ansatz&quot;; operator = &quot;iHt&quot;</span>
+<span class="c1"># method_state = &quot;HF&quot; ; operator = &quot;N_0&quot;</span>
+<span class="c1"># method_state = &quot;HF&quot; ; operator = &quot;N_2&quot;</span>
+<span class="c1"># method_state = &quot;HF&quot; ; operator = &quot;N_0N_1&quot;</span>
+
+<span class="c1">#method_state = &quot;ansatz&quot;; operator = &quot;N_0&quot;</span>
+<span class="n">method_state</span> <span class="o">=</span> <span class="s2">&quot;ansatz&quot;</span><span class="p">;</span> <span class="n">operator</span> <span class="o">=</span> <span class="s2">&quot;iHt&quot;</span>
+<span class="c1">#method_state = &quot;HF&quot;; operator = &quot;iHt&quot;</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>  <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">draw_mpl</span><span class="p">(</span><span class="n">circuit_QPE</span><span class="p">)(</span><span class="n">H_qubit</span><span class="p">,</span> <span class="n">method_state</span><span class="p">,</span> <span class="n">operator</span><span class="p">)</span>
+
+<span class="n">trotter_step</span> <span class="o">=</span> <span class="mi">25</span>
+<span class="n">time_step</span> <span class="o">=</span> <span class="mf">1.e-3</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">circuit_QPE</span><span class="p">(</span><span class="n">H_qubit</span><span class="p">,</span> <span class="n">method_state</span><span class="p">,</span> <span class="n">operator</span><span class="p">)</span>
+<span class="n">res</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([9.92292122e-01, 2.12153408e-03, 5.55870904e-04, 2.51062401e-04,
+        1.42402970e-04, 9.16178480e-05, 6.38632244e-05, 4.70584945e-05,
+        3.61185694e-05, 2.86009208e-05, 2.32138537e-05, 1.92222123e-05,
+        1.61825937e-05, 1.38146795e-05, 1.19342141e-05, 1.04160470e-05,
+        9.17275921e-06, 8.14179237e-06, 7.27742305e-06, 6.54560515e-06,
+        5.92056573e-06, 5.38250475e-06, 4.91600788e-06, 4.50893039e-06,
+        4.15159888e-06, 3.83623151e-06, 3.55651088e-06, 3.30726538e-06,
+        3.08422856e-06, 2.88385546e-06, 2.70318102e-06, 2.53970986e-06,
+        2.39132973e-06, 2.25624309e-06, 2.13291239e-06, 2.02001630e-06,
+        1.91641418e-06, 1.82111723e-06, 1.73326489e-06, 1.65210536e-06,
+        1.57697953e-06, 1.50730759e-06, 1.44257788e-06, 1.38233747e-06,
+        1.32618426e-06, 1.27376032e-06, 1.22474613e-06, 1.17885583e-06,
+        1.13583296e-06, 1.09544698e-06, 1.05749016e-06, 1.02177492e-06,
+        9.88131553e-07, 9.56406207e-07, 9.26459149e-07, 8.98163235e-07,
+        8.71402583e-07, 8.46071393e-07, 8.22072916e-07, 7.99318546e-07,
+        7.77727010e-07, 7.57223656e-07, 7.37739818e-07, 7.19212252e-07,
+        7.01582631e-07, 6.84797099e-07, 6.68805864e-07, 6.53562843e-07,
+        6.39025335e-07, 6.25153728e-07, 6.11911244e-07, 5.99263693e-07,
+        5.87179267e-07, 5.75628345e-07, 5.64583314e-07, 5.54018415e-07,
+        5.43909596e-07, 5.34234382e-07, 5.24971754e-07, 5.16102042e-07,
+        5.07606824e-07, 4.99468837e-07, 4.91671890e-07, 4.84200792e-07,
+        4.77041281e-07, 4.70179958e-07, 4.63604231e-07, 4.57302260e-07,
+        4.51262905e-07, 4.45475683e-07, 4.39930727e-07, 4.34618741e-07,
+        4.29530971e-07, 4.24659167e-07, 4.19995556e-07, 4.15532809e-07,
+        4.11264021e-07, 4.07182678e-07, 4.03282646e-07, 3.99558139e-07,
+        3.96003706e-07, 3.92614211e-07, 3.89384819e-07, 3.86310975e-07,
+        3.83388397e-07, 3.80613055e-07, 3.77981166e-07, 3.75489178e-07,
+        3.73133759e-07, 3.70911792e-07, 3.68820360e-07, 3.66856744e-07,
+        3.65018407e-07, 3.63302996e-07, 3.61708330e-07, 3.60232393e-07,
+        3.58873333e-07, 3.57629453e-07, 3.56499211e-07, 3.55481209e-07,
+        3.54574197e-07, 3.53777062e-07, 3.53088833e-07, 3.52508672e-07,
+        3.52035875e-07, 3.51669871e-07, 3.51410216e-07, 3.51256597e-07,
+        3.51208829e-07, 3.51266855e-07, 3.51430745e-07, 3.51700696e-07,
+        3.52077033e-07, 3.52560213e-07, 3.53150819e-07, 3.53849568e-07,
+        3.54657312e-07, 3.55575035e-07, 3.56603862e-07, 3.57745059e-07,
+        3.59000036e-07, 3.60370351e-07, 3.61857716e-07, 3.63463999e-07,
+        3.65191231e-07, 3.67041608e-07, 3.69017503e-07, 3.71121469e-07,
+        3.73356245e-07, 3.75724765e-07, 3.78230169e-07, 3.80875807e-07,
+        3.83665255e-07, 3.86602320e-07, 3.89691053e-07, 3.92935765e-07,
+        3.96341035e-07, 3.99911729e-07, 4.03653011e-07, 4.07570364e-07,
+        4.11669606e-07, 4.15956909e-07, 4.20438822e-07, 4.25122292e-07,
+        4.30014687e-07, 4.35123828e-07, 4.40458010e-07, 4.46026041e-07,
+        4.51837267e-07, 4.57901615e-07, 4.64229631e-07, 4.70832518e-07,
+        4.77722189e-07, 4.84911311e-07, 4.92413364e-07, 5.00242697e-07,
+        5.08414595e-07, 5.16945349e-07, 5.25852332e-07, 5.35154081e-07,
+        5.44870394e-07, 5.55022426e-07, 5.65632798e-07, 5.76725723e-07,
+        5.88327133e-07, 6.00464827e-07, 6.13168633e-07, 6.26470579e-07,
+        6.40405096e-07, 6.55009228e-07, 6.70322873e-07, 6.86389047e-07,
+        7.03254178e-07, 7.20968436e-07, 7.39586092e-07, 7.59165928e-07,
+        7.79771692e-07, 8.01472605e-07, 8.24343932e-07, 8.48467622e-07,
+        8.73933037e-07, 9.00837760e-07, 9.29288521e-07, 9.59402241e-07,
+        9.91307223e-07, 1.02514450e-06, 1.06106938e-06, 1.09925321e-06,
+        1.13988542e-06, 1.18317582e-06, 1.22935735e-06, 1.27868911e-06,
+        1.33146008e-06, 1.38799324e-06, 1.44865056e-06, 1.51383875e-06,
+        1.58401607e-06, 1.65970036e-06, 1.74147858e-06, 1.83001822e-06,
+        1.92608085e-06, 2.03053857e-06, 2.14439378e-06, 2.26880330e-06,
+        2.40510774e-06, 2.55486778e-06, 2.71990891e-06, 2.90237725e-06,
+        3.10480961e-06, 3.33022203e-06, 3.58222261e-06, 3.86515677e-06,
+        4.18429560e-06, 4.54608308e-06, 4.95846369e-06, 5.43132216e-06,
+        5.97708108e-06, 6.61152500e-06, 7.35495437e-06, 8.23382951e-06,
+        9.28315764e-06, 1.05500332e-05, 1.20990148e-05, 1.40205156e-05,
+        1.64443006e-05, 1.95619843e-05, 2.36660971e-05, 2.92212922e-05,
+        3.70018886e-05, 4.83770682e-05, 6.59571466e-05, 9.52363571e-05,
+        1.49471123e-04, 2.67820373e-04, 6.12466017e-04, 2.57589629e-03], requires_grad=True)
+</pre></div>
+</div>
+<img alt="../_images/3d87dd81dea7670900d15e6b1f9e4030a870f85b7cb89bbeaa975e60f5f18296.png" src="../_images/3d87dd81dea7670900d15e6b1f9e4030a870f85b7cb89bbeaa975e60f5f18296.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ancilla_wires</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">Norb</span><span class="p">,</span> <span class="n">Norb</span><span class="o">+</span><span class="n">n_ancilla</span><span class="p">))</span>
+<span class="n">bit_strings</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;0.</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s2">0</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ancilla_wires</span><span class="p">)</span><span class="si">}</span><span class="s2">b</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">))]</span>
+
+<span class="n">idxs</span> <span class="o">=</span> <span class="n">o_np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="n">wsum</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+      <span class="n">idx</span> <span class="o">=</span> <span class="n">idxs</span><span class="p">[</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+      <span class="n">val</span> <span class="o">=</span> <span class="n">float_from_binary</span><span class="p">(</span><span class="n">bit_strings</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+      <span class="n">bit_str</span> <span class="o">=</span> <span class="n">bit_strings</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+      <span class="n">estimated</span> <span class="o">=</span><span class="n">idx</span> <span class="o">/</span> <span class="mi">2</span><span class="o">**</span><span class="n">n_ancilla</span>
+      <span class="n">val2pi</span> <span class="o">=</span> <span class="n">val</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+      <span class="n">wsum</span> <span class="o">+=</span> <span class="n">res</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">*</span> <span class="n">val2pi</span>
+      <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">th most freq&quot;</span><span class="p">,</span> <span class="n">bit_str</span><span class="p">,</span> <span class="s2">&quot;prob.&quot;</span><span class="p">,</span> <span class="n">res</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="s2">&quot;*2pi&quot;</span><span class="p">,</span> <span class="n">val2pi</span><span class="p">,</span> <span class="s2">&quot;estimated&quot;</span><span class="p">,</span> <span class="n">estimated</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;wsum&quot;</span><span class="p">,</span> <span class="n">wsum</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0th most freq 0.00000000 prob. 0.9922921217692221 value 0.0 *2pi 0.0 estimated 0.0
+1th most freq 0.11111111 prob. 0.00257589628762764 value 0.99609375 *2pi 6.258641614573416 estimated 0.99609375
+2th most freq 0.00000001 prob. 0.0021215340794521797 value 0.00390625 *2pi 0.02454369260617026 estimated 0.00390625
+3th most freq 0.11111110 prob. 0.0006124660168762856 value 0.9921875 *2pi 6.234097921967246 estimated 0.9921875
+4th most freq 0.00000010 prob. 0.000555870904176637 value 0.0078125 *2pi 0.04908738521234052 estimated 0.0078125
+wsum 0.020019141353156772
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">res</span> <span class="c1">#res[1:]</span>
+
+<span class="n">weights</span> <span class="o">=</span> <span class="n">o_np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="n">ys</span> <span class="o">=</span> <span class="n">o_np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">1.e-7</span><span class="p">:</span>
+        <span class="n">bitstring</span> <span class="o">=</span> <span class="n">bit_strings</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">lam_t</span> <span class="o">=</span> <span class="n">float_from_binary</span><span class="p">(</span><span class="n">bitstring</span><span class="p">)</span> 
+        <span class="n">weights</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">ys</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">lam_t</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+        <span class="c1">#print(idx, &quot;weight&quot;, data[idx], lam_t * (2* np.pi) )</span>
+<span class="c1"># draw histogram</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">ys</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">evals</span><span class="p">:</span>    
+    <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Exact&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">E_HF</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;HF&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Probability&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;E exact&quot;</span><span class="p">,</span> <span class="n">evals</span><span class="p">,</span> <span class="s2">&quot;EHF&quot;</span><span class="p">,</span> <span class="n">E_HF</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/4c1c6a8fa58f7467a86d5b77181575d863b030e0ba40e4b4ce93816dc13d2990.png" src="../_images/4c1c6a8fa58f7467a86d5b77181575d863b030e0ba40e4b4ce93816dc13d2990.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>E exact [1.18985184 3.29649666 5.34       5.34       7.42853393 9.44511758] EHF 1.3399999999999999
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">idxs</span> <span class="o">=</span> <span class="p">[</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mf">1.e-6</span><span class="p">]</span>
+<span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">tmp</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tmp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bit_strings</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idxs</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">tmp</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tmp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idxs</span><span class="p">]</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;phase&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;probability&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="s2">&quot;vertical&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/e78ad486e02ee107d9c4bb5bf0fcb9e6886b11cb4e67a4738e6244743a2833ae.png" src="../_images/e78ad486e02ee107d9c4bb5bf0fcb9e6886b11cb4e67a4738e6244743a2833ae.png" />
+</div>
+</div>
+<section id="document">
+<h3>Documentを参考に再考...<a class="headerlink" href="#document" title="Link to this heading">#</a></h3>
+<p>(<code class="docutils literal notranslate"><span class="pre">QuantumPhaseEstimation</span></code>を使う場合と上の場合とで、同じことはできていそうだ。)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pennylane.templates</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumPhaseEstimation</span>
+<span class="n">dev</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;default.qubit&quot;</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="n">n_ancilla</span><span class="o">+</span><span class="n">Hamil</span><span class="o">.</span><span class="n">Norb</span><span class="p">)</span>
+
+<span class="nd">@qml</span><span class="o">.</span><span class="n">qnode</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">circuit</span><span class="p">():</span>
+    <span class="n">estimation_wires</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">Norb</span><span class="p">,</span> <span class="n">Norb</span><span class="o">+</span><span class="n">n_ancilla</span><span class="p">))</span>
+
+    <span class="c1"># State preparation</span>
+    <span class="n">qml</span><span class="o">.</span><span class="n">PauliX</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">qml</span><span class="o">.</span><span class="n">PauliX</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">method_state</span> <span class="o">==</span> <span class="s2">&quot;ansatz&quot;</span><span class="p">:</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">ctrl</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">])(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">ctrl</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">])(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">ctrl</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">])(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+
+    <span class="c1"># Time Evolution</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">TrotterProduct</span><span class="p">(</span><span class="n">H_qubit</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">trotter_step</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">time_step</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="n">QuantumPhaseEstimation</span><span class="p">(</span>
+        <span class="n">U</span><span class="p">,</span>
+        <span class="n">estimation_wires</span><span class="o">=</span><span class="n">estimation_wires</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">qml</span><span class="o">.</span><span class="n">probs</span><span class="p">(</span><span class="n">estimation_wires</span><span class="p">)</span>
+
+<span class="c1">#fig, ax  = qml.draw_mpl(circuit)()</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">circuit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="n">idx_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;idx&quot;</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="s2">&quot;idx_&quot;</span><span class="p">,</span> <span class="n">idx_</span><span class="p">)</span>
+<span class="n">bitstring</span> <span class="o">=</span> <span class="n">bit_strings</span><span class="p">[</span><span class="n">idx_</span><span class="p">]</span>
+
+<span class="n">lam_t</span> <span class="o">=</span> <span class="n">float_from_binary</span><span class="p">(</span><span class="n">bitstring</span><span class="p">)</span> 
+<span class="n">lam_t</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>idx 0 idx_ 1
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.39269908169872414
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">estimation_wires</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">Norb</span><span class="p">,</span> <span class="n">Norb</span><span class="o">+</span><span class="n">n_ancilla</span><span class="p">))</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">circuit</span><span class="p">(</span><span class="n">estimation_wires</span><span class="p">)</span>
+<span class="n">bit_strings</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;0.</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s2">0</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">estimation_wires</span><span class="p">)</span><span class="si">}</span><span class="s2">b</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">))]</span>
+<span class="n">idxs</span> <span class="o">=</span> <span class="p">[</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mf">1.e-6</span><span class="p">]</span>
+<span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">tmp</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tmp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bit_strings</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idxs</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">tmp</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tmp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idxs</span><span class="p">]</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">bit_strings</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;phase&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;probability&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="s2">&quot;vertical&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">15</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">estimation_wires</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">Norb</span><span class="p">,</span> <span class="n">Norb</span><span class="o">+</span><span class="n">n_ancilla</span><span class="p">))</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">results</span> <span class="o">=</span> <span class="n">circuit</span><span class="p">(</span><span class="n">estimation_wires</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">bit_strings</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;0.</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s2">0</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">estimation_wires</span><span class="p">)</span><span class="si">}</span><span class="s2">b</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">))]</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">idxs</span> <span class="o">=</span> <span class="p">[</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mf">1.e-6</span><span class="p">]</span>
+
+<span class="nn">File ~/my_python3_env_forQC/lib/python3.13/site-packages/pennylane/workflow/qnode.py:905,</span> in <span class="ni">QNode.__call__</span><span class="nt">(self, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">903</span> <span class="k">if</span> <span class="n">qml</span><span class="o">.</span><span class="n">capture</span><span class="o">.</span><span class="n">enabled</span><span class="p">():</span>
+<span class="g g-Whitespace">    </span><span class="mi">904</span>     <span class="k">return</span> <span class="n">capture_qnode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">905</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_impl_call</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File ~/my_python3_env_forQC/lib/python3.13/site-packages/pennylane/workflow/qnode.py:868,</span> in <span class="ni">QNode._impl_call</span><span class="nt">(self, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">865</span> <span class="k">def</span><span class="w"> </span><span class="nf">_impl_call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qml</span><span class="o">.</span><span class="n">typing</span><span class="o">.</span><span class="n">Result</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">866</span> 
+<span class="g g-Whitespace">    </span><span class="mi">867</span>     <span class="c1"># construct the tape</span>
+<span class="ne">--&gt; </span><span class="mi">868</span>     <span class="n">tape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">870</span>     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">871</span>         <span class="n">interface</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">get_interface</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="nb">list</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+
+<span class="nn">File ~/my_python3_env_forQC/lib/python3.13/site-packages/pennylane/logging/decorators.py:61,</span> in <span class="ni">log_string_debug_func.&lt;locals&gt;.wrapper_entry</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">54</span>     <span class="n">s_caller</span> <span class="o">=</span> <span class="s2">&quot;::L&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">55</span>         <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getouterframes</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">(),</span> <span class="mi">2</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]]</span>
+<span class="g g-Whitespace">     </span><span class="mi">56</span>     <span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">57</span>     <span class="n">lgr</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">58</span>         <span class="sa">f</span><span class="s2">&quot;Calling </span><span class="si">{</span><span class="n">f_string</span><span class="si">}</span><span class="s2"> from </span><span class="si">{</span><span class="n">s_caller</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">59</span>         <span class="o">**</span><span class="n">_debug_log_kwargs</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">60</span>     <span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">61</span> <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File ~/my_python3_env_forQC/lib/python3.13/site-packages/pennylane/workflow/qnode.py:854,</span> in <span class="ni">QNode.construct</span><span class="nt">(self, args, kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">852</span> <span class="k">with</span> <span class="n">pldb_device_manager</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">853</span>     <span class="k">with</span> <span class="n">qml</span><span class="o">.</span><span class="n">queuing</span><span class="o">.</span><span class="n">AnnotatedQueue</span><span class="p">()</span> <span class="k">as</span> <span class="n">q</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">854</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_qfunc_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">856</span> <span class="n">tape</span> <span class="o">=</span> <span class="n">QuantumScript</span><span class="o">.</span><span class="n">from_queue</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">858</span> <span class="n">params</span> <span class="o">=</span> <span class="n">tape</span><span class="o">.</span><span class="n">get_parameters</span><span class="p">(</span><span class="n">trainable_only</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="ne">TypeError</span>: circuit() takes 0 positional arguments but 1 was given
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ancilla_wires</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">Norb</span><span class="p">,</span> <span class="n">Norb</span><span class="o">+</span><span class="n">n_ancilla</span><span class="p">))</span>
+<span class="n">bit_strings</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;0.</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s2">0</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ancilla_wires</span><span class="p">)</span><span class="si">}</span><span class="s2">b</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">))]</span>
+
+<span class="n">Et</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bitstring</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bit_strings</span><span class="p">):</span>
+    <span class="n">prob</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">fac</span> <span class="o">=</span> <span class="n">float_from_binary</span><span class="p">(</span><span class="n">bitstring</span><span class="p">)</span>
+    <span class="n">Et</span> <span class="o">+=</span> <span class="n">prob</span> <span class="o">*</span> <span class="n">fac</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Et&quot;</span><span class="p">,</span> <span class="n">Et</span> <span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="n">Et</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">o_np</span><span class="o">.</span><span class="n">pi</span>  <span class="o">/</span><span class="n">time_step</span><span class="p">,</span> <span class="s2">&quot;Egs_exact &quot;</span><span class="p">,</span> <span class="n">Egs_exact</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="id1">
+<h2>正しい結果を得るために...<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>Trotterとか関係ないoperatorの期待値をQPEで得ることを目指そう。</p>
+<p>まずはHadamard testで<span class="math notranslate nohighlight">\(N_0 N_1\)</span>の期待値を計算する。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_ancilla</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">dev</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;default.qubit&quot;</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="n">n_ancilla</span><span class="o">+</span><span class="n">Hamil</span><span class="o">.</span><span class="n">Norb</span><span class="p">)</span>
+
+<span class="nd">@qml</span><span class="o">.</span><span class="n">qnode</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">circuit_Test</span><span class="p">():</span>
+    <span class="n">q_ancilla</span> <span class="o">=</span> <span class="n">Norb</span>
+    <span class="c1"># State preparation</span>
+    <span class="n">qml</span><span class="o">.</span><span class="n">PauliX</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">qml</span><span class="o">.</span><span class="n">PauliX</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">method_state</span> <span class="o">==</span> <span class="s2">&quot;ansatz&quot;</span><span class="p">:</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">ctrl</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">])(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">ctrl</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">])(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">ctrl</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">])(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+
+    <span class="c1"># Define simplified Hamiltonian N_0 N_1 should be probability to occupy 0 and 1 simultaneously</span>
+    <span class="n">op0</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">qml</span><span class="o">.</span><span class="n">PauliZ</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">op1</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">qml</span><span class="o">.</span><span class="n">PauliZ</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">Hsimple</span> <span class="o">=</span> <span class="n">op0</span> <span class="o">@</span> <span class="n">op1</span> <span class="c1">#@ qml.Identity(2) @ qml.Identity(3)</span>
+    <span class="n">coeff</span> <span class="o">=</span> <span class="mf">0.25</span>
+
+    <span class="c1"># making it to exp(iHt)</span>
+    <span class="c1">#U = qml.exp(Hsimple, coeff= -1.j * coeff*time_step, num_steps=trotter_step)</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">Hsimple</span><span class="p">,</span> <span class="n">coeff</span><span class="o">=</span> <span class="mf">1.</span><span class="n">j</span> <span class="o">*</span> <span class="n">coeff</span><span class="o">*</span><span class="n">time_step</span><span class="p">,</span> <span class="n">num_steps</span><span class="o">=</span><span class="n">trotter_step</span><span class="p">)</span>
+
+    <span class="c1"># Hadamard test</span>
+    <span class="n">qml</span><span class="o">.</span><span class="n">Hadamard</span><span class="p">(</span><span class="n">wires</span><span class="o">=</span><span class="n">q_ancilla</span><span class="p">)</span>
+    <span class="n">qml</span><span class="o">.</span><span class="n">ControlledQubitUnitary</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">control_wires</span><span class="o">=</span><span class="p">[</span><span class="n">q_ancilla</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Norb</span><span class="p">))</span>
+    <span class="n">qml</span><span class="o">.</span><span class="n">Hadamard</span><span class="p">(</span><span class="n">wires</span><span class="o">=</span><span class="n">q_ancilla</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">qml</span><span class="o">.</span><span class="n">expval</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">PauliZ</span><span class="p">(</span><span class="n">q_ancilla</span><span class="p">))</span>
+
+<span class="n">method_state</span> <span class="o">=</span> <span class="s2">&quot;HF&quot;</span>
+<span class="n">method_state</span> <span class="o">=</span> <span class="s2">&quot;ansatz&quot;</span>
+
+<span class="n">trotter_step</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">time_step</span> <span class="o">=</span> <span class="mf">1.e-3</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>  <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">draw_mpl</span><span class="p">(</span><span class="n">circuit_Test</span><span class="p">,</span> <span class="n">show_all_wires</span><span class="o">=</span><span class="kc">True</span><span class="p">)()</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">circuit_Test</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="n">nlog</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="n">p0</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">res</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">p1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">res</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">Et</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="n">E</span> <span class="o">=</span> <span class="n">Et</span> <span class="o">/</span> <span class="n">time_step</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;initial state&quot;</span><span class="p">,</span> <span class="n">method_state</span><span class="p">,</span> <span class="s2">&quot;res&quot;</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> 
+     <span class="s2">&quot;time_step </span><span class="si">%3.1e</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">time_step</span><span class="p">,</span> <span class="s2">&quot;&lt;N_0N_1&gt; </span><span class="si">%12.9f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">E</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>うまく行った。</p>
+<p>続いて、QPEで<span class="math notranslate nohighlight">\(N_0 N_1\)</span>の期待値を計算してみる。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_ancilla</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">dev</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;default.qubit&quot;</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="n">n_ancilla</span><span class="o">+</span><span class="n">Hamil</span><span class="o">.</span><span class="n">Norb</span><span class="p">)</span>
+
+<span class="nd">@qml</span><span class="o">.</span><span class="n">qnode</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">circuit_Test</span><span class="p">():</span>
+    <span class="n">estimation_wires</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">Norb</span><span class="p">,</span> <span class="n">Norb</span><span class="o">+</span><span class="n">n_ancilla</span><span class="p">))</span>
+
+    <span class="c1"># State preparation</span>
+    <span class="n">qml</span><span class="o">.</span><span class="n">PauliX</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">qml</span><span class="o">.</span><span class="n">PauliX</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">method_state</span> <span class="o">==</span> <span class="s2">&quot;ansatz&quot;</span><span class="p">:</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">ctrl</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">])(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">ctrl</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">])(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">ctrl</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">])(</span><span class="n">params_exact</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+
+    <span class="c1"># Time Evolution</span>
+    <span class="c1"># U = qml.TrotterProduct(H_qubit, n=trotter_step, time=time_step, order=1)</span>
+
+    <span class="c1"># Define simplified Hamiltonian N_0 N_1 should be probability to occupy 0 and 1 simultaneously</span>
+    <span class="n">op0</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">qml</span><span class="o">.</span><span class="n">PauliZ</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">op1</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">qml</span><span class="o">.</span><span class="n">PauliZ</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">Hsimple</span> <span class="o">=</span> <span class="n">op0</span> <span class="o">@</span> <span class="n">op1</span> <span class="c1">#@ qml.Identity(2) @ qml.Identity(3)</span>
+    <span class="n">coeff</span> <span class="o">=</span> <span class="mf">0.25</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">Hsimple</span><span class="p">,</span> <span class="n">coeff</span><span class="o">=</span> <span class="mf">1.</span><span class="n">j</span> <span class="o">*</span> <span class="n">coeff</span><span class="o">*</span><span class="n">time_step</span><span class="p">,</span> <span class="n">num_steps</span><span class="o">=</span><span class="n">trotter_step</span><span class="p">)</span>
+
+    <span class="c1"># QPE part    </span>
+    <span class="n">QuantumPhaseEstimation</span><span class="p">(</span>
+        <span class="n">U</span><span class="p">,</span>
+        <span class="n">estimation_wires</span><span class="o">=</span><span class="n">estimation_wires</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">qml</span><span class="o">.</span><span class="n">probs</span><span class="p">(</span><span class="n">wires</span><span class="o">=</span><span class="n">estimation_wires</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">method_state</span> <span class="o">=</span> <span class="s2">&quot;ansatz&quot;</span>
+<span class="n">trotter_step</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">time_step</span> <span class="o">=</span> <span class="mf">1.e-3</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">circuit_Test</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="n">idx_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;idx&quot;</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="s2">&quot;idx_&quot;</span><span class="p">,</span> <span class="n">idx_</span><span class="p">)</span>
+<span class="n">bitstring</span> <span class="o">=</span> <span class="n">bit_strings</span><span class="p">[</span><span class="n">idx_</span><span class="p">]</span>
+
+<span class="n">lam_t</span> <span class="o">=</span> <span class="n">float_from_binary</span><span class="p">(</span><span class="n">bitstring</span><span class="p">)</span> 
+<span class="n">lam_t</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ancilla_wires</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">Norb</span><span class="p">,</span> <span class="n">Norb</span><span class="o">+</span><span class="n">n_ancilla</span><span class="p">))</span>
+
+<span class="n">bit_strings</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;0.</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s2">0</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ancilla_wires</span><span class="p">)</span><span class="si">}</span><span class="s2">b</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">))]</span>
+<span class="c1">#bit_strings = [f&quot;0.{len(res)-1-x:0{len(ancilla_wires)}b}&quot; for x in range(len(res))]</span>
+
+
+<span class="n">Et</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bitstring</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bit_strings</span><span class="p">):</span>
+    <span class="n">prob</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">fac</span> <span class="o">=</span> <span class="n">float_from_binary</span><span class="p">(</span><span class="n">bitstring</span><span class="p">)</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">prob</span> <span class="o">*</span> <span class="n">fac</span> 
+    <span class="n">Et</span> <span class="o">+=</span> <span class="n">tmp</span>
+    <span class="k">if</span> <span class="n">prob</span> <span class="o">&gt;</span> <span class="mf">1.e-6</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Et&quot;</span><span class="p">,</span> <span class="n">tmp</span> <span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="n">tmp</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">o_np</span><span class="o">.</span><span class="n">pi</span>  <span class="o">/</span><span class="n">time_step</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Et&quot;</span><span class="p">,</span> <span class="n">Et</span> <span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="n">Et</span> <span class="o">/</span><span class="n">time_step</span> <span class="p">)</span> <span class="c1">#&quot;Egs_exact &quot;, Egs_exact)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目次
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#u-exp-i-hat-h-t">時間発展演算子: <span class="math notranslate nohighlight">\(U=\exp{(-i\hat{H}t)}\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hadamard-test">Hadamard test</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#qpe">QPE</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#document">Documentを参考に再考...</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">正しい結果を得るために...</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  © Copyright 2025-present by 吉田 聡太 (Sota Yoshida). 本コンテンツは<a rel="license" href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0 ライセンス</a>の下に提供されています。 <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="クリエイティブ・コモンズ・ライセンス" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a>　ただし、資料中のコードセル部分は<a rel="license" href="https://opensource.org/licenses/MIT">MITライセンス</a>の下に提供されています。
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

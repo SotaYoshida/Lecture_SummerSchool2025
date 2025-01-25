@@ -25,19 +25,29 @@
 | Coupled Cluster (CC)|  [6章](notebooks/CoupledCluster.html)  | 
 | In-Medium Similarity Renormalization Group (IM-SRG) | [7章](notebooks/IMSRG.html) | 
 | Eigenvector Continuation | [8章](notebooks/EC.html)  |  
-| Quantum Computing | [9章](notebooks/QuantumComputing.html) [10章](notebooks/Pairing_QC_pennylane.html) [11章](notebooks/Pairing_QC_pytket.html) |  
+| Quantum Computing ※ | [9章](notebooks/QuantumComputing.html) [10章](notebooks/pennylane_VQE.html) [11章](notebooks/pennylane_QPE.html) [12章](notebooks/qiskit_QC.html) [13章](notebooks/pytket_VQE.html) |  
+
+:::{margin}
+Julia言語による...資料の題とありますが、量子計算の部分は全てPythonです。
+:::
+ご覧の通り、既に多すぎる手法が講義資料に含まれているため、今回の講義だけですべての手法をカバーすることはおそらくできません。
+講義では、皆さんの前提知識や興味に応じて取捨選択をする予定です。
+
+講義で扱わなかった手法についても、より一般のHamiltonianに対して適用を考えれば、独自の研究テーマへと十分発展し得る手法が幾つも転がっているはずです。
+この資料をきっかけにそうした研究や、筆者との共同研究などに繋がれば、この上ない喜びです。
+もし質問などあれば、講義以降もぜひ気軽にコンタクトしてください。
 
 
 ## PairingHamiltonian.jl
 
-こうした手法を扱う数値計算コードは、様々な言語で書かれ(たまにオープンソースとして公開されていることもありますが)、
+核子系の数値計算コードは、様々な言語で書かれ(たまにオープンソースとして公開されていることもありますが)、
 その多くは研究室・グループの秘伝コードであったり、特定の研究目的に特化していたりすることが多いです。
 もちろんそのことは、非難されるべきことではありませんが、初学者が核構造計算の手法を学んだり、他者とアイデアを共有・交換しながら新たな手法を開発するためには、
 できるだけ多くの人がアクセスしやすい形でコードを公開することもまた分野にとって望ましいことであると筆者は考えています。
 機械学習の分野があれほどまでに急速に発展したのも、多くの人がアクセスしやすい形でコードを公開し、共有したことが大きな要因であると考えられ、
-こうした文化から学べることも多いと考えています(もちろん、全てのコードがオープンソースであるべきだとは考えていませんので悪しからず)。
+こうした文化から学べることも多いと考えています(もちろん、全てのコードがオープンソースであるべきだとは考えていませんし、そのような主張でもないので悪しからず)。
 
-このような個人的な信念から、本講義で使用するコードはJulia言語で実装し、GitHub上で公開するとともにJuliaのパッケージとして公開することにしました。
+上記のような個人的な信念から、本講義で使用するコードはJulia言語で実装し、GitHub上で公開するとともにJuliaのパッケージとして公開することにしました。
 [PairingHamiltonian.jl](https://github.com/sotayoshida/pairinghamiltonian.jl)
 Pairing Hamiltonianというシンプルなモデルを題材にしているとはいえ、単一のコード(プロジェクト)で、
 CI, HF, BCS, MBPT, CC, IM-SRG, Quantum Computingといった多様な手法を実装/解説したコード&資料は、筆者の知る限り他にはないと自負しています。

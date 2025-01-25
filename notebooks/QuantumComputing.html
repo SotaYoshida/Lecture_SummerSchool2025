@@ -66,7 +66,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/QuantumComputing';</script>
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
-    <link rel="next" title="10. Pairing Hamiltonianの量子計算 (Pennylane)" href="Pairing_QC_pennylane.html" />
+    <link rel="next" title="10. pennylaneを用いたVQE計算" href="pennylane_VQE.html" />
     <link rel="prev" title="8. Emulator/Surrogate model" href="EC.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="ja"/>
@@ -179,8 +179,10 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">量子計算</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">9. Quantum Computing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Pairing_QC_pennylane.html">10. Pairing Hamiltonianの量子計算 (Pennylane)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Pairing_QC_pytket.html">11. Pairing Hamiltonianの量子計算 (pytket)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pennylane_VQE.html">10. pennylaneを用いたVQE計算</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pennylane_QPE.html">11. pennylaneを用いたQPE計算</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qiskit_QC.html">12. Qiskitを用いた量子計算</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pytket_VQE.html">13. pytketを用いたVQE計算</a></li>
 </ul>
 
     </div>
@@ -527,14 +529,154 @@ Alice と Bob は、量子もつれを共有している(もつれのある量�
 <p>代表的な量子系に対するアルゴリズムについて説明する。</p>
 <section id="vqe-variational-quantum-eigensolver">
 <h3><span class="section-number">9.4.1. </span>VQE (Variational Quantum Eigensolver)<a class="headerlink" href="#vqe-variational-quantum-eigensolver" title="Link to this heading">#</a></h3>
+<p>例えば第二量子化され、有限の配位で(近似的に)表現されるような系では、
+ビット列の各ビットを量子ビットに割り当てて、その状態<span class="math notranslate nohighlight">\(\ket{0}, \ket{1}\)</span>をそれぞれ非占有/占有状態とみなせば
+あとはその重みとあわせて、波動関数を表現することができる。
+３つの軌道があり、粒子数が1の系を例に取れば以下のようにかける:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{align}
+\ket{\psi} = c_{001} \ket{001} + c_{010} \ket{010} + c_{100} \ket{100}
+\end{align}
+\]</div>
+<p>典型的には、回転ゲートなどを組み合わせて各配位を作成することから、
+回転角などのパラメータを持った試行波動関数として<span class="math notranslate nohighlight">\(\ket{\psi(\theta)}\)</span>と書く。</p>
+<p>このように量子ビットで波動関数(状態)<span class="math notranslate nohighlight">\(\ket{\psi(\theta)}\)</span>を表現したら、
+次はハミルトニアンなどの演算子の期待値<span class="math notranslate nohighlight">\(\bra{\psi(\theta)} H \ket{\psi(\theta)}\)</span>を計算したくなる。</p>
+<p>Variational Quantum Eigensolverは、</p>
+<ol class="arabic simple">
+<li><p>【Q】ansatz: 状態作成 (state preparation)の回路 <span class="math notranslate nohighlight">\(\to \ket{\psi(\theta)}\)</span></p></li>
+<li><p>【Q(C)】Hamiltonianの期待値 <span class="math notranslate nohighlight">\(\bra{\psi(\theta)} H \ket{\psi(\theta)}\)</span>を測定</p></li>
+<li><p>【C】エネルギー(ハミルトニアンの期待値)を変分原理(やその他の条件)の下で最小化すべく<span class="math notranslate nohighlight">\(\theta\)</span>の最適化を行う</p></li>
+<li><p>1-3までを収束するまで繰り返す</p></li>
+</ol>
+<p>ことで、興味のある状態のエネルギーを推定しよう、というのが基本的な発想となる。
+なお、1.-3.までに【Q】などを付したが、これはそれぞれの工程が&quot;典型的には&quot;量子(Q)/古典(C)計算機上で実行されることが
+想定されている、という意味である。</p>
+<p>このように、VQEでは量子・古典計算機の双方を駆使して問題を解くアプローチであり、これが良く量子-古典ハイブリッドと呼ばれる所以である。</p>
 </section>
 <section id="hadamard-test-quantum-phase-estimation-qpe">
 <h3><span class="section-number">9.4.2. </span>Hadamard test/Quantum phase estimation (QPE)<a class="headerlink" href="#hadamard-test-quantum-phase-estimation-qpe" title="Link to this heading">#</a></h3>
+<p>次に、long-term algorithmである量子位相推定(QPE)の説明を行う。</p>
+<p>まず初めにHadamard testを紹介し、QPEの説明に移る。</p>
 <section id="hadamard-test">
 <h4><span class="section-number">9.4.2.1. </span>Hadamard test<a class="headerlink" href="#hadamard-test" title="Link to this heading">#</a></h4>
+<p>アダマールテストは、1つの補助量子ビットを用いて興味のある系のユニタリ演算子の固有値を得る方法である。</p>
+<p>以下では補助量子ビットのことをancilla、興味のある系を表現するための量子ビットをターゲット量子ビットと呼ぶことにする。
+またターゲット量子ビットが既に、ユニタリ演算子<span class="math notranslate nohighlight">\(U\)</span>の固有状態である<span class="math notranslate nohighlight">\(U\ket{\psi} = e^{i\lambda} \ket{\psi}\)</span>とする。</p>
+<p>Hadamard-gateとHamiltonianを混同しないようにしよう。
+ここの節では、<span class="math notranslate nohighlight">\(H\)</span>はすべてH-gateを意味し、<span class="math notranslate nohighlight">\(\hat{H}\)</span>でHamiltonianを表現する。</p>
+<div class="tip admonition">
+<p class="admonition-title">Hadamard testの手順</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(\ket{0}\)</span>で初期化されたancillaに、H-gateを作用させる。</p></li>
+<li><p>ancillaを制御ビットとした、制御ユニタリ演算をターゲット量子ビットに作用させる。</p></li>
+<li><p>ancillaにH-gateを作用させ、その<span class="math notranslate nohighlight">\(Z\)</span>成分を測定する。</p></li>
+</ol>
+</div>
+<p>各ステップでの全系の状態を書き出してみよう。</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+1. \quad &amp; \frac{\ket{0}+\ket{1}}{\sqrt{2}} \otimes \ket{\psi} \\
+2. \quad &amp; \frac{1}{\sqrt{2}} \ket{0} \otimes \ket{\psi} 
+            + \frac{1}{\sqrt{2}} \ket{1} \otimes U \ket{\psi}　\\
+3. \quad &amp; \frac{\ket{0}+\ket{1}}{2} \otimes \ket{\psi}
+            + \frac{\ket{0}-\ket{1}}{2} \otimes U \ket{\psi}
+         &amp; \to \frac{1+e^{i \lambda}}{2} \ket{0} \otimes \ket{\psi} + 
+               \frac{1-e^{i \lambda}}{2} \ket{1} \otimes \ket{\psi} 
+\end{align}
+\end{split}\]</div>
+<p>すると、ancilla qubitを測定した結果が<span class="math notranslate nohighlight">\(\ket{0}\)</span>であるか<span class="math notranslate nohighlight">\(\ket{1}\)</span>であるかによって、
+ユニタリ演算子の固有値の情報が引き出せる事がわかる。</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+P(0) &amp; = \left| \frac{1+e^{i \lambda}}{2} \right|^2 = \frac{1+\cos \lambda}{2} \\
+P(1) &amp; = \left| \frac{1-e^{i \lambda}}{2} \right|^2 = \frac{1-\cos \lambda}{2}
+\end{align}
+\end{split}\]</div>
+<p>実際に量子計算機でHadamard testを行う際は、ancillaに対する確率は、有限のshot数に対する<span class="math notranslate nohighlight">\(0/1\)</span>の割合となり近似が生じる。</p>
+<p>下の系の固有値の古典計算が<span class="math notranslate nohighlight">\(d=2^n\)</span>の<span class="math notranslate nohighlight">\(\mathcal{O}(d^3)\)</span>程度とすると、
+Hadamard testでは、必要な精度<span class="math notranslate nohighlight">\(\epsilon\)</span>に対して<span class="math notranslate nohighlight">\(M \sim (1/\epsilon)^p\)</span>回の測定が必要となる。</p>
+<p>もし仮に、<span class="math notranslate nohighlight">\(n\)</span>個の量子回路に対する量子ゲート演算が古典計算より早くでき、ノイズも無視できるほどエラー低減/エラー訂正できれば、Hadamard testによって計算が高速化できる可能性がある(高速化できるとは言っていない)。</p>
+<p>Hadamard testを少し拡張すると、固有値を２進小数の各桁ごとに推定することができる。その工程を一度に行うのが、次に説明する量子位相推定(QPE)である。</p>
 </section>
 <section id="quantum-phase-estimation-qpe">
 <h4><span class="section-number">9.4.2.2. </span>Quantum phase estimation (QPE)<a class="headerlink" href="#quantum-phase-estimation-qpe" title="Link to this heading">#</a></h4>
+<p>次にQPEの概要を示す。
+様々な拡張があるものの、最も代表的(教科書的)なQPEの説明にとどめておく。</p>
+<p>ユニタリ演算子<span class="math notranslate nohighlight">\(U\)</span>とその固有ベクトル<span class="math notranslate nohighlight">\(\ket{\psi}\)</span>に対して、その固有値を求める事を考える。</p>
+<div class="math notranslate nohighlight" id="equation-time-evolution">
+<span class="eqno">(9.1)<a class="headerlink" href="#equation-time-evolution" title="Link to this equation">#</a></span>\[
+\begin{align}
+U \ket{\psi} = e^{i 2\pi\theta}
+\end{align}
+\]</div>
+<p>上の<span class="math notranslate nohighlight">\(\theta\)</span>(位相)を求めることになる。また、より具体的な応用例として、量子系のエネルギーを推定したい場合には</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+U &amp; = e^{- i\hat{H}t } \\
+U \ket{\psi} &amp; = e^{i\hat{H}t} \ket{\psi} = e^{iEt} \ket{\psi}
+\end{align}
+\end{split}\]</div>
+<p>となる。ここで、<span class="math notranslate nohighlight">\(\hat{H}\)</span>は系のHamiltonian、<span class="math notranslate nohighlight">\(E\)</span>は系のエネルギー、<span class="math notranslate nohighlight">\(t\)</span>は時間(定数)である。
+以下では、より一般の<a class="reference internal" href="#equation-time-evolution">(9.1)</a>の場合を考えよう。</p>
+<div class="tip admonition">
+<p class="admonition-title">QPEの手順</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(n\)</span>個のancilla <span class="math notranslate nohighlight">\(\ket{A}\)</span>を用意し、ターゲット量子ビットには<span class="math notranslate nohighlight">\(\ket{\psi}\)</span>を用意する。全系は<span class="math notranslate nohighlight">\(\ket{\Psi} = \ket{A} \otimes \ket{\psi}\)</span>とする。</p></li>
+<li><p><span class="math notranslate nohighlight">\(n_a\)</span>個のancillaに対して、H-gateで重ね合わせ状態を作る。</p></li>
+<li><p>各ancillaからターゲット量子ビットに制御ユニタリ演算子をそれぞれ<span class="math notranslate nohighlight">\(U^{2^0}, U^{2^1}, \ldots, U^{2^{n_a-1}}\)</span>回作用させる。</p></li>
+<li><p>(逆)量子フーリエ変換を施す。</p></li>
+<li><p>ancillaを測定する<br />
+(2.のユニタリ演算の順番やどのancillaを上位ビットとするかはconventionに依る)。</p></li>
+<li><p>ancillaの測定結果から位相<span class="math notranslate nohighlight">\(\theta\)</span>を推定する。</p></li>
+</ol>
+</div>
+<p>この回路によってなぜ固有値の推定ができるのかを見ていこう。</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+1. &amp; \to \ket{\Psi} = \ket{0}^{\otimes n} \otimes \ket{\psi} \\
+2. &amp; \to \ket{\Psi} = \frac{1}{\sqrt{2^{n}}} \sum_{k=0}^{2^{n}-1} \ket{k} \otimes \ket{\psi} \\
+3. &amp; \to  \frac{1}{\sqrt{2^{n}}} \left[ 
+    \left( \ket{0} + e^{2\pi i \theta 2^0} \ket{1} \right) \otimes 
+    \left( \ket{0} + e^{2\pi i \theta 2^1} \ket{1} \right) \otimes \cdots \otimes
+    \left( \ket{0} + e^{2\pi i \theta 2^{n-1}} \ket{1} \right) \right] \otimes \ket{\psi} \\
+    &amp; =  \frac{1}{\sqrt{2^{n}}} \sum_{k=0}^{2^{n}-1} e^{2\pi i \theta k} \ket{k} \otimes \ket{\psi} \\
+4. &amp; \to \frac{1}{2^{n}} \sum_{k=0}^{2^{n}-1} \sum_{x=0}^{2^{n}-1} e^{2\pi i \theta k} e^{-2\pi i k x/2^n} \ket{x} \otimes \ket{\psi} \\
+&amp; = \frac{1}{2^{n}} \sum_{k=0}^{2^{n}-1} \sum_{x=0}^{2^{n}-1} e^{ -\frac{2\pi ik}{2^n}(x-2^n \theta) } \ket{x} \otimes \ket{\psi} 
+\end{align}
+\end{split}\]</div>
+<p>仮に<span class="math notranslate nohighlight">\(2^n \theta\)</span>が整数となるような <span class="math notranslate nohighlight">\(\theta\)</span>であったとすると、ancillaの値<span class="math notranslate nohighlight">\(x\)</span>を測定することで<span class="math notranslate nohighlight">\(\theta\)</span>を推定できることがわかる。
+また、<span class="math notranslate nohighlight">\(2^n \theta\)</span>が整数でない場合も、<span class="math notranslate nohighlight">\(x\)</span>の測定結果は<span class="math notranslate nohighlight">\(2^n \theta\)</span>に近い値が高い確率で得られることが期待できるので、<span class="math notranslate nohighlight">\(2\pi/2^n\)</span>の精度で<span class="math notranslate nohighlight">\(\theta\)</span>を推定できる。</p>
+<p>各ancilla qubitがレジスターになっており、位相の二進小数での各桁を担っている。
+したがって、ancilla qubitを1つ追加するごとに、1bit分(10進数にして2)推定の精度を向上することができる。
+もちろん様々な注がつくとはいえ、QPEでは、<span class="math notranslate nohighlight">\(2\pi / 2^{n_a}\)</span>の精度で固有値推定が可能であり、
+仮にQPEに必要な量子ゲートの実行が高速で精度が十分であれば、古典計算に比べた量子計算の優位性が生じることになる。</p>
+<p><strong>試行波動関数について</strong></p>
+<p>またHadamard testやQPEに共通して想像される至極真っ当な疑問として、</p>
+<blockquote>
+<div><p>「計算が大変な系の波動関数やエネルギーを推定したいのに、ターゲット量子ビットで既に目的となる波動関数が用意されていることが前提になっているではないか。それをどうやって用意するんだ！？」</p>
+</div></blockquote>
+<p>という疑問が生じるかと思う。
+QPEでは、必ずしも<span class="math notranslate nohighlight">\(\ket{\psi}\)</span>はターゲット系の厳密解であることは要請されない。
+目的となる厳密解と有限のオーバーラップを持っていれば良い。</p>
+<p>試行波動関数を、(知り得ない)真の波動関数で展開するとわかるように
+興味のある固有値を測定できる確率は、真の波動関数とのoverlap amplitudeに比例するため、
+できるだけ良い試行波動関数を使わなければならない、というのは事実としてある。</p>
+<p>そこでHFやBCS, CC, truncateされた空間でのCI波動関数, あるいはVQEで最適化した範囲でのansatzなど、
+状況に応じて(様々なトレードオフで)QPEのinputを選ぶことになるだろう。</p>
+<p>いずれにしても、QPEはQFT自体がlong-term algorithmであること、
+制御ユニタリ演算など必要な回路が非常に深くなること、
+ターゲット量子ビットの状態作成の非自明さ・コスト、実機におけるエラー率などから、
+古典計算機の適用限界を超えた計算は2025年8月現在においては非常に難しい。</p>
+<p>しかしながら、幾つかの(期待も含めた？)条件のもとで、量子コンピュータの優位性が期待されている
+量子アルゴリズムの一つであることは間違いない。</p>
+<p>また、限られたリソース(qubit)やエラー率のなかでのNISQデバイスを用いた計算の工夫が、
+量子多体系に対する新たな量子アルゴリズムの提案に繋がってきたことは強調したい。</p>
 </section>
 </section>
 </section>
@@ -543,27 +685,31 @@ Alice と Bob は、量子もつれを共有している(もつれのある量�
 <aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>正確に言うと、pytketを使ったことはなかったが、QuantinuumのH-seriesを使ってみたいと思っていたところ、
-この夏学の講師依頼があり、講義資料を作るのを機にpytketを使ってみることにした。</p>
+この夏学の講師依頼があり、講義資料を作るのを機に重い腰をあげた。</p>
 </aside>
 <p>Pythonで量子計算を行うためのフレームワークはいくつかあるが、ここでは筆者が使用経験のあるものを紹介する。
-特徴などの説明については、あくまで筆者の非常に限られた経験に基づくもので誤りである可能性は大いにある。
-その際は、そっと教えていただけると幸いである。
-フレームワーク間を行き来する機能なども其々のフレームワークに用意されていたりもするが、
-後述のように、ソフトウェア面においても発展が急速すぎるため、必ずしもうまく行き来できるとは限らない。</p>
-<p>したがって、(とくに実機利用を行う場合には)自身の解きたい問題や使いたいハードウェアにあわせて、フレームワークを選択することが重要である。</p>
+特徴などの説明については、あくまで筆者の非常に限られた経験と浅い理解に基づくもので誤りである可能性は大いにあることは断っておく。
+また、その際は、そっと教えていただけると幸いである。
+回路やオペレータ表現についてフレームワーク間を行き来する互換機能なども其々のフレームワークに用意されていたりもするが、
+ソフトウェア面においても発展が急速すぎるため、必ずしもうまく行き来できるとは限らない。</p>
+<p>したがって、(とくに実機利用を行う場合には)自身の解きたい問題や使いたいハードウェアにあわせて、フレームワークを選択することが重要であると同時に、
+計算を行った際の仮想環境・ライブラリのバージョン情報などは保持しておこう。</p>
 <ul class="simple">
 <li><p>Qiskit (IBM)
 言わずとしれた、IBMが開発している量子計算用のPythonフレームワーク。<br />
-2024年2月のメジャーバージョンアップデート以降、APIやDocumentが大幅に破壊的な変更を受け、古いコードが動かなくなることがある。
-筆者はやや脱落気味である。
-<a class="reference external" href="https://qiita.com/notori48/items/da4e2c298c3cd804867c">Qiskit1.0チートシート</a>など、有志による情報も参考になる。</p></li>
+2024年2月のメジャーバージョンアップデート以降、APIやDocumentが大幅に破壊的な変更を受け、古いコードが動かないことが多い。
+筆者は大変困っていてやや脱落気味であるが、  <a class="reference external" href="https://qiita.com/notori48/items/da4e2c298c3cd804867c">Qiskit1.0チートシート</a>など、有志による情報も参考になる。</p></li>
 <li><p>Pennylane (Xanadu)
 量子計算と機械学習を統合したフレームワーク。<br />
 OpenFermionとの連携が強く、量子化学計算などで用いられる実装が利用できる他、量子機械学習のアルゴリズムも実装されている(筆者は使ったことがない)。
-また、いろいろなタッチの回路を描くことができる点も気に入っている。</p></li>
+量子化学の計算に関するTutorialもあるなど、量子多体系への適用の障壁はやや低い印象。
+また、いろいろなタッチの回路を描くことができる。</p></li>
 <li><p>pytket (Quantinuum)
-Quantinuum社が開発している量子計算用のPython モジュール。筆者は絶賛勉強中。</p></li>
+Quantinuum社が開発している量子計算用のPython モジュール。筆者は絶賛勉強中。<br />
+Trotter分解、制御ユニタリ演算の構築などの、物理系のシミュレーションに不可欠なハミルトニアンの時間発展に関する実装はやや未整備な印象。</p></li>
 </ul>
+<p>続く章で３つのフレームワークを用いた簡単な量子計算の実装例を示すが、(少なくともsimulatorレベルでは)pennylaneが最も使いやすい印象を受けた。
+とくに、制御ユニタリ/ハミルトニアンの時間発展や、QPEの実装がよく整備されており、興味のある系に応用しやすいであろう。</p>
 </section>
 </section>
 
@@ -607,11 +753,11 @@ Quantinuum社が開発している量子計算用のPython モジュール。筆
       </div>
     </a>
     <a class="right-next"
-       href="Pairing_QC_pennylane.html"
+       href="pennylane_VQE.html"
        title="次ページ">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">次へ</p>
-        <p class="prev-next-title"><span class="section-number">10. </span>Pairing Hamiltonianの量子計算 (Pennylane)</p>
+        <p class="prev-next-title"><span class="section-number">10. </span>pennylaneを用いたVQE計算</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
