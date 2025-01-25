@@ -23,7 +23,8 @@ parts:
   numbered: true
   chapters:  
   - file: notebooks/QuantumComputing
-  - file: notebooks/Pairing_VQE_pennylane
-  - file: notebooks/qpe_pennylane
-  - file: notebooks/Pairing_VQE_pytket
+  - file: notebooks/pennylane_VQE
+  - file: notebooks/pennylane_QPE
+  - file: notebooks/qiskit_QC
+  - file: notebooks/pytket_VQE
 

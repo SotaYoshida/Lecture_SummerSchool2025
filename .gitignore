@@ -1,5 +1,6 @@
 .DS_Store
 notebooks/.DS_Store
+notebooks/*.pkl
 ref
 _build
 *~
