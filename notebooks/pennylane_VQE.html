@@ -378,7 +378,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hamiltonian">10.1. Hamiltonianの準備</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pennylane">10.2. pennylaneを用いた表現</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hf">10.3. HF状態の準備と測定</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#energy">10.4. 回路によるEnergy測定</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#energy">10.4. 回路によるEnergy測定と最適化</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">10.5. 補足</a></li>
 </ul>
             </nav>
@@ -696,20 +696,17 @@ occ.  [2, 3] E_HF:  9.34
 </div>
 </section>
 <section id="energy">
-<h2><span class="section-number">10.4. </span>回路によるEnergy測定<a class="headerlink" href="#energy" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">10.4. </span>回路によるEnergy測定と最適化<a class="headerlink" href="#energy" title="Link to this heading">#</a></h2>
 <p>以下では、実際に回路を用いてエネルギーを測定しつつ、(statevectorを使って、という条件付きだが)回路パラメータの最適化も行う。</p>
 <aside class="margin sidebar">
 <p class="sidebar-title"></p>
-<p>筆者はここで、こんな浅い回路で勾配消失が起こるとは思えない一方で最適化が全然進まず、時間を溶かした。
-こんなん知らんがな、と言いたくもなる。</p>
+<p>筆者はここで、こんな浅い回路で勾配消失が起こるとは思えない一方で最適化が全然進まず、時間を溶かした。</p>
 </aside>
 <p>やはりここでも注意しないといけないのが、回路のパラメータもpennylane内のnumpyを使って、TorchTensorで与える必要がある。
 最適化すべき角度のパラメータをリストで与えると最適化が進まない。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params_exact</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-    <span class="p">[</span><span class="o">-</span><span class="mf">0.48104276</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.03976498</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.98963981</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.18481738</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.54832984</span><span class="p">]</span>
-    <span class="p">)</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params_exact</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.48104276</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.03976498</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.98963981</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.18481738</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.54832984</span><span class="p">]</span> <span class="p">)</span> 
 </pre></div>
 </div>
 </div>
@@ -780,9 +777,7 @@ occ.  [2, 3] E_HF:  9.34
     <span class="n">E</span> <span class="o">=</span> <span class="n">ansatz</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Optimized</span><span class="se">\n</span><span class="s2">E&quot;</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="s2">&quot;Egs_exact&quot;</span><span class="p">,</span> <span class="n">Egs_exact</span><span class="p">,</span> <span class="s2">&quot;Diff.&quot;</span><span class="p">,</span> <span class="n">E</span> <span class="o">-</span> <span class="n">Egs_exact</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;params Opt (0~2π): &quot;</span><span class="p">,</span>  <span class="n">params</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;params_exact(0~2π):&quot;</span><span class="p">,</span>  <span class="n">params_exact</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>    
-    <span class="c1"># print(&quot;params Opt (0~2π): &quot;, list(map(make_angle_to_0_2pi, params.tolist())))</span>
-    <span class="c1">#print(&quot;params_exact(0~2π):&quot;, list(map(make_angle_to_0_2pi, params_exact.tolist())))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;params_exact(0~2π):&quot;</span><span class="p">,</span>  <span class="n">params_exact</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>   
 </pre></div>
 </div>
 </div>
@@ -877,9 +872,9 @@ C++による高速なstatevectorのシミュレーションが可能なバック
 </pre></div>
 </div>
 <p>などとしてやれば良い。ただし、最近Pythonのライブラリの依存関係の考え方が変わり、
-brewやaptなどシステムのパッケージマネージャ経由でインストールすべし、とされている。</p>
-<p>このあたりの事情から、少々手こずるかもしれない。
-依存関係ぶっ壊れてもいいからpipで強引にインストールする方法もあるが、仮想環境の作成が推奨ということであろう。</p>
+brewやaptなどシステムのパッケージマネージャ経由でインストールすべし、とされている。
+このあたりの事情から、少々手こずるかもしれない。</p>
+<p>依存関係ぶっ壊れてもいいからpipで強引にインストールするという方法もなくなはいが、簡単だし仮想環境の作成が推奨。</p>
 </section>
 </section>
 
@@ -951,7 +946,7 @@ brewやaptなどシステムのパッケージマネージャ経由でインス�
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hamiltonian">10.1. Hamiltonianの準備</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pennylane">10.2. pennylaneを用いた表現</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hf">10.3. HF状態の準備と測定</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#energy">10.4. 回路によるEnergy測定</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#energy">10.4. 回路によるEnergy測定と最適化</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">10.5. 補足</a></li>
 </ul>
   </nav></div>

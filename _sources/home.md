@@ -1,6 +1,6 @@
 # 講義の狙いと資料の概要
 
-[原子核三者若手夏の学校 2025](https://www2.yukawa.kyoto-u.ac.jp/~sansha.wakate/school2025/index.html)の原子核パート「Julia言語による原子核構造計算入門」の資料です。
+本資料は[原子核三者若手夏の学校 2025](https://www2.yukawa.kyoto-u.ac.jp/~sansha.wakate/school2025/index.html)の原子核パート「Julia言語による原子核構造計算入門」での使用を目的として開発した資料です。
 
 ## 講義の狙い
 

@@ -544,6 +544,18 @@ T &amp;
 <p>つまり、元の行列<span class="math notranslate nohighlight">\(H\)</span>の固有値問題を、iterationの回数のTridiagonal行列<span class="math notranslate nohighlight">\(T\)</span>の固有値問題にダウンサイズすることができる。
 殻模型計算の場合においても、(もちろん系や求めたい状態の数に依存するが)反復回数は典型的には数十から数百程度であり、
 比較的少ないiterationで固有値を求めることができる。</p>
+<p><span class="math notranslate nohighlight">\(H v_{k}\)</span>の計算では、<span class="math notranslate nohighlight">\(v_{k}\)</span>と<span class="math notranslate nohighlight">\(v_{k-1}\)</span>の直交化を行っているが、
+実際の計算では、数値誤差により<span class="math notranslate nohighlight">\(v_{k}\)</span>と<span class="math notranslate nohighlight">\(v_{k-2}\)</span>以前が直交していないことがある。
+このまま固有値問題を解くと、本来現れるべきでない偽の固有値が現れたり、興味のある固有値が収束しないことがある。</p>
+<p>そこで、Lanczos法では、定期的に直交化を行うことで、この問題を解決する。
+最も基本的な直交化法は以下のGram-Schmidt法である。</p>
+<div class="math notranslate nohighlight" id="equation-gram-schmidt">
+<span class="eqno">(2.1)<a class="headerlink" href="#equation-gram-schmidt" title="Link to this equation">#</a></span>\[
+\begin{align}
+v_{k} = v_k - \sum_{i=1}^{k-1} \frac{\langle v_k | v_i \rangle}{\langle v_i | v_i \rangle} v_i
+\end{align}
+\]</div>
+<p>再直交化のコストが増大してLanczos法の効率が悪化しないよう、この他にも様々な直交化法が提案されている。</p>
 </section>
 <section id="hamiltonian">
 <h3><span class="section-number">2.2.2. </span>Hamiltonianのスパース表現<a class="headerlink" href="#hamiltonian" title="Link to this heading">#</a></h3>
