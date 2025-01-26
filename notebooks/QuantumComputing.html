@@ -378,7 +378,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">9.1. 基本的な量子ゲート</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qubit">9.1.1. 1-qubit ゲート</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">9.1.2. 2-qubit ゲート</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#universal-gate-set">9.1.3. universal gate set</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#universal-gate-set">9.1.3. Universal gate set</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">9.2. 重ね合わせ状態</a></li>
@@ -406,20 +406,20 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="quantum-computing">
 <h1><span class="section-number">9. </span>Quantum Computing<a class="headerlink" href="#quantum-computing" title="Link to this heading">#</a></h1>
-<p>筆者には量子計算のgeneralな説明をするような能力は無いが、必要な最低限の情報をまとめておく。</p>
+<p>筆者には量子計算のgeneralな説明をするような能力は無いので、必要な最低限の情報をまとめておく。</p>
 <p>より詳細が知りたい場合は、様々なTutorialがあるので、そちらを参照してほしい。</p>
 <ul class="simple">
 <li><p>Qiskit/IBM: <a class="reference external" href="https://learning.quantum.ibm.com/">IBM Quantum Learning</a></p></li>
 <li><p>Pennylane/Xanadu: <a class="reference external" href="https://pennylane.ai/qml">Learn quantum programming with PennyLane</a></p></li>
-<li><p>Quantum Native Dojo by Qunasys: <a class="reference external" href="https://dojo.qulacs.org/ja/latest/index.html">Quantum Native Dojo</a></p></li>
+<li><p>(JA) Quantum Native Dojo by Qunasys: <a class="reference external" href="https://dojo.qulacs.org/ja/latest/index.html">Quantum Native Dojo</a></p></li>
+<li><p>(EN/JA) 量子コンピューティング・ワークブック by 東大ICEPP <a class="reference external" href="https://utokyo-icepp.github.io/qc-workbook/ja/welcome.html">量子コンピューティング・ワークブック</a></p></li>
 </ul>
-<p>また、筆者が学習に用いた書籍は...</p>
 <section id="id1">
 <h2><span class="section-number">9.1. </span>基本的な量子ゲート<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <section id="qubit">
 <h3><span class="section-number">9.1.1. </span>1-qubit ゲート<a class="headerlink" href="#qubit" title="Link to this heading">#</a></h3>
 <p>1-qubitゲートは、1つの量子ビットに作用するゲートである。</p>
-<p><span class="math notranslate nohighlight">\(\| 0 \rangle\)</span>と<span class="math notranslate nohighlight">\(\| 1 \rangle\)</span>を基底とする1-qubitの状態ベクトルを<span class="math notranslate nohighlight">\(\| \psi \rangle = \alpha \| 0 \rangle + \beta \| 1 \rangle\)</span>とする。</p>
+<p><span class="math notranslate nohighlight">\(\ket{0}\)</span>と<span class="math notranslate nohighlight">\(\ket{0}\)</span>を基底とする1-qubitの状態ベクトルを<span class="math notranslate nohighlight">\(\ket{ \psi } = \alpha \ket{0}  + \beta \ket{1}\)</span>とする。</p>
 <p>qubitに対する演算はノルムを保存するユニタリ行列で表される。最も重要なものがパウリ行列である。</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -438,21 +438,33 @@ T = \left[ \begin{array}{cc} 1 &amp; 0 \\ 0 &amp; \exp(i \pi /4) \end{array} \ri
 <p>Pauli行列を指数関数の肩に乗せたもの(各軸周りの回転)もよく使われる。</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-R_x(\theta) = \exp(-i \theta X/2) = \left[ \begin{array}{cc} \cos(\theta/2) &amp; -i \sin(\theta/2) \\ -i \sin(\theta/2) &amp; \cos(\theta/2) \end{array} \right], \quad
-R_y(\theta) = \exp(-i \theta Y/2) = \left[ \begin{array}{cc} \cos(\theta/2) &amp; -\sin(\theta/2) \\ \sin(\theta/2) &amp; \cos(\theta/2) \end{array} \right], \quad
-R_z(\theta) = \exp(-i \theta Z/2) = \left[ \begin{array}{cc} \exp(-i \theta/2) &amp; 0 \\ 0 &amp; \exp(i \theta/2) \end{array} \right]
+\begin{align}
+R_x(\theta) &amp; = \exp(-i \theta X/2) = \left[ \begin{array}{cc} \cos(\theta/2) &amp; -i \sin(\theta/2) \\ -i \sin(\theta/2) &amp; \cos(\theta/2) \end{array} \right] \\ 
+R_y(\theta) &amp;= \exp(-i \theta Y/2) = \left[ \begin{array}{cc} \cos(\theta/2) &amp; -\sin(\theta/2) \\ \sin(\theta/2) &amp; \cos(\theta/2) \end{array} \right] \\
+R_z(\theta) &amp;= \exp(-i \theta Z/2) = \left[ \begin{array}{cc} \exp(-i \theta/2) &amp; 0 \\ 0 &amp; \exp(i \theta/2) \end{array} \right]
+\end{align}
 \end{split}\]</div>
 <p>この回転ゲートを用いた重要な定理を示す。</p>
-<div class="admonition- admonition">
+<div class="tip admonition">
 <p class="admonition-title">定理</p>
 <p>単一qubitに対する任意のユニタリ変換があるとき、<span class="math notranslate nohighlight">\(U= \exp(i \alpha) R_z(\beta) R_y(\gamma) R_z(\delta)\)</span>を満たす<span class="math notranslate nohighlight">\(\alpha, \beta, \gamma, \delta\)</span>が存在する。</p>
 </div>
 </section>
 <section id="id2">
 <h3><span class="section-number">9.1.2. </span>2-qubit ゲート<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>2-qubitゲートは、2つの量子ビットに作用するゲートである。</p>
+<p>2-qubitゲートの中で最も重要なものはCNOT(CX)ゲートで、制御ビットが0のときは何もしないが、制御ビットが1のときはターゲットビットにXゲートを作用させる。
+その他の制御ユニタリゲート, SWAPゲート, iSWAPゲートなどもよく使われるが、以下に紹介するようにuniversalゲートセットが決まれば、それらのゲートを組み合わせて2-qubitゲートを作ることができる。</p>
 </section>
 <section id="universal-gate-set">
-<h3><span class="section-number">9.1.3. </span>universal gate set<a class="headerlink" href="#universal-gate-set" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">9.1.3. </span>Universal gate set<a class="headerlink" href="#universal-gate-set" title="Link to this heading">#</a></h3>
+<p>量子計算において、任意の量子ゲートを作るためには、ある特定のゲートセットがあれば十分である。このようなゲートセットをuniversal gate setと呼ぶ。
+以下によく使われるuniversal gate setを示す。</p>
+<ul class="simple">
+<li><p>回転ゲート<span class="math notranslate nohighlight">\(R_x(\theta), R_y(\theta), R_z(\theta)\)</span>と位相ゲート<span class="math notranslate nohighlight">\(S\)</span>、CNOTゲート</p></li>
+<li><p>Cliffordゲートセット<span class="math notranslate nohighlight">\(\{ H, S, CNOT\}\)</span> と <span class="math notranslate nohighlight">\(T\)</span>ゲート</p></li>
+<li><p>ToffoliゲートとHadamardゲート</p></li>
+</ul>
 </section>
 </section>
 <section id="id3">
@@ -522,14 +534,14 @@ Alice と Bob は、量子もつれを共有している(もつれのある量�
 </section>
 <section id="id5">
 <h2><span class="section-number">9.4. </span>量子コンピュータを用いた量子多体系の計算<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
-<aside class="margin sidebar">
-<p class="sidebar-title"></p>
-<p>何回でも書きますが、筆者は網羅的にレビューなどできません！</p>
-</aside>
 <p>代表的な量子系に対するアルゴリズムについて説明する。</p>
 <section id="vqe-variational-quantum-eigensolver">
 <h3><span class="section-number">9.4.1. </span>VQE (Variational Quantum Eigensolver)<a class="headerlink" href="#vqe-variational-quantum-eigensolver" title="Link to this heading">#</a></h3>
-<p>例えば第二量子化され、有限の配位で(近似的に)表現されるような系では、
+<aside class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>必ずしもこのencodingが最適であるとは限らず、例えば各状態がハミング</p>
+</aside>
+<p>第二量子化され、有限の配位で(近似的に)表現されるような系では、
 ビット列の各ビットを量子ビットに割り当てて、その状態<span class="math notranslate nohighlight">\(\ket{0}, \ket{1}\)</span>をそれぞれ非占有/占有状態とみなせば
 あとはその重みとあわせて、波動関数を表現することができる。
 ３つの軌道があり、粒子数が1の系を例に取れば以下のようにかける:</p>
@@ -583,7 +595,7 @@ Alice と Bob は、量子もつれを共有している(もつれのある量�
             + \frac{1}{\sqrt{2}} \ket{1} \otimes U \ket{\psi}　\\
 3. \quad &amp; \frac{\ket{0}+\ket{1}}{2} \otimes \ket{\psi}
             + \frac{\ket{0}-\ket{1}}{2} \otimes U \ket{\psi}
-         &amp; \to \frac{1+e^{i \lambda}}{2} \ket{0} \otimes \ket{\psi} + 
+ \to \frac{1+e^{i \lambda}}{2} \ket{0} \otimes \ket{\psi} + 
                \frac{1-e^{i \lambda}}{2} \ket{1} \otimes \ket{\psi} 
 \end{align}
 \end{split}\]</div>
@@ -617,7 +629,7 @@ U \ket{\psi} = e^{i 2\pi\theta}
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align}
-U &amp; = e^{- i\hat{H}t } \\
+U &amp; = e^{ i\hat{H}t } \\
 U \ket{\psi} &amp; = e^{i\hat{H}t} \ket{\psi} = e^{iEt} \ket{\psi}
 \end{align}
 \end{split}\]</div>
@@ -657,7 +669,7 @@ U \ket{\psi} &amp; = e^{i\hat{H}t} \ket{\psi} = e^{iEt} \ket{\psi}
 もちろん様々な注がつくとはいえ、QPEでは、<span class="math notranslate nohighlight">\(2\pi / 2^{n_a}\)</span>の精度で固有値推定が可能であり、
 仮にQPEに必要な量子ゲートの実行が高速で精度が十分であれば、古典計算に比べた量子計算の優位性が生じることになる。</p>
 <p><strong>試行波動関数について</strong></p>
-<p>またHadamard testやQPEに共通して想像される至極真っ当な疑問として、</p>
+<p>Hadamard testやQPEに共通して想像される至極真っ当な疑問として、</p>
 <blockquote>
 <div><p>「計算が大変な系の波動関数やエネルギーを推定したいのに、ターゲット量子ビットで既に目的となる波動関数が用意されていることが前提になっているではないか。それをどうやって用意するんだ！？」</p>
 </div></blockquote>
@@ -668,15 +680,15 @@ QPEでは、必ずしも<span class="math notranslate nohighlight">\(\ket{\psi}\
 興味のある固有値を測定できる確率は、真の波動関数とのoverlap amplitudeに比例するため、
 できるだけ良い試行波動関数を使わなければならない、というのは事実としてある。</p>
 <p>そこでHFやBCS, CC, truncateされた空間でのCI波動関数, あるいはVQEで最適化した範囲でのansatzなど、
-状況に応じて(様々なトレードオフで)QPEのinputを選ぶことになるだろう。</p>
-<p>いずれにしても、QPEはQFT自体がlong-term algorithmであること、
+状況に応じて(様々なトレードオフで)QPEのinputを選ぶことになるだろう。
+いずれにしても、QPEはQFT自体がlong-term algorithmであること、
 制御ユニタリ演算など必要な回路が非常に深くなること、
 ターゲット量子ビットの状態作成の非自明さ・コスト、実機におけるエラー率などから、
 古典計算機の適用限界を超えた計算は2025年8月現在においては非常に難しい。</p>
 <p>しかしながら、幾つかの(期待も含めた？)条件のもとで、量子コンピュータの優位性が期待されている
 量子アルゴリズムの一つであることは間違いない。</p>
-<p>また、限られたリソース(qubit)やエラー率のなかでのNISQデバイスを用いた計算の工夫が、
-量子多体系に対する新たな量子アルゴリズムの提案に繋がってきたことは強調したい。</p>
+<p>また、long-termアルゴリズムの検討と平行する形で、限られたリソース(qubit)やエラー率のなかでのNISQデバイスを用いた計算の工夫が、
+量子多体系に対する新たな量子アルゴリズムの提案に繋がってきたことも強調したい。</p>
 </section>
 </section>
 </section>
@@ -698,7 +710,8 @@ QPEでは、必ずしも<span class="math notranslate nohighlight">\(\ket{\psi}\
 <li><p>Qiskit (IBM)
 言わずとしれた、IBMが開発している量子計算用のPythonフレームワーク。<br />
 2024年2月のメジャーバージョンアップデート以降、APIやDocumentが大幅に破壊的な変更を受け、古いコードが動かないことが多い。
-筆者は大変困っていてやや脱落気味であるが、  <a class="reference external" href="https://qiita.com/notori48/items/da4e2c298c3cd804867c">Qiskit1.0チートシート</a>など、有志による情報も参考になる。</p></li>
+筆者は大変困っていてやや脱落気味であるが、この資料作成にあたって力を振り絞り、Qiskitを使った実装例も示すことにした。
+<a class="reference external" href="https://qiita.com/notori48/items/da4e2c298c3cd804867c">Qiskit1.0チートシート</a>など、有志による情報も参考になる。</p></li>
 <li><p>Pennylane (Xanadu)
 量子計算と機械学習を統合したフレームワーク。<br />
 OpenFermionとの連携が強く、量子化学計算などで用いられる実装が利用できる他、量子機械学習のアルゴリズムも実装されている(筆者は使ったことがない)。
@@ -710,6 +723,42 @@ Trotter分解、制御ユニタリ演算の構築などの、物理系のシミ�
 </ul>
 <p>続く章で３つのフレームワークを用いた簡単な量子計算の実装例を示すが、(少なくともsimulatorレベルでは)pennylaneが最も使いやすい印象を受けた。
 とくに、制御ユニタリ/ハミルトニアンの時間発展や、QPEの実装がよく整備されており、興味のある系に応用しやすいであろう。</p>
+<aside class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>※1. 勾配を用いた最適化, ※2.勾配フリーな逐次最適化</p>
+</aside>
+<p>それぞれの章では、フレームワークの得手不得手(や筆者の理解)によって、以下の表のように、少しずつ異なるトピックを扱った。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>フレームワーク</p></th>
+<th class="head text-center"><p>VQE</p></th>
+<th class="head text-center"><p>回路パラメータの最適化</p></th>
+<th class="head text-center"><p>Hadamar test</p></th>
+<th class="head text-center"><p>QPE</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>Pennylane</p></td>
+<td class="text-center"><p>◯</p></td>
+<td class="text-center"><p>◯※1</p></td>
+<td class="text-center"><p>◯</p></td>
+<td class="text-center"><p>◯</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Qiskit</p></td>
+<td class="text-center"><p>◯</p></td>
+<td class="text-center"><p>-</p></td>
+<td class="text-center"><p>◯</p></td>
+<td class="text-center"><p>◯</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>pytket</p></td>
+<td class="text-center"><p>◯</p></td>
+<td class="text-center"><p>◯※2</p></td>
+<td class="text-center"><p>-</p></td>
+<td class="text-center"><p>-</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
 </section>
 
@@ -781,7 +830,7 @@ Trotter分解、制御ユニタリ演算の構築などの、物理系のシミ�
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">9.1. 基本的な量子ゲート</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qubit">9.1.1. 1-qubit ゲート</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">9.1.2. 2-qubit ゲート</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#universal-gate-set">9.1.3. universal gate set</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#universal-gate-set">9.1.3. Universal gate set</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">9.2. 重ね合わせ状態</a></li>

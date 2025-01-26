@@ -375,7 +375,7 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#u-exp-i-hat-h-t">11.1. 時間発展演算子: <span class="math notranslate nohighlight">\(U=\exp{(-i\hat{H}t)}\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#u-exp-i-hat-h-t">11.1. 時間発展演算子: <span class="math notranslate nohighlight">\(U=\exp{(i\hat{H}t)}\)</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hadamard-test">11.2. Hadamard test</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#qpe">11.3. QPE</a></li>
 </ul>
@@ -552,7 +552,7 @@ H_qubit:  -0.165 * (I(0) + -1 * Z(0)) + 0.835 * (I(1) + -1 * Z(1)) + 1.835 * (I(
 </div>
 </div>
 <section id="u-exp-i-hat-h-t">
-<h2><span class="section-number">11.1. </span>時間発展演算子: <span class="math notranslate nohighlight">\(U=\exp{(-i\hat{H}t)}\)</span><a class="headerlink" href="#u-exp-i-hat-h-t" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">11.1. </span>時間発展演算子: <span class="math notranslate nohighlight">\(U=\exp{(i\hat{H}t)}\)</span><a class="headerlink" href="#u-exp-i-hat-h-t" title="Link to this heading">#</a></h2>
 <p>上のHamiltonianを少し整理して、１,2-body termで整理する:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -583,14 +583,14 @@ e^{\frac{igt}{2r} (X_pX_q+Y_pY_q)}
 <div class="math notranslate nohighlight" id="equation-suzukitrotter-1">
 <span class="eqno">(11.1)<a class="headerlink" href="#equation-suzukitrotter-1" title="Link to this equation">#</a></span>\[
 \begin{align}
-e^{iHt} &amp; = \left( e^{-i h_j t /r} \right)^r + \mathcal{O}(m^2t^2/r)
+e^{iHt} &amp; = \left( e^{i h_j t /r} \right)^r + \mathcal{O}(m^2t^2/r)
 \end{align}
 \]</div>
 <p>Second-order:</p>
 <div class="math notranslate nohighlight" id="equation-suzukitrotter-2">
 <span class="eqno">(11.2)<a class="headerlink" href="#equation-suzukitrotter-2" title="Link to this equation">#</a></span>\[
 \begin{align}
-e^{iHt} &amp; = \left( e^{-i h_j t /2r}  \prod^1_{j=m} e^{-ih_jt/2r} \right)^r + \mathcal{O}(m^3t^3/r^2)
+e^{iHt} &amp; = \left( e^{i h_j t /2r}  \prod^1_{j=m} e^{ih_jt/2r} \right)^r + \mathcal{O}(m^3t^3/r^2)
 \end{align}
 \]</div>
 </div>
@@ -607,7 +607,8 @@ e^{-iH_\epsilon t } &amp;
 = \bigotimes^{N-1}_{p=0} P(-\epsilon_p t)
 \end{align}
 \end{split}\]</div>
-<p>pennylenでは、Trotter分解を行うには、<code class="docutils literal notranslate"><span class="pre">TrotterProduct</span></code>メソッドを用いて演算子とステップ数, 時間<span class="math notranslate nohighlight">\(t\)</span>, 次数(order)を指定してやれば良い。</p>
+<p>pennylaneでは、Trotter分解を行うには、<code class="docutils literal notranslate"><span class="pre">TrotterProduct</span></code>メソッドを用いて演算子とステップ数, 時間<span class="math notranslate nohighlight">\(t\)</span>, 次数(order)を指定してやれば良い。</p>
+<p>本当は、それぞれの項の交換性を考慮してGroupingするなどしてTrotter分解を行うべきだが、ここでは<code class="docutils literal notranslate"><span class="pre">TrotterProduct</span></code>に投げてしまうことにする。</p>
 </section>
 <section id="hadamard-test">
 <h2><span class="section-number">11.2. </span>Hadamard test<a class="headerlink" href="#hadamard-test" title="Link to this heading">#</a></h2>
@@ -665,11 +666,11 @@ e^{-iH_\epsilon t } &amp;
 </div>
 </div>
 </div>
-<p>厳密解から<span class="math notranslate nohighlight">\(\exp(-iEt)\)</span>を計算するなどして検算してみよう。</p>
+<p>厳密解から<span class="math notranslate nohighlight">\(\exp(iEt)\)</span>を計算するなどして検算してみよう。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># exp(-iEt)</span>
-<span class="n">Uex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">Egs_exact</span> <span class="o">*</span> <span class="n">time_step</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># exp(iEt)</span>
+<span class="n">Uex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">Egs_exact</span> <span class="o">*</span> <span class="n">time_step</span><span class="p">))</span>
 
 <span class="n">p0_exact</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">Uex</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
 <span class="n">p1_exact</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">Uex</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
@@ -836,12 +837,12 @@ initial state ansatz trotter_step 100 time_step 1.0e-04 E  1.189850696 error 1.1
 <span class="n">idx</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 <span class="n">bit_str</span> <span class="o">=</span> <span class="n">bit_strings</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
 <span class="n">E_estimated</span> <span class="o">=</span> <span class="n">idx</span> <span class="o">/</span> <span class="mi">2</span><span class="o">**</span><span class="n">n_ancilla</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">o_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">time_step</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">bit_str</span><span class="p">,</span> <span class="s2">&quot;prob.&quot;</span><span class="p">,</span> <span class="n">res</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="s2">&quot;E_estimated&quot;</span><span class="p">,</span> <span class="n">E_estimated</span><span class="p">,</span> <span class="s2">&quot;Egs_exact&quot;</span><span class="p">,</span> <span class="n">Egs_exact</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="n">E_estimated</span> <span class="o">-</span> <span class="n">Egs_exact</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;E_estimated: </span><span class="si">{</span><span class="n">E_estimated</span><span class="si">:</span><span class="s2">.8f</span><span class="si">}</span><span class="s2"> Egs_exact: </span><span class="si">{</span><span class="n">Egs_exact</span><span class="si">:</span><span class="s2">.8f</span><span class="si">}</span><span class="s2"> diff. </span><span class="si">{</span><span class="n">E_estimated</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Egs_exact</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0000010011 prob. 0.5869441247214197 E_estimated 1.165825398793087 Egs_exact 1.1898518351360725 error -0.024026436342985402
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>E_estimated: 1.16582540 Egs_exact: 1.18985184 diff. -2.40e-02
 </pre></div>
 </div>
 </div>
@@ -914,7 +915,7 @@ initial state ansatz trotter_step 100 time_step 1.0e-04 E  1.189850696 error 1.1
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#u-exp-i-hat-h-t">11.1. 時間発展演算子: <span class="math notranslate nohighlight">\(U=\exp{(-i\hat{H}t)}\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#u-exp-i-hat-h-t">11.1. 時間発展演算子: <span class="math notranslate nohighlight">\(U=\exp{(i\hat{H}t)}\)</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hadamard-test">11.2. Hadamard test</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#qpe">11.3. QPE</a></li>
 </ul>
