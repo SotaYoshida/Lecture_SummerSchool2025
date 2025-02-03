@@ -3,7 +3,7 @@
 
 title: Julia言語による原子核構造計算入門
 author: ""
-#logo: logo_full.png
+logo: logo_Lecture.png
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html

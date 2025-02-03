@@ -27,4 +27,5 @@ parts:
   - file: notebooks/pennylane_QPE
   - file: notebooks/qiskit_QC
   - file: notebooks/pytket_VQE
+  - file: notebooks/QuantumKrylov
 
