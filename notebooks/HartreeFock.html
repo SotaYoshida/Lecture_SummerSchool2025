@@ -30,7 +30,7 @@
   <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -144,8 +144,14 @@
   
   
   
+    
+    
+      
+    
+    
+    <img src="../_static/logo_Lecture.png" class="logo__image only-light" alt="Julia言語による原子核構造計算入門 - Home"/>
+    <img src="../_static/logo_Lecture.png" class="logo__image only-dark pst-js-only" alt="Julia言語による原子核構造計算入門 - Home"/>
   
-    <p class="title logo__title">Julia言語による原子核構造計算入門</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -174,7 +180,7 @@
 <li class="toctree-l1"><a class="reference internal" href="MBPT.html">5. Many-Body Perturbation Theory (MBPT)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CoupledCluster.html">6. Coupled Cluster</a></li>
 <li class="toctree-l1"><a class="reference internal" href="IMSRG.html">7. In-medium Similarity Renormalization Group (IM-SRG)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="EC.html">8. Emulator/Surrogate model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EC.html">8. Eigenvector continuation (Emulator/Surrogate model)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">量子計算</span></p>
 <ul class="nav bd-sidenav">
@@ -183,6 +189,7 @@
 <li class="toctree-l1"><a class="reference internal" href="pennylane_QPE.html">11. pennylaneを用いたQPE計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qiskit_QC.html">12. Qiskitを用いた量子計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pytket_VQE.html">13. pytketを用いたVQE計算</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QuantumKrylov.html">14. Quantum Krylov subspace method</a></li>
 </ul>
 
     </div>
@@ -393,17 +400,21 @@
 <p><strong>スレーター行列式</strong>の部分が、Fermion系の反対称性を担保している。
 <strong>単一の</strong>部分をどう選ぶかは単純で、最もエネルギーが低い状態を選ぶ。
 別の見方をすれば、一粒子軌道の線形変換を用いて、エネルギーを最小化する基底へと変換する方法とも言える。</p>
-<aside class="margin sidebar">
-<p class="sidebar-title"></p>
-<p>globalなpairingの場合、HOが既にHF基底である、と言っても良い。</p>
-</aside>
 <p>pairing Hamiltonianの場合は、縮退した同一軌道間にのみ相互作用が働くという事情から、
 基底の線形変換を考えても特にエネルギーの利得はなく、naive fillingと同一になるが、
-あとに続く手法との関係もあるので紹介しておこう。</p>
+あとに続く手法(MBPT, CC, IMSRG)との関係もあるので紹介しておこう。</p>
 <section id="hf">
 <h2><span class="section-number">3.1. </span>HF方程式の導出<a class="headerlink" href="#hf" title="Link to this heading">#</a></h2>
-<p>元の一粒子基底の添字をギリシャ文字で、最適化された一粒子基底の添字をラテン文字で表すことにすると、
-HF近似では、次のエネルギーが最小化される。</p>
+<p>元の一粒子基底の添字をギリシャ文字で、最適化された一粒子基底の添字をラテン文字で表すことにする。
+このとき、基底の線形変換を行列<span class="math notranslate nohighlight">\(C\)</span>で表すことにする。</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{align}
+\ket{\alpha} &amp; = \sum_{\alpha} C_{\alpha i} \ket{i}
+\end{align}
+\]</div>
+<p>このような<span class="math notranslate nohighlight">\(C\)</span>を施した新たな基底で下から順番に粒子を詰めていった際に、エネルギーが最小になるような<span class="math notranslate nohighlight">\(C\)</span>を求めることがHF法の目的である。</p>
+<p>平均場での(単一configurationでの)エネルギーの表式は、以下のように書ける。</p>
 <div class="math notranslate nohighlight">
 \[
 E_{HF} = \sum_{i \leq F} \langle i | h | i \rangle + \frac{1}{2} \sum_{ij \leq F} \langle ij | v | ij \rangle
@@ -412,7 +423,7 @@ E_{HF} = \sum_{i \leq F} \langle i | h | i \rangle + \frac{1}{2} \sum_{ij \leq F
 <p>拘束条件として、<span class="math notranslate nohighlight">\(C^T C = 1\)</span>を課して、Lagrangeの未定乗数法を用いて停留条件をみてやれば、HF方程式が得られる。</p>
 <div class="math notranslate nohighlight">
 \[
-\sum_{\beta} \left( h_{\alpha \beta} + \sum_{\gamma \delta} \sum_{j \leq F} C^T_{j \gamma} C_{j \delta} \langle \alpha \gamma | v | \beta \delta \rangle \right) C_{i \beta} = \epsilon_i C_{i \alpha}
+\sum_{\beta} \left( h_{\alpha \beta} + \sum_{\gamma \delta} \sum_{j \leq F} C^T_{j \gamma} C_{j \delta} \langle \alpha \gamma | v | \beta \delta \rangle \right) C_{i \beta} = \lambda C_{i \alpha}
 \]</div>
 <p>これはFock行列</p>
 <div class="math notranslate nohighlight">
@@ -422,7 +433,7 @@ F_{\alpha\beta} \equiv \langle \alpha | h | \beta \rangle + \sum_{\gamma \delta}
 <p>についての固有値方程式の形になっている。</p>
 <div class="math notranslate nohighlight">
 \[
-\sum_{\beta} F_{\alpha\beta} C_{i \beta} = \epsilon_i C_{i \alpha}
+\sum_{\beta} F_{\alpha\beta} C_{i \beta} = \lambda  C_{i \alpha}
 \]</div>
 <p>また、下記の密度行列を定義しておこう:</p>
 <div class="math notranslate nohighlight">
@@ -434,7 +445,7 @@ F_{\alpha\beta} \equiv \langle \alpha | h | \beta \rangle + \sum_{\gamma \delta}
 \[
 F_{\alpha\beta} = \langle \alpha | h | \beta \rangle + \sum_{\gamma \delta} \rho_{\gamma \delta} \langle \alpha \gamma | v | \beta \delta \rangle
 \]</div>
-<p>pairing Hamiltonianや模型空間の小さな(2主殻以下)の場合は、<span class="math notranslate nohighlight">\(h\)</span>が対角的なので、式は更に簡単になり</p>
+<p>pairing Hamiltonianや模型空間の小さな(2主殻以下)の場合は、<span class="math notranslate nohighlight">\(h\)</span>が対角的なので、式は更に簡単になる。</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align}
@@ -444,6 +455,14 @@ E_{1b} &amp; = \sum_{i \leq F} \sum_{\alpha\beta} C^T_{i \alpha} C_{i \beta} \la
 E_{2b} &amp;= \frac{1}{2}\sum_{\alpha\beta\gamma\delta} \rho_{\alpha \beta} \rho_{\gamma \delta} \langle \alpha \gamma | v | \beta \delta \rangle
 \end{align}
 \end{split}\]</div>
+<p>あとは、</p>
+<ol class="arabic simple">
+<li><p>Fock行列に対する固有値問題を解く</p></li>
+<li><p>新しい密度行列を計算する</p></li>
+<li><p>Fock行列を更新する</p></li>
+</ol>
+<p>上記を収束するまで繰り返すだけとなる。ただし前述の通り、globalなpairing Hamiltonianの場合は、
+単純なnaive fillingと同じになるためこのプロセスは(収束判定の方法にもよるが)1回で終わり(更新なし)となる。</p>
 </section>
 </section>
 

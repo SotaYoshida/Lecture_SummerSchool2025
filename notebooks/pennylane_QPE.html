@@ -30,7 +30,7 @@
   <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -144,8 +144,14 @@
   
   
   
+    
+    
+      
+    
+    
+    <img src="../_static/logo_Lecture.png" class="logo__image only-light" alt="Julia言語による原子核構造計算入門 - Home"/>
+    <img src="../_static/logo_Lecture.png" class="logo__image only-dark pst-js-only" alt="Julia言語による原子核構造計算入門 - Home"/>
   
-    <p class="title logo__title">Julia言語による原子核構造計算入門</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -174,7 +180,7 @@
 <li class="toctree-l1"><a class="reference internal" href="MBPT.html">5. Many-Body Perturbation Theory (MBPT)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CoupledCluster.html">6. Coupled Cluster</a></li>
 <li class="toctree-l1"><a class="reference internal" href="IMSRG.html">7. In-medium Similarity Renormalization Group (IM-SRG)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="EC.html">8. Emulator/Surrogate model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EC.html">8. Eigenvector continuation (Emulator/Surrogate model)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">量子計算</span></p>
 <ul class="current nav bd-sidenav">
@@ -183,6 +189,7 @@
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">11. pennylaneを用いたQPE計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qiskit_QC.html">12. Qiskitを用いた量子計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pytket_VQE.html">13. pytketを用いたVQE計算</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QuantumKrylov.html">14. Quantum Krylov subspace method</a></li>
 </ul>
 
     </div>
@@ -395,13 +402,13 @@
 まずは、ancilla qubitが1つの場合としてHadamard testを実装し、その後、QPEへと拡張する。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">o_np</span> <span class="c1">#pennylaneのnumpyと被らないように</span>
-<span class="kn">import</span> <span class="nn">itertools</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">pennylane</span> <span class="k">as</span> <span class="nn">qml</span> 
-<span class="kn">from</span> <span class="nn">pennylane</span> <span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
-<span class="kn">from</span> <span class="nn">pennylane.templates</span> <span class="kn">import</span> <span class="n">QuantumPhaseEstimation</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">o_np</span> <span class="c1">#pennylaneのnumpyと被らないように</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">combinations</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pennylane</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qml</span> 
+<span class="kn">from</span><span class="w"> </span><span class="nn">pennylane</span><span class="w"> </span><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pennylane.templates</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumPhaseEstimation</span>
 </pre></div>
 </div>
 </div>
@@ -437,8 +444,8 @@ ansatz(状態作成)部分は<span class="math notranslate nohighlight">\(N_\mat
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">PairingHamiltonian</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">Nocc</span><span class="p">,</span> <span class="n">gval</span><span class="p">,</span> <span class="n">delta_eps</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">PairingHamiltonian</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">Nocc</span><span class="p">,</span> <span class="n">gval</span><span class="p">,</span> <span class="n">delta_eps</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Norb</span> <span class="o">=</span> <span class="n">Norb</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Nocc</span> <span class="o">=</span> <span class="n">Nocc</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delta_eps</span> <span class="o">=</span> <span class="n">delta_eps</span>
@@ -447,18 +454,18 @@ ansatz(状態作成)部分は<span class="math notranslate nohighlight">\(N_\mat
         <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_epsilon</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Hmat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_Hmat</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">make_basis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_basis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">basis</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">occ</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Norb</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nocc</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">occ</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">basis</span>
     
-    <span class="k">def</span> <span class="nf">eval_epsilon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">eval_epsilon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_eps</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Norb</span><span class="p">)</span> <span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span>
     
-    <span class="k">def</span> <span class="nf">eval_Hmat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">eval_Hmat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Hmat</span> <span class="o">=</span> <span class="n">o_np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">bra_idx</span><span class="p">,</span> <span class="n">bra</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="p">):</span>
@@ -476,7 +483,7 @@ ansatz(状態作成)部分は<span class="math notranslate nohighlight">\(N_\mat
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Hmat</span>
 
-<span class="k">def</span> <span class="nf">tuple_to_bitstring</span><span class="p">(</span><span class="n">tup</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">rev</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tuple_to_bitstring</span><span class="p">(</span><span class="n">tup</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">rev</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">bitint</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tup</span><span class="p">:</span>
         <span class="n">bitint</span> <span class="o">+=</span> <span class="mi">2</span><span class="o">**</span><span class="n">i</span>
@@ -486,7 +493,7 @@ ansatz(状態作成)部分は<span class="math notranslate nohighlight">\(N_\mat
         <span class="n">bitstring</span> <span class="o">=</span> <span class="s2">&quot;|&quot;</span><span class="o">+</span><span class="nb">format</span><span class="p">(</span><span class="n">bitint</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;0</span><span class="si">{</span><span class="n">Norb</span><span class="si">}</span><span class="s1">b&#39;</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;&gt;&quot;</span>        
     <span class="k">return</span> <span class="n">bitstring</span>
 
-<span class="k">def</span> <span class="nf">ij_tuple_to_AdagA_str</span><span class="p">(</span><span class="n">tuple_in</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ij_tuple_to_AdagA_str</span><span class="p">(</span><span class="n">tuple_in</span><span class="p">):</span>
     <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">tuple_in</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">^ </span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">&quot;</span>
 
@@ -618,7 +625,7 @@ e^{-iH_\epsilon t } &amp;
 <span class="n">dev</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;default.qubit&quot;</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="n">n_ancilla</span><span class="o">+</span><span class="n">Hamil</span><span class="o">.</span><span class="n">Norb</span><span class="p">)</span>
 
 <span class="nd">@qml</span><span class="o">.</span><span class="n">qnode</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">circuit_HadamardTest</span><span class="p">(</span><span class="n">H_qubit</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">circuit_HadamardTest</span><span class="p">(</span><span class="n">H_qubit</span><span class="p">):</span>
     <span class="n">q_ancilla</span> <span class="o">=</span> <span class="n">Norb</span>
     <span class="c1"># State preparation</span>
     <span class="k">if</span> <span class="n">method_state</span> <span class="o">==</span> <span class="s2">&quot;HF&quot;</span><span class="p">:</span>
@@ -660,7 +667,7 @@ e^{-iH_\epsilon t } &amp;
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>initial state ansatz trotter_step  10 time_step 2.0e-03 E  1.189851898 error 6.3e-08
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/sotair/myenv_Python3.13_forQC/lib/python3.13/site-packages/pennylane/ops/op_math/controlled_ops.py:163: UserWarning: base operator already has wires; values specified through wires kwarg will be ignored.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/sym4p/my_python3_env_forQC/lib/python3.13/site-packages/pennylane/ops/op_math/controlled_ops.py:163: UserWarning: base operator already has wires; values specified through wires kwarg will be ignored.
   warnings.warn(
 </pre></div>
 </div>
@@ -692,39 +699,24 @@ Egs_exact 1.1898518351360725 E 1.189851897910462 Diff. 6.277438946433733e-08
 <p>初期状態やtrotter step, time stepなどを変えて試してみよう:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">method_state</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;HF&quot;</span><span class="p">,</span> <span class="s2">&quot;ansatz&quot;</span><span class="p">]:</span>
-    <span class="k">for</span> <span class="n">trotter_step</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">]:</span>
-        <span class="k">for</span> <span class="n">p_time_step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
-            <span class="n">time_step</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">p_time_step</span><span class="p">)</span> 
-            <span class="n">res</span> <span class="o">=</span> <span class="n">circuit_HadamardTest</span><span class="p">(</span><span class="n">H_qubit</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-            <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">res</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">res</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
-            <span class="n">Et</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
-            <span class="n">E</span> <span class="o">=</span> <span class="n">Et</span> <span class="o">/</span> <span class="n">time_step</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;initial state </span><span class="si">%6s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">method_state</span><span class="p">,</span> 
-                  <span class="s2">&quot;trotter_step </span><span class="si">%3d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">trotter_step</span><span class="p">,</span>
-                  <span class="s2">&quot;time_step </span><span class="si">%3.1e</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">time_step</span><span class="p">,</span> <span class="s2">&quot;E </span><span class="si">%12.9f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">E</span><span class="p">,</span> <span class="s2">&quot;error </span><span class="si">%3.1e</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">E</span> <span class="o">-</span> <span class="n">Egs_exact</span><span class="p">))</span>
-            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">method_state</span><span class="p">,</span> <span class="n">trotter_step</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">time_step</span><span class="p">),</span> <span class="n">E</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">E</span> <span class="o">-</span> <span class="n">Egs_exact</span><span class="p">))])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">method_state</span> <span class="o">=</span> <span class="s2">&quot;ansatz&quot;</span>
+<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">trotter_step</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">p_time_step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+        <span class="n">time_step</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">p_time_step</span><span class="p">)</span> 
+        <span class="n">res</span> <span class="o">=</span> <span class="n">circuit_HadamardTest</span><span class="p">(</span><span class="n">H_qubit</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">res</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">res</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">Et</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+        <span class="n">E</span> <span class="o">=</span> <span class="n">Et</span> <span class="o">/</span> <span class="n">time_step</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;initial state </span><span class="si">%6s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">method_state</span><span class="p">,</span> 
+            <span class="s2">&quot;trotter_step </span><span class="si">%3d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">trotter_step</span><span class="p">,</span>
+            <span class="s2">&quot;time_step </span><span class="si">%3.1e</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">time_step</span><span class="p">,</span> <span class="s2">&quot;E </span><span class="si">%12.9f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">E</span><span class="p">,</span> <span class="s2">&quot;error </span><span class="si">%3.1e</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">E</span> <span class="o">-</span> <span class="n">Egs_exact</span><span class="p">))</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">method_state</span><span class="p">,</span> <span class="n">trotter_step</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">time_step</span><span class="p">),</span> <span class="n">E</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">E</span> <span class="o">-</span> <span class="n">Egs_exact</span><span class="p">))])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>initial state     HF trotter_step   1 time_step 1.0e+00 E  1.419261932 error 2.3e-01
-initial state     HF trotter_step   1 time_step 1.0e-01 E  1.493094394 error 3.0e-01
-initial state     HF trotter_step   1 time_step 1.0e-02 E  1.493713940 error 3.0e-01
-initial state     HF trotter_step   1 time_step 1.0e-03 E  1.493720126 error 3.0e-01
-initial state     HF trotter_step   1 time_step 1.0e-04 E  1.493720272 error 3.0e-01
-initial state     HF trotter_step  10 time_step 1.0e+00 E  1.251664265 error 6.2e-02
-initial state     HF trotter_step  10 time_step 1.0e-01 E  1.489096149 error 3.0e-01
-initial state     HF trotter_step  10 time_step 1.0e-02 E  1.493673604 error 3.0e-01
-initial state     HF trotter_step  10 time_step 1.0e-03 E  1.493719722 error 3.0e-01
-initial state     HF trotter_step  10 time_step 1.0e-04 E  1.493719038 error 3.0e-01
-initial state     HF trotter_step 100 time_step 1.0e+00 E  1.250100793 error 6.0e-02
-initial state     HF trotter_step 100 time_step 1.0e-01 E  1.489056448 error 3.0e-01
-initial state     HF trotter_step 100 time_step 1.0e-02 E  1.493673201 error 3.0e-01
-initial state     HF trotter_step 100 time_step 1.0e-03 E  1.493719598 error 3.0e-01
-initial state     HF trotter_step 100 time_step 1.0e-04 E  1.493729459 error 3.0e-01
-initial state ansatz trotter_step   1 time_step 1.0e+00 E  1.379174376 error 1.9e-01
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>initial state ansatz trotter_step   1 time_step 1.0e+00 E  1.379174376 error 1.9e-01
 initial state ansatz trotter_step   1 time_step 1.0e-01 E  1.205431296 error 1.6e-02
 initial state ansatz trotter_step   1 time_step 1.0e-02 E  1.190011501 error 1.6e-04
 initial state ansatz trotter_step   1 time_step 1.0e-03 E  1.189853433 error 1.6e-06
@@ -748,7 +740,7 @@ initial state ansatz trotter_step 100 time_step 1.0e-04 E  1.189850696 error 1.1
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
 <span class="n">results</span> <span class="o">=</span> <span class="n">o_np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">method_state</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;HF&quot;</span><span class="p">,</span> <span class="s2">&quot;ansatz&quot;</span><span class="p">]:</span>
+<span class="k">for</span> <span class="n">method_state</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;ansatz&quot;</span><span class="p">]:</span>
     <span class="n">tm</span> <span class="o">=</span> <span class="s2">&quot;o&quot;</span> <span class="k">if</span> <span class="n">method_state</span> <span class="o">==</span> <span class="s2">&quot;HF&quot;</span> <span class="k">else</span> <span class="s2">&quot;D&quot;</span>
     <span class="k">for</span> <span class="n">trotter_step</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">]:</span>
         <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">results</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">method_state</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">results</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">trotter_step</span><span class="p">)</span> <span class="p">)</span>
@@ -766,7 +758,7 @@ initial state ansatz trotter_step 100 time_step 1.0e-04 E  1.189850696 error 1.1
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/7adfbb49e2bdc34485b8bdb5cbcee89452e32354a9aca37775427d1dcf0506c8.png" src="../_images/7adfbb49e2bdc34485b8bdb5cbcee89452e32354a9aca37775427d1dcf0506c8.png" />
+<img alt="../_images/9b5e34fbe40ee09fc58fd32bdbe162bb37d57c8f3bdc830265369ddece1b2da0.png" src="../_images/9b5e34fbe40ee09fc58fd32bdbe162bb37d57c8f3bdc830265369ddece1b2da0.png" />
 </div>
 </div>
 </section>
@@ -775,14 +767,14 @@ initial state ansatz trotter_step 100 time_step 1.0e-04 E  1.189850696 error 1.1
 <p>pennylaneの<a class="reference external" href="https://pennylane.ai/qml/demos/tutorial_qpe">Intro to Quantum Phase Estimation</a>も参考にしてみよう。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">float_from_binary</span><span class="p">(</span><span class="n">binary</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">float_from_binary</span><span class="p">(</span><span class="n">binary</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">binary</span><span class="p">[</span><span class="mi">2</span><span class="p">:])])</span>
 
 <span class="n">n_ancilla</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">dev</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;default.qubit&quot;</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="n">n_ancilla</span><span class="o">+</span><span class="n">Hamil</span><span class="o">.</span><span class="n">Norb</span><span class="p">)</span>
 
 <span class="nd">@qml</span><span class="o">.</span><span class="n">qnode</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">circuit_QPE</span><span class="p">(</span><span class="n">H_qubit</span><span class="p">,</span> <span class="n">method_state</span><span class="o">=</span><span class="s2">&quot;ansatz&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">circuit_QPE</span><span class="p">(</span><span class="n">H_qubit</span><span class="p">,</span> <span class="n">method_state</span><span class="o">=</span><span class="s2">&quot;ansatz&quot;</span><span class="p">):</span>
     <span class="n">ancilla_wires</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">Norb</span><span class="p">,</span> <span class="n">Norb</span><span class="o">+</span><span class="n">n_ancilla</span><span class="p">))</span>
     <span class="c1"># State preparation</span>
     <span class="k">if</span> <span class="n">method_state</span> <span class="o">==</span> <span class="s2">&quot;HF&quot;</span> <span class="ow">or</span> <span class="n">method_state</span> <span class="o">==</span> <span class="s2">&quot;ansatz&quot;</span><span class="p">:</span>
@@ -832,10 +824,26 @@ initial state ansatz trotter_step 100 time_step 1.0e-04 E  1.189850696 error 1.1
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ancilla_wires</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">Norb</span><span class="p">,</span> <span class="n">Norb</span><span class="o">+</span><span class="n">n_ancilla</span><span class="p">))</span>
-<span class="n">bit_strings</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;0.</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s2">0</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ancilla_wires</span><span class="p">)</span><span class="si">}</span><span class="s2">b</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">))]</span>
 
 <span class="n">idx</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
-<span class="n">bit_str</span> <span class="o">=</span> <span class="n">bit_strings</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+<span class="n">E_estimated</span> <span class="o">=</span> <span class="n">idx</span> <span class="o">/</span> <span class="mi">2</span><span class="o">**</span><span class="n">n_ancilla</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">o_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">time_step</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;E_estimated: </span><span class="si">{</span><span class="n">E_estimated</span><span class="si">:</span><span class="s2">.8f</span><span class="si">}</span><span class="s2"> Egs_exact: </span><span class="si">{</span><span class="n">Egs_exact</span><span class="si">:</span><span class="s2">.8f</span><span class="si">}</span><span class="s2"> diff. </span><span class="si">{</span><span class="n">E_estimated</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Egs_exact</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>E_estimated: 1.16582540 Egs_exact: 1.18985184 diff. -2.40e-02
+</pre></div>
+</div>
+</div>
+</div>
+<p>QPEの場合は、厳密解でなくとも</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">method_state</span> <span class="o">=</span> <span class="s2">&quot;HF&quot;</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">circuit_QPE</span><span class="p">(</span><span class="n">H_qubit</span><span class="p">,</span> <span class="n">method_state</span><span class="p">)</span>
+
+<span class="n">idx</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 <span class="n">E_estimated</span> <span class="o">=</span> <span class="n">idx</span> <span class="o">/</span> <span class="mi">2</span><span class="o">**</span><span class="n">n_ancilla</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">o_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">time_step</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;E_estimated: </span><span class="si">{</span><span class="n">E_estimated</span><span class="si">:</span><span class="s2">.8f</span><span class="si">}</span><span class="s2"> Egs_exact: </span><span class="si">{</span><span class="n">Egs_exact</span><span class="si">:</span><span class="s2">.8f</span><span class="si">}</span><span class="s2"> diff. </span><span class="si">{</span><span class="n">E_estimated</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Egs_exact</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>

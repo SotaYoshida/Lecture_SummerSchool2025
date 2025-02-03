@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>8. Emulator/Surrogate model &#8212; Julia言語による原子核構造計算入門</title>
+    <title>8. Eigenvector continuation (Emulator/Surrogate model) &#8212; Julia言語による原子核構造計算入門</title>
   
   
   
@@ -30,7 +30,7 @@
   <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -144,8 +144,14 @@
   
   
   
+    
+    
+      
+    
+    
+    <img src="../_static/logo_Lecture.png" class="logo__image only-light" alt="Julia言語による原子核構造計算入門 - Home"/>
+    <img src="../_static/logo_Lecture.png" class="logo__image only-dark pst-js-only" alt="Julia言語による原子核構造計算入門 - Home"/>
   
-    <p class="title logo__title">Julia言語による原子核構造計算入門</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -174,7 +180,7 @@
 <li class="toctree-l1"><a class="reference internal" href="MBPT.html">5. Many-Body Perturbation Theory (MBPT)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CoupledCluster.html">6. Coupled Cluster</a></li>
 <li class="toctree-l1"><a class="reference internal" href="IMSRG.html">7. In-medium Similarity Renormalization Group (IM-SRG)</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">8. Emulator/Surrogate model</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">8. Eigenvector continuation (Emulator/Surrogate model)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">量子計算</span></p>
 <ul class="nav bd-sidenav">
@@ -183,6 +189,7 @@
 <li class="toctree-l1"><a class="reference internal" href="pennylane_QPE.html">11. pennylaneを用いたQPE計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qiskit_QC.html">12. Qiskitを用いた量子計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pytket_VQE.html">13. pytketを用いたVQE計算</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QuantumKrylov.html">14. Quantum Krylov subspace method</a></li>
 </ul>
 
     </div>
@@ -365,7 +372,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Emulator/Surrogate model</h1>
+    <h1>Eigenvector continuation (Emulator/Surrogate model)</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -380,6 +387,7 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eigenvector-continuation">8.2.1. Eigenvector continuation法を用いた近似殻模型波動関数の構築</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pairing-hamiltonian">8.3. pairing Hamiltonianでのデモ</a></li>
 </ul>
             </nav>
         </div>
@@ -391,8 +399,8 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="emulator-surrogate-model">
-<h1><span class="section-number">8. </span>Emulator/Surrogate model<a class="headerlink" href="#emulator-surrogate-model" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="eigenvector-continuation-emulator-surrogate-model">
+<h1><span class="section-number">8. </span>Eigenvector continuation (Emulator/Surrogate model)<a class="headerlink" href="#eigenvector-continuation-emulator-surrogate-model" title="Link to this heading">#</a></h1>
 <p>代理モデルの構築は、(他の分野と同様)原子核物理における喫緊の課題である。</p>
 <p>原子核物理(とくに理論計算)においては、2010年代になりようやく不定性評価の重要性が認識されるようになり、ベイズ推定などを用いた不定性評価が行われるようになった。
 当然ながら、不定性評価を行うためには、計算コストが高い計算を何度も行う(サンプリングする)必要があり、
@@ -493,6 +501,41 @@ naiiveには、サンプル点で得た固有ベクトルが張る低次元空�
 といった方法論も将来的にありえるかもしれない。</p>
 </section>
 </section>
+<section id="pairing-hamiltonian">
+<h2><span class="section-number">8.3. </span>pairing Hamiltonianでのデモ<a class="headerlink" href="#pairing-hamiltonian" title="Link to this heading">#</a></h2>
+<p>以下では、pairing Hamiltonianを用いて、Eigenvector Continuation法によるFull-CIの波動関数を用いたパラメータ空間での内挿・外挿をしてみよう。</p>
+<p>パラメータ空間(今はpairing strengthで1次元)において、サンプル点をいくつか取り、それを用いて別のパラメータ点での波動関数を予測する。
+ターゲットとなるHamiltonianを<span class="math notranslate nohighlight">\(H(g_{\odot})\)</span>とすると、評価すべき行列要素は</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+H_{ij} &amp; = \langle \psi(g_i) | H(g_{\odot}) | \psi(g_j) \rangle \nonumber \\
+N_{ij} &amp; = \langle \psi(g_i) | \psi(g_j) \rangle \nonumber
+\end{align}
+\end{split}\]</div>
+<p>である。<span class="math notranslate nohighlight">\(\ket{\psi(g_i)}\)</span>は、<span class="math notranslate nohighlight">\(g=g_i\)</span>におけるFull-CI波動関数である。</p>
+<aside class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>殻模型ハミルトニアンの場合は、transition densityを計算することで<span class="math notranslate nohighlight">\(H_{ij}\)</span>の評価を大幅に効率化できる。
+詳しくは、<a class="reference external" href="https://doi.org/10.1093/ptep/ptac057">S. Yoshida and Noritaka Shimizu, PTEP 2022 053D02</a>を参照。</p>
+</aside>
+<p>実際のEC法の適用では、とくに<span class="math notranslate nohighlight">\(H_{ij}\)</span>の評価がコストが高いため、工夫が必要であるが、
+pairing Hamiltonianの場合は、<span class="math notranslate nohighlight">\(H_{ij}\ket{\psi(g)}\)</span>を陽に計算して行列要素を評価することにする。</p>
+<p>これまでの章でみてきたように、pairing Hamiltonianのもとでの基底状態は<span class="math notranslate nohighlight">\(g_\mathrm{crit}\)</span>を境にその性質が変わる。
+したがって、サンプルする点の取り方に対して精度がどのように変わるかもあわせてみることにしよう。</p>
+<p>そこで、サンプル点を以下のように取ったパターンを考える:</p>
+<ul class="simple">
+<li><p>Set-A: <span class="math notranslate nohighlight">\(\{ -1.0, -0.50, 0.0 \}\)</span></p></li>
+<li><p>Set-B: <span class="math notranslate nohighlight">\(\{ -1.0, 0.0, 1.0 \}\)</span></p></li>
+<li><p>Set-C: <span class="math notranslate nohighlight">\(\{ 0.0, 0.50, 1.0 \}\)</span></p></li>
+</ul>
+<p>また、予測点は<span class="math notranslate nohighlight">\(g \in [-2.0, 2.0]\)</span>の範囲で、<span class="math notranslate nohighlight">\(0.1\)</span>刻みで取ることにする。</p>
+<p><span class="math notranslate nohighlight">\(N_\mathrm{orb}=8, N_\mathrm{occ}=4\)</span>の場合について、上記のサンプル点を用いて、予測点における波動関数を予測してみよう。
+なお、縮退を仮定して解く場合のFull-CIではこの場合次元が6と大変小さいため、サンプル数が多いとby definitionで厳密解が得られることに注意しよう。</p>
+<p><img alt="" src="../_images/EC_Norb8_Nocc4.png" /></p>
+<p>それぞれ、重点的にサンプルした領域においては、EC法による予測が非常に精度良く行われていることがわかる。</p>
+<p>一方で、両方にまたがってサンプル点を取ったSet-Bの場合はどちらの相(というと不正確だが)においても、内挿・外挿が出来ている.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -565,6 +608,7 @@ naiiveには、サンプル点で得た固有ベクトルが張る低次元空�
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eigenvector-continuation">8.2.1. Eigenvector continuation法を用いた近似殻模型波動関数の構築</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pairing-hamiltonian">8.3. pairing Hamiltonianでのデモ</a></li>
 </ul>
   </nav></div>
 

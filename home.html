@@ -30,7 +30,7 @@
   <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -145,8 +145,14 @@
   
   
   
+    
+    
+      
+    
+    
+    <img src="_static/logo_Lecture.png" class="logo__image only-light" alt="Julia言語による原子核構造計算入門 - Home"/>
+    <img src="_static/logo_Lecture.png" class="logo__image only-dark pst-js-only" alt="Julia言語による原子核構造計算入門 - Home"/>
   
-    <p class="title logo__title">Julia言語による原子核構造計算入門</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -175,7 +181,7 @@
 <li class="toctree-l1"><a class="reference internal" href="notebooks/MBPT.html">5. Many-Body Perturbation Theory (MBPT)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/CoupledCluster.html">6. Coupled Cluster</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/IMSRG.html">7. In-medium Similarity Renormalization Group (IM-SRG)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/EC.html">8. Emulator/Surrogate model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/EC.html">8. Eigenvector continuation (Emulator/Surrogate model)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">量子計算</span></p>
 <ul class="nav bd-sidenav">
@@ -184,6 +190,7 @@
 <li class="toctree-l1"><a class="reference internal" href="notebooks/pennylane_QPE.html">11. pennylaneを用いたQPE計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/qiskit_QC.html">12. Qiskitを用いた量子計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/pytket_VQE.html">13. pytketを用いたVQE計算</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/QuantumKrylov.html">14. Quantum Krylov subspace method</a></li>
 </ul>
 
     </div>
@@ -431,27 +438,27 @@
 <tr class="row-even"><td><p>Eigenvector Continuation</p></td>
 <td><p><a class="reference internal" href="#notebooks/EC.html"><span class="xref myst">8章</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p>Quantum Computing ※</p></td>
-<td><p><a class="reference internal" href="#notebooks/QuantumComputing.html"><span class="xref myst">9章</span></a> <a class="reference internal" href="#notebooks/pennylane_VQE.html"><span class="xref myst">10章</span></a> <a class="reference internal" href="#notebooks/pennylane_QPE.html"><span class="xref myst">11章</span></a> <a class="reference internal" href="#notebooks/qiskit_QC.html"><span class="xref myst">12章</span></a> <a class="reference internal" href="#notebooks/pytket_VQE.html"><span class="xref myst">13章</span></a></p></td>
+<tr class="row-odd"><td><p>Quantum Computing ※2</p></td>
+<td><p><a class="reference internal" href="#notebooks/QuantumComputing.html"><span class="xref myst">9章</span></a> <a class="reference internal" href="#notebooks/pennylane_VQE.html"><span class="xref myst">10章</span></a> <a class="reference internal" href="#notebooks/pennylane_QPE.html"><span class="xref myst">11章</span></a> <a class="reference internal" href="#notebooks/qiskit_QC.html"><span class="xref myst">12章</span></a> <a class="reference internal" href="#notebooks/pytket_VQE.html"><span class="xref myst">13章</span></a> <a class="reference internal" href="notebooks/QuantumKrylov.html"><span class="doc std std-doc">14章</span></a></p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <aside class="margin sidebar">
 <p class="sidebar-title"></p>
-<p>Julia言語による...資料の題とありますが、量子計算の部分は全てPythonです。</p>
+<p>※Julia言語による...と資料の題にありますが、量子計算の部分は全てPythonです。</p>
 </aside>
 <p>ご覧の通り、既に多すぎる手法が講義資料に含まれているため、今回の講義だけですべての手法をカバーすることはおそらくできません。
 講義では、皆さんの前提知識や興味に応じて取捨選択をする予定です。</p>
-<p>講義で扱わなかった手法についても、より一般のHamiltonianに対して適用を考えれば、独自の研究テーマへと十分発展し得る手法が幾つも転がっているはずです。
-この資料をきっかけにそうした研究や、筆者との共同研究などに繋がれば、この上ない喜びです。
-もし質問などあれば、講義以降もぜひ気軽にコンタクトしてください。</p>
+<p>講義で扱わなかった手法についても、より一般のHamiltonianに対して適用を考えれば、独自の研究テーマへと十分発展し得る材料が幾つも転がっているはずです。
+この資料をきっかけにそうした研究や、筆者との共同研究などに繋がれば、この上ない喜びです。講義以降もぜひ気軽にコンタクトしてください。</p>
 </section>
 <section id="pairinghamiltonian-jl">
 <h2>PairingHamiltonian.jl<a class="headerlink" href="#pairinghamiltonian-jl" title="Link to this heading">#</a></h2>
 <p>核子系の数値計算コードは、様々な言語で書かれ(たまにオープンソースとして公開されていることもありますが)、
 その多くは研究室・グループの秘伝コードであったり、特定の研究目的に特化していたりすることが多いです。
-もちろんそのことは、非難されるべきことではありませんが、初学者が核構造計算の手法を学んだり、他者とアイデアを共有・交換しながら新たな手法を開発するためには、
+もちろんそのことは、非難されるべきことでも悪いことでも決してありませんが、初学者が核構造計算の手法を学んだり、
+他者とアイデアを共有・交換しながら新たな手法を開発するためには、
 できるだけ多くの人がアクセスしやすい形でコードを公開することもまた分野にとって望ましいことであると筆者は考えています。
 機械学習の分野があれほどまでに急速に発展したのも、多くの人がアクセスしやすい形でコードを公開し、共有したことが大きな要因であると考えられ、
 こうした文化から学べることも多いと考えています(もちろん、全てのコードがオープンソースであるべきだとは考えていませんし、そのような主張でもないので悪しからず)。</p>

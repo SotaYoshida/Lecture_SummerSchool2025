@@ -1,0 +1,863 @@
+
+<!DOCTYPE html>
+
+
+<html lang="ja" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>14. Quantum Krylov subspace method &#8212; Julia言語による原子核構造計算入門</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=1cf7f4d9"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/translations.js?v=91613774"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/QuantumKrylov';</script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="prev" title="13. pytketを用いたVQE計算" href="pytket_VQE.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="ja"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">本文へスキップ</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>トップに戻る</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="バージョン警告"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../home.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo_Lecture.png" class="logo__image only-light" alt="Julia言語による原子核構造計算入門 - Home"/>
+    <img src="../_static/logo_Lecture.png" class="logo__image only-dark pst-js-only" alt="Julia言語による原子核構造計算入門 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">検索</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../home.html">
+                    講義の狙いと資料の概要
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">pairing Hamiltonianと多体計算手法</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Hamiltonian.html">1. pairing Hamiltonian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FullCI.html">2. Full-CI/厳密対角化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HartreeFock.html">3. Hartree-Fock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BCS.html">4. BCS (Bardeen-Cooper-Schrieffer)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MBPT.html">5. Many-Body Perturbation Theory (MBPT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CoupledCluster.html">6. Coupled Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="IMSRG.html">7. In-medium Similarity Renormalization Group (IM-SRG)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EC.html">8. Eigenvector continuation (Emulator/Surrogate model)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">量子計算</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="QuantumComputing.html">9. Quantum Computing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pennylane_VQE.html">10. pennylaneを用いたVQE計算</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pennylane_QPE.html">11. pennylaneを用いたQPE計算</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qiskit_QC.html">12. Qiskitを用いた量子計算</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pytket_VQE.html">13. pytketを用いたVQE計算</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">14. Quantum Krylov subspace method</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/SotaYoshida/Lecture_SummerSchool2025" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="ソースリポジトリ"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/SotaYoshida/Lecture_SummerSchool2025/issues/new?title=Issue%20on%20page%20%2Fnotebooks/QuantumKrylov.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="問題を報告"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="このページをダウンロード">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/QuantumKrylov.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="ソースファイルをダウンロード"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="PDFに印刷"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全画面モード"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="ライト"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="ダーク"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Quantum Krylov subspace method</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目次 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#n-kl-tilde-h-kl">14.1. 量子コンピュータ上での<span class="math notranslate nohighlight">\(N_{kl}, \tilde{H}_{kl}\)</span>の計算</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overlap">14.1.1. overlap行列の計算</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langle-psi-a-psi-b-rangle">14.1.2. <span class="math notranslate nohighlight">\(\langle \Psi_a | \Psi_b \rangle \)</span>の計算</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ket-psi-a-h-ket-psi-b">14.1.3. <span class="math notranslate nohighlight">\(\ket{\Psi_a} | H | \ket{\Psi_b} \)</span>の計算</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="quantum-krylov-subspace-method">
+<h1><span class="section-number">14. </span>Quantum Krylov subspace method<a class="headerlink" href="#quantum-krylov-subspace-method" title="Link to this heading">#</a></h1>
+<p>この章では、発展的な話題として、Quantum Krylov subspace method、とくにLanczos法の量子版について説明する。</p>
+<p>Full-CIの章でも述べたように、Krylov部分空間法は、与えられたハミルトニアン<span class="math notranslate nohighlight">\(H\)</span>と初期状態<span class="math notranslate nohighlight">\(\ket{\psi}\)</span>から生成されるKrylov部分空間</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{K}_m(H, \ket{\psi}) = \text{span}\{\ket{\psi}, H\ket{\psi}, H^2\ket{\psi}, \ldots, H^{m-1}\ket{\psi}\}
+\]</div>
+<p>を用いて、固有値問題を効率的に解く手法である。</p>
+<p>量子コンピュータ上での実行に馴染む形として、ゲート<span class="math notranslate nohighlight">\(U(t) = e^{-iHt}\)</span>を用いて、異なる時間ステップでの時間発展演算子を適用し、
+量子版のKrylov部分空間法を考えることができる。</p>
+<p>具体的には、初期状態<span class="math notranslate nohighlight">\(\ket{\Phi}_0\)</span>から、Hamiltonian <span class="math notranslate nohighlight">\(H\)</span>による時間発展演算子<span class="math notranslate nohighlight">\(e^{-iHt}\)</span>を作用させて</p>
+<div class="math notranslate nohighlight">
+\[
+\ket{\Phi}_0, e^{-iHt_1}\ket{\Phi}_0, \ldots, e^{-iHt_{M}}\ket{\Phi}_0
+\]</div>
+<p>を順次生成し、これらの非直交基底を用いて、問題をsubspaceで解く。
+つまり、</p>
+<div class="math notranslate nohighlight" id="equation-qkrylovme">
+<span class="eqno">(14.1)<a class="headerlink" href="#equation-qkrylovme" title="Link to this equation">#</a></span>\[\begin{split}
+\begin{align}
+N_{kl} &amp; = \langle \Phi_k \ket{\Phi_l} = \bra{\Phi_0} e^{-i(t_l-t_k)H} \ket{\Phi_0} \\
+\tilde{H}_{kl} &amp; = \bra{\Phi_k} H \ket{\Phi_l} = \bra{\Phi_0} H e^{-i(t_l-t_k)H} \ket{\Phi_0}
+\end{align}
+\end{split}\]</div>
+<p>のもとで、一般化固有値問題</p>
+<div class="math notranslate nohighlight">
+\[
+\tilde{H} \ket{\Phi} = E N \ket{\Phi}
+\]</div>
+<p>を解くことになる。</p>
+<p>QPEではHamiltonianの時間発展に加えて、逆量子フーリエ変換が必要であるのに対し、
+Quantum Krylovでは前者のみを考え、古典計算機上で一般化固有値問題を解くことになる。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumCircuit</span> <span class="c1">#, transpile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.circuit.library</span><span class="w"> </span><span class="kn">import</span> <span class="n">PauliEvolutionGate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.quantum_info</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparsePauliOp</span><span class="p">,</span> <span class="n">Statevector</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.synthesis</span><span class="w"> </span><span class="kn">import</span> <span class="n">SuzukiTrotter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.visualization</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_histogram</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="n-kl-tilde-h-kl">
+<h2><span class="section-number">14.1. </span>量子コンピュータ上での<span class="math notranslate nohighlight">\(N_{kl}, \tilde{H}_{kl}\)</span>の計算<a class="headerlink" href="#n-kl-tilde-h-kl" title="Link to this heading">#</a></h2>
+<p>式<a class="reference internal" href="#equation-qkrylovme">(14.1)</a>の各要素を量子コンピュータでどう測るか、が問題となる。</p>
+<p>このような行列要素の計算を含め、線形代数演算を量子コンピュータで行う方法については<a class="reference external" href="https://arxiv.org/abs/1902.10394">arXiv:1902.10394</a>が詳しい。</p>
+<p>具体的な説明に入る前に、少し約束事とconventionを整理しておこう。</p>
+<p>通常のLanczos法においても、Block Lanczosやmulti-reference Lanczosなどと呼ばれるように、
+複数の初期状態からKrylov部分空間を生成する手法があるが、ここではsingle-referenceの場合を考える。</p>
+<p><span class="math notranslate nohighlight">\(\ket{0}^{\otimes N}\)</span>で初期化されたターゲット量子ビットに対して、
+reference state作成を行うためのユニタリ演算子を<span class="math notranslate nohighlight">\(U_{p}\)</span>とし、
+ハミルトニアンの時間発展演算子を<span class="math notranslate nohighlight">\(U_H(t)\)</span>と書くことにして、
+これらを組み合わせたユニタリ演算子を<span class="math notranslate nohighlight">\(U_\alpha = U_H U_p\)</span>とする(<span class="math notranslate nohighlight">\(\alpha\)</span>は時間<span class="math notranslate nohighlight">\(t\)</span>を含むパラメータを表す)。</p>
+<section id="overlap">
+<h3><span class="section-number">14.1.1. </span>overlap行列の計算<a class="headerlink" href="#overlap" title="Link to this heading">#</a></h3>
+<p>まず</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+\ket{\Psi} &amp; = \frac{1}{\sqrt{2}} \left( \ket{0} \otimes \ket{x} + \ket{1} \otimes \ket{y} \right) \\
+\end{align}
+\end{split}\]</div>
+<p>という状態が作れたとして、<span class="math notranslate nohighlight">\(\langle x | y \rangle\)</span>を測るにはどうすればよいかを考える。
+初めのqubitに対してHadamardゲートを作用させると、</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+\ket{\Psi} &amp; \to \frac{1}{2} \left( \ket{0} \otimes (\ket{x} + \ket{y}) + \ket{1} \otimes (\ket{x} - \ket{y}) \right) \\
+\end{align}
+\end{split}\]</div>
+<p>となる。このとき、ancillaを測定し、<span class="math notranslate nohighlight">\(\ket{0}\)</span>が得られる確率は</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{align}
+P(0) &amp; = \frac{1}{2} \left( \bra{x} + \bra{y} \right) \left( \ket{x} + \ket{y} \right)  = \frac{1}{2} \left( 1 +  \mathrm{Re} \langle x | y \rangle \right)
+\end{align}
+\]</div>
+<p>となる。また、ancillaに<span class="math notranslate nohighlight">\(S^\dagger\)</span>-ゲートに相当するphase-rotationを施し</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+\ket{\Psi} &amp; \to \frac{1}{2} \left( \ket{0} \otimes \ket{x}  - i \ket{1} \otimes \ket{y} \right) \\
+\end{align}
+\end{split}\]</div>
+<p>Hadamardゲートを作用させると、</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+\ket{\Psi} &amp; \to \frac{1}{2} \left( \ket{0} \otimes (\ket{x} - i \ket{y}) + \ket{1} \otimes (\ket{x} + i \ket{y}) \right) \\
+\end{align}
+\end{split}\]</div>
+<p>となり、<span class="math notranslate nohighlight">\(\ket{0}\)</span>が得られる確率は</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{align}
+P(0) &amp; = \frac{1}{2} \left( \bra{x} + i \bra{y} \right) \left( \ket{x} - i \ket{y} \right)  
+= \frac{1}{2} \left( 1 +  \mathrm{Im} \langle x | y \rangle \right)
+\end{align}
+\]</div>
+<p>となる。このように、<span class="math notranslate nohighlight">\(\langle x | y \rangle\)</span>の実部と虚部を測定することができる。</p>
+<p>まずはOverlap行列について以下のような回路を考えることで、それぞれの要素を測定することができる。</p>
+<p><img alt="" src="../_images/overlap_Re.png" /></p>
+<p><img alt="" src="../_images/overlap_Im.png" /></p>
+</section>
+<section id="langle-psi-a-psi-b-rangle">
+<h3><span class="section-number">14.1.2. </span><span class="math notranslate nohighlight">\(\langle \Psi_a | \Psi_b \rangle \)</span>の計算<a class="headerlink" href="#langle-psi-a-psi-b-rangle" title="Link to this heading">#</a></h3>
+<p>ターゲット量子ビットが4つあるとして、適当な初期状態から、これまた適当なオペレータで時間発展させた場合のオーバーラップを計算してみよう。</p>
+<p>検算しやすいように、</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+\ket{\Phi_0} &amp; = \frac{\ket{1100} + \ket{0011} }{\sqrt{2}} \\
+H &amp; = 0.123 Z_0Z_1 
+\end{align}
+\end{split}\]</div>
+<p>とでもしておこう。</p>
+<p><span class="math notranslate nohighlight">\(H \ket{\Phi_0} = 0.123 \ket{\Phi_0}\)</span>なので、<span class="math notranslate nohighlight">\(e^{-iHt} \ket{\Phi_0}\)</span>を計算すると、</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+\ket{\Psi_a} &amp; = e^{-iHt_a} \ket{\Phi_0} = e^{- 0.123 i t_a} \ket{\Phi_0} \\
+\ket{\Psi_b} &amp; = e^{-iHt_b} \ket{\Phi_0} = e^{- 0.123 i t_b} \ket{\Phi_0} \\
+\langle \Psi_a | \Psi_b \rangle &amp; = e^{0.579 i (t_a - t_b)} = \cos(0.123 (t_a - t_b)) + i \sin(0.123 (t_a - t_b))
+\end{align}
+\end{split}\]</div>
+<p>となる。</p>
+<p>状態作成のための回路を適当に作ってみよう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ancilla_qubits</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">target_qubits</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+
+<span class="n">operator</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ZZII&quot;</span><span class="p">]</span>
+<span class="n">coeff</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.123</span><span class="p">]</span>
+<span class="n">hamiltonian_op</span> <span class="o">=</span> <span class="n">SparsePauliOp</span><span class="p">(</span><span class="n">operator</span><span class="p">,</span> <span class="n">coeff</span><span class="p">)</span>
+
+<span class="c1"># To make time evolution operators</span>
+<span class="n">t_i</span> <span class="o">=</span> <span class="mf">0.12</span>
+<span class="n">t_j</span> <span class="o">=</span> <span class="mf">0.56</span>
+<span class="n">trotter_steps</span> <span class="o">=</span> <span class="mi">30</span>
+
+<span class="n">Re_Exact</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">coeff</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">t_i</span><span class="o">-</span><span class="n">t_j</span><span class="p">))</span>
+<span class="n">Im_Exact</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">coeff</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">t_i</span><span class="o">-</span><span class="n">t_j</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Exact: &quot;</span><span class="p">,</span> <span class="n">Re_Exact</span><span class="p">,</span> <span class="n">Im_Exact</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Exact:  0.9985358702188959 -0.05409358451972206
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qc_prep</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">qc_prep</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">qc_prep</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">qc_prep</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">qc_prep</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">qc_prep</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">qc_prep</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">qc_prep</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s1">&#39;mpl&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/26c29589c83b8f7ffcda79b78242d3317324a2e64b0c52ab8b1d0c76d6a8f29c.png" src="../_images/26c29589c83b8f7ffcda79b78242d3317324a2e64b0c52ab8b1d0c76d6a8f29c.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">state_vector</span> <span class="o">=</span> <span class="n">Statevector</span><span class="o">.</span><span class="n">from_instruction</span><span class="p">(</span><span class="n">qc_prep</span><span class="p">)</span>
+<span class="n">state_vector</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s2">&quot;latex&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\frac{\sqrt{2}}{2} |0011\rangle+\frac{\sqrt{2}}{2} |1100\rangle\]</div>
+</div>
+</div>
+<p>これをユニタリ演算子<span class="math notranslate nohighlight">\(U_p\)</span>としておく。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Uprep</span> <span class="o">=</span> <span class="n">qc_prep</span><span class="o">.</span><span class="n">to_gate</span><span class="p">()</span>
+<span class="n">Uprep</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;$U_p$&quot;</span>
+<span class="n">Updag</span> <span class="o">=</span> <span class="n">Uprep</span><span class="o">.</span><span class="n">inverse</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qc_prep</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">qc_prep</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">state_vector</span> <span class="o">=</span> <span class="n">Statevector</span><span class="o">.</span><span class="n">from_instruction</span><span class="p">(</span><span class="n">qc_prep</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">state_vector</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s2">&quot;latex&quot;</span><span class="p">))</span>
+
+<span class="c1"># 逆演算U^{\dagger}_pを作用させて|0&gt;に戻るかチェック</span>
+<span class="n">qc_prep</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Updag</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">state_vector</span> <span class="o">=</span> <span class="n">Statevector</span><span class="o">.</span><span class="n">from_instruction</span><span class="p">(</span><span class="n">qc_prep</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">state_vector</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s2">&quot;latex&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\frac{\sqrt{2}}{2} |0011\rangle+\frac{\sqrt{2}}{2} |1100\rangle\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[ |0000\rangle\]</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(U_i \equiv e^{- i H t_i}\)</span>と<span class="math notranslate nohighlight">\(U_j \equiv e^{-i H t_j}\)</span>、これらのcontrolled-Uを用意しておく:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Ui</span> <span class="o">=</span> <span class="n">PauliEvolutionGate</span><span class="p">(</span><span class="n">hamiltonian_op</span><span class="p">,</span> <span class="n">t_i</span><span class="p">,</span> <span class="n">synthesis</span><span class="o">=</span><span class="n">SuzukiTrotter</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">reps</span><span class="o">=</span><span class="n">trotter_steps</span><span class="p">))</span>
+<span class="n">Uj</span> <span class="o">=</span> <span class="n">PauliEvolutionGate</span><span class="p">(</span><span class="n">hamiltonian_op</span><span class="p">,</span> <span class="n">t_j</span><span class="p">,</span> <span class="n">synthesis</span><span class="o">=</span><span class="n">SuzukiTrotter</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">reps</span><span class="o">=</span><span class="n">trotter_steps</span><span class="p">))</span>
+
+<span class="n">circuit_Ui</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">circuit_Ui</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Ui</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">gate_Ui</span> <span class="o">=</span> <span class="n">circuit_Ui</span><span class="o">.</span><span class="n">to_gate</span><span class="p">()</span>
+
+<span class="n">circuit_Uj</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">circuit_Uj</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Uj</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">gate_Uj</span> <span class="o">=</span> <span class="n">circuit_Uj</span><span class="o">.</span><span class="n">to_gate</span><span class="p">()</span>
+
+<span class="c1"># c-Ui: controlled U = exp(-iHt_i)</span>
+<span class="n">circuit_cUi</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">circuit_cUi</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">circuit_cUi</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Ui</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">circuit_cUi</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;c-$U(t_i) U_p$&#39;</span>
+<span class="n">gate_cUi</span> <span class="o">=</span> <span class="n">circuit_cUi</span><span class="o">.</span><span class="n">to_gate</span><span class="p">()</span><span class="o">.</span><span class="n">control</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># C-Uj </span>
+<span class="n">circuit_cUj</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">circuit_cUj</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">circuit_cUj</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Uj</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">circuit_cUj</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;c-$U(t_j) U_p$&#39;</span>
+<span class="n">gate_cUj</span> <span class="o">=</span> <span class="n">circuit_cUj</span><span class="o">.</span><span class="n">to_gate</span><span class="p">()</span><span class="o">.</span><span class="n">control</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>まず <span class="math notranslate nohighlight">\(\ket{\Psi_i} = U_i U_p |0\rangle^{\otimes 4}, \ket{\Psi_j} = U_j U_p |0\rangle^{\otimes 4}\)</span>を作り、overlapをstatevectorで計算してみよう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qc_psi_i</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">qc_psi_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">qc_psi_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gate_Ui</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">psi_i</span> <span class="o">=</span> <span class="n">Statevector</span><span class="o">.</span><span class="n">from_instruction</span><span class="p">(</span><span class="n">qc_psi_i</span><span class="p">)</span>
+
+<span class="n">qc_psi_j</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">qc_psi_j</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">qc_psi_j</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gate_Uj</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">psi_j</span> <span class="o">=</span> <span class="n">Statevector</span><span class="o">.</span><span class="n">from_instruction</span><span class="p">(</span><span class="n">qc_psi_j</span><span class="p">)</span>
+
+<span class="n">overlap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">psi_i</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span> <span class="n">psi_j</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="n">Re_overlap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">overlap</span><span class="p">)</span>
+<span class="n">Im_overlap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">overlap</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&lt;psi_i|psi_j&gt;&quot;</span><span class="p">,</span> <span class="n">overlap</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;cos(t_i-t_j)&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">coeff</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">t_i</span><span class="o">-</span><span class="n">t_j</span><span class="p">)</span> <span class="p">),</span> <span class="s2">&quot;sin(t_i-t_j)&quot;</span><span class="p">,</span>  <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">coeff</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">t_i</span><span class="o">-</span><span class="n">t_j</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;psi_i|psi_j&gt; (0.998535870218896-0.054093584519722036j)
+cos(t_i-t_j) 0.9985358702188959 sin(t_i-t_j) -0.05409358451972206
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># circuit to measure Re &lt;psi_i|psi_j&gt;</span>
+<span class="n">qc_re</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">qc_re</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">qc_re</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gate_cUi</span><span class="p">,</span> <span class="n">ancilla_qubits</span> <span class="o">+</span> <span class="n">target_qubits</span><span class="p">)</span>
+<span class="n">qc_re</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">qc_re</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gate_cUj</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="o">+</span><span class="n">target_qubits</span><span class="p">)</span>
+<span class="n">qc_re</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">qc_re</span><span class="o">.</span><span class="n">measure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">qc_re</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s1">&#39;mpl&#39;</span><span class="p">))</span>
+<span class="n">qc_re</span> <span class="o">=</span> <span class="n">qc_re</span><span class="o">.</span><span class="n">decompose</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ff2c2ea3c5c6357df1785cb30423f3bfd01b9596e6896861f535ee0f8f2d67e4.png" src="../_images/ff2c2ea3c5c6357df1785cb30423f3bfd01b9596e6896861f535ee0f8f2d67e4.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># circuit to measure Im &lt;psi_i|psi_j&gt;</span>
+<span class="n">qc_im</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">qc_im</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">qc_im</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gate_cUi</span><span class="p">,</span> <span class="n">ancilla_qubits</span> <span class="o">+</span> <span class="n">target_qubits</span><span class="p">)</span>
+<span class="n">qc_im</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">qc_im</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gate_cUj</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="o">+</span><span class="n">target_qubits</span><span class="p">)</span>
+<span class="n">qc_im</span><span class="o">.</span><span class="n">sdg</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">qc_im</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">qc_im</span><span class="o">.</span><span class="n">measure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">qc_im</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s1">&#39;mpl&#39;</span><span class="p">))</span>
+<span class="n">qc_im</span> <span class="o">=</span> <span class="n">qc_im</span><span class="o">.</span><span class="n">decompose</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/9feeaf89f73b4f2730436b186bf3445ae9c6eb6a503cac900218d1dec331acd9.png" src="../_images/9feeaf89f73b4f2730436b186bf3445ae9c6eb6a503cac900218d1dec331acd9.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_aer.primitives</span><span class="w"> </span><span class="kn">import</span> <span class="n">SamplerV2</span>
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">SamplerV2</span><span class="p">()</span>
+<span class="n">num_shot</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">5</span>
+
+<span class="n">job</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">qc_re</span><span class="p">,</span> <span class="n">qc_im</span><span class="p">],</span> <span class="n">shots</span><span class="o">=</span><span class="n">num_shot</span><span class="p">)</span>
+<span class="n">results</span>  <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+
+<span class="c1"># Real part</span>
+<span class="n">prob</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+<span class="n">p0</span> <span class="o">=</span> <span class="n">prob</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_shot</span>
+<span class="n">p1</span> <span class="o">=</span> <span class="n">prob</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_shot</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Estimated Re&lt;psi_i|psi_j&gt; = </span><span class="si">{</span><span class="n">p0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">p1</span><span class="si">:</span><span class="s2">9.5f</span><span class="si">}</span><span class="s2">  Exact: </span><span class="si">{</span><span class="n">Re_overlap</span><span class="si">:</span><span class="s2">9.5f</span><span class="si">}</span><span class="s2"> Error: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">p0</span><span class="o">-</span><span class="n">p1</span><span class="o">-</span><span class="n">Re_overlap</span><span class="p">)</span><span class="si">:</span><span class="s2">6.2e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Imaginary part</span>
+<span class="n">prob</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+<span class="n">p0</span> <span class="o">=</span> <span class="n">prob</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_shot</span>
+<span class="n">p1</span> <span class="o">=</span> <span class="n">prob</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_shot</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Estimated Im&lt;psi_i|psi_j&gt; = </span><span class="si">{</span><span class="n">p0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">p1</span><span class="si">:</span><span class="s2">9.5f</span><span class="si">}</span><span class="s2">  Exact: </span><span class="si">{</span><span class="n">Im_overlap</span><span class="si">:</span><span class="s2">9.5f</span><span class="si">}</span><span class="s2"> Error: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">p0</span><span class="o">-</span><span class="n">p1</span><span class="o">-</span><span class="n">Im_overlap</span><span class="p">)</span><span class="si">:</span><span class="s2">6.2e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Estimated Re&lt;psi_i|psi_j&gt; =   0.99856  Exact:   0.99854 Error: 2.41e-05
+Estimated Im&lt;psi_i|psi_j&gt; =  -0.05498  Exact:  -0.05409 Error: 8.86e-04
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="ket-psi-a-h-ket-psi-b">
+<h3><span class="section-number">14.1.3. </span><span class="math notranslate nohighlight">\(\ket{\Psi_a} | H | \ket{\Psi_b} \)</span>の計算<a class="headerlink" href="#ket-psi-a-h-ket-psi-b" title="Link to this heading">#</a></h3>
+<p>次に、<span class="math notranslate nohighlight">\(\langle \Psi_a | H | \Psi_b \rangle\)</span>の計算を考える。</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="pytket_VQE.html"
+       title="前のページ">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">前へ</p>
+        <p class="prev-next-title"><span class="section-number">13. </span>pytketを用いたVQE計算</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目次
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#n-kl-tilde-h-kl">14.1. 量子コンピュータ上での<span class="math notranslate nohighlight">\(N_{kl}, \tilde{H}_{kl}\)</span>の計算</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overlap">14.1.1. overlap行列の計算</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langle-psi-a-psi-b-rangle">14.1.2. <span class="math notranslate nohighlight">\(\langle \Psi_a | \Psi_b \rangle \)</span>の計算</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ket-psi-a-h-ket-psi-b">14.1.3. <span class="math notranslate nohighlight">\(\ket{\Psi_a} | H | \ket{\Psi_b} \)</span>の計算</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  © Copyright 2025-present by 吉田 聡太 (Sota Yoshida). 本コンテンツは<a rel="license" href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0 ライセンス</a>の下に提供されています。 <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="クリエイティブ・コモンズ・ライセンス" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a>　ただし、資料中のコードセル部分は<a rel="license" href="https://opensource.org/licenses/MIT">MITライセンス</a>の下に提供されています。
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

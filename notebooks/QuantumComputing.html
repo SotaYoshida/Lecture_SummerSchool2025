@@ -30,7 +30,7 @@
   <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -67,7 +67,7 @@
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
     <link rel="next" title="10. pennylaneを用いたVQE計算" href="pennylane_VQE.html" />
-    <link rel="prev" title="8. Emulator/Surrogate model" href="EC.html" />
+    <link rel="prev" title="8. Eigenvector continuation (Emulator/Surrogate model)" href="EC.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="ja"/>
   <meta name="docsearch:version" content="" />
@@ -144,8 +144,14 @@
   
   
   
+    
+    
+      
+    
+    
+    <img src="../_static/logo_Lecture.png" class="logo__image only-light" alt="Julia言語による原子核構造計算入門 - Home"/>
+    <img src="../_static/logo_Lecture.png" class="logo__image only-dark pst-js-only" alt="Julia言語による原子核構造計算入門 - Home"/>
   
-    <p class="title logo__title">Julia言語による原子核構造計算入門</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -174,7 +180,7 @@
 <li class="toctree-l1"><a class="reference internal" href="MBPT.html">5. Many-Body Perturbation Theory (MBPT)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CoupledCluster.html">6. Coupled Cluster</a></li>
 <li class="toctree-l1"><a class="reference internal" href="IMSRG.html">7. In-medium Similarity Renormalization Group (IM-SRG)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="EC.html">8. Emulator/Surrogate model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EC.html">8. Eigenvector continuation (Emulator/Surrogate model)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">量子計算</span></p>
 <ul class="current nav bd-sidenav">
@@ -183,6 +189,7 @@
 <li class="toctree-l1"><a class="reference internal" href="pennylane_QPE.html">11. pennylaneを用いたQPE計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qiskit_QC.html">12. Qiskitを用いた量子計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pytket_VQE.html">13. pytketを用いたVQE計算</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QuantumKrylov.html">14. Quantum Krylov subspace method</a></li>
 </ul>
 
     </div>
@@ -535,11 +542,13 @@ Alice と Bob は、量子もつれを共有している(もつれのある量�
 <section id="id5">
 <h2><span class="section-number">9.4. </span>量子コンピュータを用いた量子多体系の計算<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
 <p>代表的な量子系に対するアルゴリズムについて説明する。</p>
+<p>適宜、回路図を描きながら説明する。回路図を描くときには上位ビット(ビット列の左側)が上に来るようできるだけ統一して描いたつもりだが、
+Qiskitではビット列の右側が上に来るように描かれるのでそれに引っ張られて誤りがあるかもしれない。</p>
 <section id="vqe-variational-quantum-eigensolver">
 <h3><span class="section-number">9.4.1. </span>VQE (Variational Quantum Eigensolver)<a class="headerlink" href="#vqe-variational-quantum-eigensolver" title="Link to this heading">#</a></h3>
 <aside class="margin sidebar">
 <p class="sidebar-title"></p>
-<p>必ずしもこのencodingが最適であるとは限らず、例えば各状態がハミング</p>
+<p>必ずしもこのencodingが最適であるとは限らず、例えばGray codeなど他のencodingもある。</p>
 </aside>
 <p>第二量子化され、有限の配位で(近似的に)表現されるような系では、
 ビット列の各ビットを量子ビットに割り当てて、その状態<span class="math notranslate nohighlight">\(\ket{0}, \ket{1}\)</span>をそれぞれ非占有/占有状態とみなせば
@@ -586,6 +595,8 @@ Alice と Bob は、量子もつれを共有している(もつれのある量�
 <li><p>ancillaにH-gateを作用させ、その<span class="math notranslate nohighlight">\(Z\)</span>成分を測定する。</p></li>
 </ol>
 </div>
+<p>回路図にすると以下のようになる:</p>
+<p><img alt="" src="../_images/circuit_HadamardTest.png" /></p>
 <p>各ステップでの全系の状態を書き出してみよう。</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -608,10 +619,10 @@ P(0) &amp; = \left| \frac{1+e^{i \lambda}}{2} \right|^2 = \frac{1+\cos \lambda}{
 P(1) &amp; = \left| \frac{1-e^{i \lambda}}{2} \right|^2 = \frac{1-\cos \lambda}{2}
 \end{align}
 \end{split}\]</div>
-<p>実際に量子計算機でHadamard testを行う際は、ancillaに対する確率は、有限のshot数に対する<span class="math notranslate nohighlight">\(0/1\)</span>の割合となり近似が生じる。</p>
-<p>下の系の固有値の古典計算が<span class="math notranslate nohighlight">\(d=2^n\)</span>の<span class="math notranslate nohighlight">\(\mathcal{O}(d^3)\)</span>程度とすると、
+<p>実際に量子計算機でHadamard testを行う際は、ancillaに対する確率は、有限のshot数に対する<span class="math notranslate nohighlight">\(0/1\)</span>の割合となり近似が生じる。
+系の固有値の古典計算が<span class="math notranslate nohighlight">\(d=2^n\)</span>の<span class="math notranslate nohighlight">\(\mathcal{O}(d^3)\)</span>程度とすると、
 Hadamard testでは、必要な精度<span class="math notranslate nohighlight">\(\epsilon\)</span>に対して<span class="math notranslate nohighlight">\(M \sim (1/\epsilon)^p\)</span>回の測定が必要となる。</p>
-<p>もし仮に、<span class="math notranslate nohighlight">\(n\)</span>個の量子回路に対する量子ゲート演算が古典計算より早くでき、ノイズも無視できるほどエラー低減/エラー訂正できれば、Hadamard testによって計算が高速化できる可能性がある(高速化できるとは言っていない)。</p>
+<p>もし仮に、<span class="math notranslate nohighlight">\(n\)</span>個の量子回路に対する量子ゲート演算が古典計算より早くでき、ノイズも無視できるほどエラー低減/エラー訂正できれば、Hadamard testによって計算が高速化できる可能性がある。</p>
 <p>Hadamard testを少し拡張すると、固有値を２進小数の各桁ごとに推定することができる。その工程を一度に行うのが、次に説明する量子位相推定(QPE)である。</p>
 </section>
 <section id="quantum-phase-estimation-qpe">
@@ -647,6 +658,7 @@ U \ket{\psi} &amp; = e^{i\hat{H}t} \ket{\psi} = e^{iEt} \ket{\psi}
 <li><p>ancillaの測定結果から位相<span class="math notranslate nohighlight">\(\theta\)</span>を推定する。</p></li>
 </ol>
 </div>
+<p><img alt="" src="../_images/circuit_QPE.png" /></p>
 <p>この回路によってなぜ固有値の推定ができるのかを見ていこう。</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -798,7 +810,7 @@ Trotter分解、制御ユニタリ演算の構築などの、物理系のシミ�
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">前へ</p>
-        <p class="prev-next-title"><span class="section-number">8. </span>Emulator/Surrogate model</p>
+        <p class="prev-next-title"><span class="section-number">8. </span>Eigenvector continuation (Emulator/Surrogate model)</p>
       </div>
     </a>
     <a class="right-next"
