@@ -6,3 +6,5 @@ _build
 *~
 *.sh
 myenv
+
+reference_*

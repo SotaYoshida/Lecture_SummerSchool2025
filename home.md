@@ -37,7 +37,7 @@
 この資料をきっかけにそうした研究や、筆者との共同研究などに繋がれば、この上ない喜びです。講義以降もぜひ気軽にコンタクトしてください。
 
 
-## PairingHamiltonian.jl
+## PairingHamiltonians.jl
 
 核子系の数値計算コードは、様々な言語で書かれ(たまにオープンソースとして公開されていることもありますが)、
 その多くは研究室・グループの秘伝コードであったり、特定の研究目的に特化していたりすることが多いです。
@@ -48,9 +48,11 @@
 こうした文化から学べることも多いと考えています(もちろん、全てのコードがオープンソースであるべきだとは考えていませんし、そのような主張でもないので悪しからず)。
 
 上記のような個人的な信念から、本講義で使用するコードはJulia言語で実装し、GitHub上で公開するとともにJuliaのパッケージとして公開することにしました。
-[PairingHamiltonian.jl](https://github.com/sotayoshida/pairinghamiltonian.jl)
+[PairingHamiltonians.jl](https://github.com/sotayoshida/pairinghamiltonians.jl)
+
 Pairing Hamiltonianというシンプルなモデルを題材にしているとはいえ、単一のコード(プロジェクト)で、
 CI, HF, BCS, MBPT, CC, IM-SRG, Quantum Computingといった多様な手法を実装/解説したコード&資料は、筆者の知る限り他にはないと自負しています。
+このパッケージを使用すれば、本講義資料に載っている全ての結果を受講者が再現することができます。理解の助けになるかとも思うので、ぜひご活用ください。
 
 筆者はこの他にも
 

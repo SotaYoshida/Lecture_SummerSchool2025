@@ -8,7 +8,7 @@ defaults:  # The defaults key will be applied to all chapters and sub-sections
   titlesonly: True
 
 parts: 
-- caption: pairing Hamiltonianと多体計算手法
+- caption: Part1 Pairing Hamiltonianと多体計算手法
   numbered: true
   chapters:  
   - file: notebooks/Hamiltonian
@@ -19,7 +19,7 @@ parts:
   - file: notebooks/CoupledCluster
   - file: notebooks/IMSRG
   - file: notebooks/EC
-- caption: 量子計算
+- caption: Part2 量子計算
   numbered: true
   chapters:  
   - file: notebooks/QuantumComputing
