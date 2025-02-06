@@ -171,7 +171,7 @@
                 </a>
             </li>
         </ul>
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">pairing Hamiltonianと多体計算手法</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part1 Pairing Hamiltonianと多体計算手法</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Hamiltonian.html">1. pairing Hamiltonian</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FullCI.html">2. Full-CI/厳密対角化</a></li>
@@ -182,7 +182,7 @@
 <li class="toctree-l1"><a class="reference internal" href="IMSRG.html">7. In-medium Similarity Renormalization Group (IM-SRG)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="EC.html">8. Eigenvector continuation (Emulator/Surrogate model)</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">量子計算</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part2 量子計算</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="QuantumComputing.html">9. Quantum Computing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pennylane_VQE.html">10. pennylaneを用いたVQE計算</a></li>
@@ -389,7 +389,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hadamard-test">12.5. Hadamard test</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#qpe">12.6. 量子位相推定(QPE)</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">12.6.1. 簡単な例</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pairing-hamiltonian">12.6.2. pairing hamiltonian</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pairing-hamilaonitnqpe">12.6.2. Pairing HamilaonitnのQPE計算</a></li>
 </ul>
 </li>
 </ul>
@@ -562,11 +562,11 @@ gs prob [9.43255208e-01 3.31024447e-02 9.63810492e-03 9.63810492e-03
     <span class="n">qc</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
     <span class="c1">## FCI</span>
     <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;FCI&quot;</span><span class="p">:</span>
-        <span class="n">G</span><span class="p">(</span><span class="n">qc</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">G</span><span class="p">(</span><span class="n">qc</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">cG1</span><span class="p">(</span><span class="n">qc</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-        <span class="n">cG1</span><span class="p">(</span><span class="n">qc</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
-        <span class="n">cG1</span><span class="p">(</span><span class="n">qc</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+        <span class="n">qc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">G_gate</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+        <span class="n">qc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">G_gate</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+        <span class="n">qc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cG1_gate</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">qc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cG1_gate</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">qc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cG1_gate</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]),</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>        
     <span class="k">return</span> <span class="n">qc</span>
 
 <span class="n">params</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> 
@@ -578,7 +578,7 @@ gs prob [9.43255208e-01 3.31024447e-02 9.63810492e-03 9.63810492e-03
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/8b89405dbf780824c650349499dfcbe33593d5afa6ce291d5cb9d25f6ce1a3ad.png" src="../_images/8b89405dbf780824c650349499dfcbe33593d5afa6ce291d5cb9d25f6ce1a3ad.png" />
+<img alt="../_images/5f50247ac1efaa40eb023479d29925a25f3bd4054d9d8fc153bb5d0ce32bc915.png" src="../_images/5f50247ac1efaa40eb023479d29925a25f3bd4054d9d8fc153bb5d0ce32bc915.png" />
 </div>
 </div>
 <p>次に、用意した回路から、各状態のstatevectorを計算してみよう。</p>
@@ -594,12 +594,12 @@ gs prob [9.43255208e-01 3.31024447e-02 9.63810492e-03 9.63810492e-03
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Statevector([5.55111512e-17+0.j, 0.00000000e+00+0.j, 0.00000000e+00+0.j,
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Statevector([0.00000000e+00+0.j, 0.00000000e+00+0.j, 0.00000000e+00+0.j,
              9.71213909e-01+0.j, 0.00000000e+00+0.j, 1.81939134e-01+0.j,
              9.81735082e-02+0.j, 0.00000000e+00+0.j, 0.00000000e+00+0.j,
              9.81721942e-02+0.j, 6.36069907e-02+0.j, 0.00000000e+00+0.j,
              1.78892924e-02+0.j, 0.00000000e+00+0.j, 0.00000000e+00+0.j,
-             0.00000000e+00+0.j],
+             2.92244877e-19+0.j],
             dims=(2, 2, 2, 2))
 </pre></div>
 </div>
@@ -628,33 +628,10 @@ gs prob [9.43255208e-01 3.31024447e-02 9.63810492e-03 9.63810492e-03
 </div>
 </div>
 </div>
-<p>厳密解を再現できた。また、自作のゲートに名前をつけてまとめてブロックにすると、可読性が上がる。</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">Norb</span><span class="p">)</span>
-<span class="n">qc</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">qc</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">qc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">G_gate</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
-<span class="n">qc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">G_gate</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-<span class="n">qc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cG1_gate</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-<span class="n">qc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cG1_gate</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-<span class="n">qc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cG1_gate</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]),</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
-<span class="n">display</span><span class="p">(</span><span class="n">qc</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="s1">&#39;mpl&#39;</span><span class="p">))</span>
-<span class="n">state_vector</span> <span class="o">=</span> <span class="n">Statevector</span><span class="o">.</span><span class="n">from_instruction</span><span class="p">(</span><span class="n">qc</span><span class="p">)</span>
-<span class="n">state_vector</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s2">&quot;latex&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/5f50247ac1efaa40eb023479d29925a25f3bd4054d9d8fc153bb5d0ce32bc915.png" src="../_images/5f50247ac1efaa40eb023479d29925a25f3bd4054d9d8fc153bb5d0ce32bc915.png" />
-<div class="output text_latex math notranslate nohighlight">
-\[0.9712139094 |0011\rangle+0.1819391345 |0101\rangle+0.0981735082 |0110\rangle+0.0981721942 |1001\rangle+0.0636069907 |1010\rangle+0.0178892924 |1100\rangle\]</div>
-</div>
-</div>
 </section>
 <section id="id2">
 <h2><span class="section-number">12.2. </span>ハミルトニアンの表現<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
-<p>Qiskitの場合、ビット列とqubitの対応のさせかたが逆順(というと語弊があるが)なことに注意が必要。</p>
+<p>Qiskitの場合、ビット列やPaulistringは右側から、indexの若いqubitに対応することに注意が必要となる。</p>
 <p>演算子のpauli stringが<code class="docutils literal notranslate"><span class="pre">IXII</span></code>のとき、<code class="docutils literal notranslate"><span class="pre">X</span></code>が作用するのは、0から数えて1番目のqubit...としたいところだが、
 Qiskitでは、回路(qubit)の上(indexが若い方)から下をビット列の下位ビットから割り当てるので、<code class="docutils literal notranslate"><span class="pre">X</span></code>が作用するのは2番目のqubitになる。</p>
 <div class="cell docutils container">
@@ -717,6 +694,8 @@ Qiskitでは、回路(qubit)の上(indexが若い方)から下をビット列の
 </section>
 <section id="id3">
 <h2><span class="section-number">12.3. </span>回路によるハミルトニアンの期待値の測定<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>期待値計算にはEstimatorを用いる。
+QuantumComputingの章などで実装したような、pauli stringに対応した各項の期待値を計算してくれる。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.primitives</span><span class="w"> </span><span class="kn">import</span> <span class="n">StatevectorEstimator</span>
@@ -745,11 +724,11 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 
 <span class="n">qc</span> <span class="o">=</span> <span class="n">ansatz</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
 <span class="n">qc</span><span class="o">.</span><span class="n">measure_all</span><span class="p">()</span>
-<span class="n">tqc</span> <span class="o">=</span> <span class="n">transpile</span><span class="p">(</span><span class="n">qc</span><span class="p">)</span>
+<span class="n">tqc</span> <span class="o">=</span> <span class="n">transpile</span><span class="p">(</span><span class="n">qc</span><span class="o">.</span><span class="n">decompose</span><span class="p">())</span>
 
 <span class="c1"># Construct an ideal simulator with SamplerV2</span>
 <span class="n">sampler</span> <span class="o">=</span> <span class="n">SamplerV2</span><span class="p">()</span>
-<span class="n">job</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">qc</span><span class="p">],</span> <span class="n">shots</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">tqc</span><span class="p">],</span> <span class="n">shots</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
 
 <span class="n">result_ftqc</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 <span class="n">counts_ftqc</span> <span class="o">=</span> <span class="n">result_ftqc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">meas</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
@@ -760,13 +739,14 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counts(ideal): {&#39;0011&#39;: 9422, &#39;0110&#39;: 117, &#39;1010&#39;: 53, &#39;0101&#39;: 302, &#39;1001&#39;: 104, &#39;1100&#39;: 2}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counts(ideal): {&#39;0011&#39;: 9397, &#39;0101&#39;: 343, &#39;1001&#39;: 107, &#39;0110&#39;: 105, &#39;1100&#39;: 3, &#39;1010&#39;: 45}
 </pre></div>
 </div>
-<img alt="../_images/ffd7858a6828ec809f75921d8206f995c72958a09a306dfe42f8bc7d5ff4b711.png" src="../_images/ffd7858a6828ec809f75921d8206f995c72958a09a306dfe42f8bc7d5ff4b711.png" />
+<img alt="../_images/1a3376146de46f2749778b99ed01ebbb6a86c42d7e6473a62ec68d7b6ad50d59.png" src="../_images/1a3376146de46f2749778b99ed01ebbb6a86c42d7e6473a62ec68d7b6ad50d59.png" />
 </div>
 </div>
 <p>ノイズありの場合</p>
+<p>粒子数を保存しない結果が現れることを確認しよう。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_ibm_runtime.fake_provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeQuebec</span>
@@ -786,7 +766,7 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/8c7625e1c8203aa94a580a539069f77b76561695dade19dfdc7d2b6024d261e6.png" src="../_images/8c7625e1c8203aa94a580a539069f77b76561695dade19dfdc7d2b6024d261e6.png" />
+<img alt="../_images/2320d0718992e090a2ccf4dbc66d97ebcb9b9dcc5b858853700180feed20ef23.png" src="../_images/2320d0718992e090a2ccf4dbc66d97ebcb9b9dcc5b858853700180feed20ef23.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -816,7 +796,7 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>noisy_expval=1.8411035156250002
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>noisy_expval=2.076796875
 </pre></div>
 </div>
 </div>
@@ -826,7 +806,7 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 <h2><span class="section-number">12.4. </span>制御ユニタリ演算子の作成<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
 <p>controlled-U演算子を作成する。Qiskitには<code class="docutils literal notranslate"><span class="pre">PauliEvolutionGate</span></code>があり、これにより<span class="math notranslate nohighlight">\(U=e^{-i\hat{H}t}\)</span>などを実装できる。
 マイナス符号がdefaultなので、位相推定による期待値計算などの際にはそのことを考慮する。</p>
-<p>あとは言うまでもなく、一般の演算子をexponentiateする際は、Trotter分解のところでerrorが生じる。</p>
+<p>一般に演算子をexponentiateする際は、Trotter分解のところでerrorが生じる。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.circuit.library</span><span class="w"> </span><span class="kn">import</span> <span class="n">PauliEvolutionGate</span>
@@ -885,7 +865,7 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/f4ae1faac77d5c93b0688a9db4fc5810f086023b385b9a070658e1d060a8a7ea.png" src="../_images/f4ae1faac77d5c93b0688a9db4fc5810f086023b385b9a070658e1d060a8a7ea.png" />
+<img alt="../_images/80891d39f94b541fb8eda5ee0e7cd044b4e2e4fced63616a3215d40d6b822fcb.png" src="../_images/80891d39f94b541fb8eda5ee0e7cd044b4e2e4fced63616a3215d40d6b822fcb.png" />
 </div>
 </div>
 <p>測ってみよう</p>
@@ -893,7 +873,7 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qc_1</span> <span class="o">=</span> <span class="n">qc_1</span><span class="o">.</span><span class="n">decompose</span><span class="p">()</span>
 
-<span class="n">n_shot</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">4</span>
+<span class="n">n_shot</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">5</span>
 <span class="n">sim</span> <span class="o">=</span> <span class="n">AerSimulator</span><span class="p">()</span>
 <span class="n">counts</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">qc_1</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="n">n_shot</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
 <span class="n">counts</span>
@@ -905,7 +885,7 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>p0=0.9977, p1=0.0023
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>p0=0.99641, p1=0.00359
 </pre></div>
 </div>
 </div>
@@ -927,7 +907,7 @@ P(1) &amp; =  \left| \frac{1 - e^{iEt}}{2} \right|^2 = \frac{1 - \cos(Et)}{2} \\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>E: 0.959534366150363 Egs_exact:  1.1898518351360725 diff. -0.23031746898570948
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>E: 1.1990503371980588 Egs_exact:  1.1898518351360725 diff. 0.009198502061986247
 </pre></div>
 </div>
 </div>
@@ -947,7 +927,6 @@ P(1) &amp; =  \left| \frac{1 - e^{iEt}}{2} \right|^2 = \frac{1 - \cos(Et)}{2} \\
         <span class="n">p0</span> <span class="o">+=</span> <span class="n">sv_arr</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">sv_arr</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">p1</span> <span class="o">+=</span> <span class="n">sv_arr</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">sv_arr</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
-    <span class="c1">#print(&quot;bitstring:&quot;, format(k, f&#39;0{Norb+1}b&#39;),  &quot;ancilla&quot;, type(ancilla), &quot;statevector:&quot;, np.real(sv_arr[k]))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;p0:&quot;</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="s2">&quot;p1:&quot;</span><span class="p">,</span> <span class="n">p1</span><span class="p">)</span>
 <span class="n">Et</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">-</span> <span class="n">p1</span>
 <span class="n">E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">Et</span><span class="p">)</span> <span class="o">/</span> <span class="n">time</span> <span class="p">)</span>
@@ -966,13 +945,6 @@ E: 1.189868780810984 Egs_exact:  1.1898518351360725 diff. 1.6945674911506003e-05
 <section id="qpe">
 <h2><span class="section-number">12.6. </span>量子位相推定(QPE)<a class="headerlink" href="#qpe" title="Link to this heading">#</a></h2>
 <p>続いて、量子位相推定(QPE)を実装する。</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.circuit.library</span><span class="w"> </span><span class="kn">import</span> <span class="n">phase_estimation</span>
-</pre></div>
-</div>
-</div>
-</div>
 <section id="id5">
 <h3><span class="section-number">12.6.1. </span>簡単な例<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
 <p>いきなりHamiltonianの期待値を求めようとすると間違えたりするのでまずは簡単な例から。</p>
@@ -1030,8 +1002,8 @@ E: 1.189868780810984 Egs_exact:  1.1898518351360725 diff. 1.6945674911506003e-05
 <span class="n">qc_QPE</span> <span class="o">=</span> <span class="n">qc_QPE</span><span class="o">.</span><span class="n">decompose</span><span class="p">()</span><span class="c1">#.decompose()</span>
 <span class="n">state_vector</span> <span class="o">=</span> <span class="n">Statevector</span><span class="o">.</span><span class="n">from_instruction</span><span class="p">(</span><span class="n">qc_QPE</span><span class="p">)</span>
 
-<span class="n">idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">state_vector</span><span class="o">.</span><span class="n">data</span><span class="p">))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="mi">5</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;top5: &quot;</span><span class="p">,</span> <span class="n">idxs</span><span class="p">)</span>
+<span class="n">idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">state_vector</span><span class="o">.</span><span class="n">data</span><span class="p">))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="mi">3</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;top3: &quot;</span><span class="p">,</span> <span class="n">idxs</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">idxs</span><span class="p">:</span>
     <span class="n">bitstr_from_idx</span> <span class="o">=</span> <span class="nb">format</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;0</span><span class="si">{</span><span class="n">n_ancilla</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">b&#39;</span><span class="p">)</span>
     <span class="n">bit_ancilla</span> <span class="o">=</span> <span class="n">bitstr_from_idx</span><span class="p">[:</span><span class="n">n_ancilla</span><span class="p">]</span>
@@ -1042,12 +1014,10 @@ E: 1.189868780810984 Egs_exact:  1.1898518351360725 diff. 1.6945674911506003e-05
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>top5:  [129 137 121 125 133]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>top3:  [129 137 121]
 idx 129 estimated_theta 0.39269908169872414
 idx 137 estimated_theta 0.4172427743048944
 idx 121 estimated_theta 0.36815538909255385
-idx 125 estimated_theta 0.380427235395639
-idx 133 estimated_theta 0.4049709280018093
 theta_exact 0.39269908169872414 err 2pi/2^n 0.006135923151542565
 </pre></div>
 </div>
@@ -1055,7 +1025,7 @@ theta_exact 0.39269908169872414 err 2pi/2^n 0.006135923151542565
 </div>
 <p>推定したい位相が(たまたま)<span class="math notranslate nohighlight">\(2\pi/2^m\)</span>のときは,<span class="math notranslate nohighlight">\(m\)</span>個のancillaを用意すれば、理想的には位相を厳密に推定できる。
 それ以外の場合は<span class="math notranslate nohighlight">\(2\pi/2^n\)</span>の精度で推定することになる。
-さらには実際にノイズの影響もあり古典計算機で行うような倍精度で推定することは困難である。</p>
+さらに実機で測る場合はノイズの影響もあり古典計算機で行うような倍精度で推定することは困難である。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># shot measurement</span>
@@ -1159,31 +1129,24 @@ theta_exact 0.39269908169872414 err 2pi/2^n 0.006135923151542565
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">state_vector</span><span class="o">.</span><span class="n">data</span><span class="p">))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="mi">5</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;top5: &quot;</span><span class="p">,</span> <span class="n">idxs</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">idxs</span><span class="p">:</span>
-    <span class="n">bitstr_from_idx</span> <span class="o">=</span> <span class="nb">format</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;0</span><span class="si">{</span><span class="n">n_ancilla</span><span class="o">+</span><span class="n">n_psi</span><span class="si">}</span><span class="s1">b&#39;</span><span class="p">)</span>
-    <span class="n">bit_ancilla</span> <span class="o">=</span> <span class="n">bitstr_from_idx</span><span class="p">[:</span><span class="n">n_ancilla</span><span class="p">]</span>
-    <span class="n">theta</span><span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bit_ancilla</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">n_ancilla</span><span class="p">)</span> 
-    <span class="n">lambda_t</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">time</span> 
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;idx&quot;</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="s2">&quot;theta&quot;</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="s2">&quot;lambda=2pitheta/time&quot;</span><span class="p">,</span> <span class="n">lambda_t</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">state_vector</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+<span class="n">bitstr_from_idx</span> <span class="o">=</span> <span class="nb">format</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;0</span><span class="si">{</span><span class="n">n_ancilla</span><span class="o">+</span><span class="n">n_psi</span><span class="si">}</span><span class="s1">b&#39;</span><span class="p">)</span>
+<span class="n">bit_ancilla</span> <span class="o">=</span> <span class="n">bitstr_from_idx</span><span class="p">[:</span><span class="n">n_ancilla</span><span class="p">]</span>
+<span class="n">theta</span><span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bit_ancilla</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">n_ancilla</span><span class="p">)</span> 
+<span class="n">lambda_t</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">time</span> 
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;idx&quot;</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="s2">&quot;theta&quot;</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="s2">&quot;lambda=2pitheta/time&quot;</span><span class="p">,</span> <span class="n">lambda_t</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>top5:  [83 87 79 91 75]
-idx 83 theta 0.078125 lambda=2pitheta/time 3.977908039897935
-idx 87 theta 0.08203125 lambda=2pitheta/time 4.176803441892832
-idx 79 theta 0.07421875 lambda=2pitheta/time 3.779012637903038
-idx 91 theta 0.0859375 lambda=2pitheta/time 4.3756988438877285
-idx 75 theta 0.0703125 lambda=2pitheta/time 3.5801172359081415
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>idx 83 theta 0.625 lambda=2pitheta/time 3.9269908169872414
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="pairing-hamiltonian">
-<h3><span class="section-number">12.6.2. </span>pairing hamiltonian<a class="headerlink" href="#pairing-hamiltonian" title="Link to this heading">#</a></h3>
+<section id="pairing-hamilaonitnqpe">
+<h3><span class="section-number">12.6.2. </span>Pairing HamilaonitnのQPE計算<a class="headerlink" href="#pairing-hamilaonitnqpe" title="Link to this heading">#</a></h3>
 <p>次に、pairing Hamiltonianの場合を考える</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1276,7 +1239,7 @@ idx 75 theta 0.0703125 lambda=2pitheta/time 3.5801172359081415
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/0d39ddec0a7c9dd30ad53470c5fbc4ec3b145ef7d80725bf01b59ebc7cd41400.png" src="../_images/0d39ddec0a7c9dd30ad53470c5fbc4ec3b145ef7d80725bf01b59ebc7cd41400.png" />
+<img alt="../_images/9e5c916626a97c9ff26bec48bcbc6de4582f9cc786eed8e2c4ce65368ffa08d9.png" src="../_images/9e5c916626a97c9ff26bec48bcbc6de4582f9cc786eed8e2c4ce65368ffa08d9.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1370,7 +1333,7 @@ idx 75 theta 0.0703125 lambda=2pitheta/time 3.5801172359081415
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hadamard-test">12.5. Hadamard test</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#qpe">12.6. 量子位相推定(QPE)</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">12.6.1. 簡単な例</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pairing-hamiltonian">12.6.2. pairing hamiltonian</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pairing-hamilaonitnqpe">12.6.2. Pairing HamilaonitnのQPE計算</a></li>
 </ul>
 </li>
 </ul>

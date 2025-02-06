@@ -172,7 +172,7 @@
                 </a>
             </li>
         </ul>
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">pairing Hamiltonianと多体計算手法</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part1 Pairing Hamiltonianと多体計算手法</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="notebooks/Hamiltonian.html">1. pairing Hamiltonian</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/FullCI.html">2. Full-CI/厳密対角化</a></li>
@@ -183,7 +183,7 @@
 <li class="toctree-l1"><a class="reference internal" href="notebooks/IMSRG.html">7. In-medium Similarity Renormalization Group (IM-SRG)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/EC.html">8. Eigenvector continuation (Emulator/Surrogate model)</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">量子計算</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part2 量子計算</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="notebooks/QuantumComputing.html">9. Quantum Computing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/pennylane_VQE.html">10. pennylaneを用いたVQE計算</a></li>
@@ -384,7 +384,7 @@
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">講義の狙い</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pairinghamiltonian-jl">PairingHamiltonian.jl</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pairinghamiltonians-jl">PairingHamiltonians.jl</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">関連する講義資料</a></li>
 </ul>
             </nav>
@@ -453,8 +453,8 @@
 <p>講義で扱わなかった手法についても、より一般のHamiltonianに対して適用を考えれば、独自の研究テーマへと十分発展し得る材料が幾つも転がっているはずです。
 この資料をきっかけにそうした研究や、筆者との共同研究などに繋がれば、この上ない喜びです。講義以降もぜひ気軽にコンタクトしてください。</p>
 </section>
-<section id="pairinghamiltonian-jl">
-<h2>PairingHamiltonian.jl<a class="headerlink" href="#pairinghamiltonian-jl" title="Link to this heading">#</a></h2>
+<section id="pairinghamiltonians-jl">
+<h2>PairingHamiltonians.jl<a class="headerlink" href="#pairinghamiltonians-jl" title="Link to this heading">#</a></h2>
 <p>核子系の数値計算コードは、様々な言語で書かれ(たまにオープンソースとして公開されていることもありますが)、
 その多くは研究室・グループの秘伝コードであったり、特定の研究目的に特化していたりすることが多いです。
 もちろんそのことは、非難されるべきことでも悪いことでも決してありませんが、初学者が核構造計算の手法を学んだり、
@@ -463,9 +463,10 @@
 機械学習の分野があれほどまでに急速に発展したのも、多くの人がアクセスしやすい形でコードを公開し、共有したことが大きな要因であると考えられ、
 こうした文化から学べることも多いと考えています(もちろん、全てのコードがオープンソースであるべきだとは考えていませんし、そのような主張でもないので悪しからず)。</p>
 <p>上記のような個人的な信念から、本講義で使用するコードはJulia言語で実装し、GitHub上で公開するとともにJuliaのパッケージとして公開することにしました。
-<a class="reference external" href="https://github.com/sotayoshida/pairinghamiltonian.jl">PairingHamiltonian.jl</a>
-Pairing Hamiltonianというシンプルなモデルを題材にしているとはいえ、単一のコード(プロジェクト)で、
-CI, HF, BCS, MBPT, CC, IM-SRG, Quantum Computingといった多様な手法を実装/解説したコード&amp;資料は、筆者の知る限り他にはないと自負しています。</p>
+<a class="reference external" href="https://github.com/sotayoshida/pairinghamiltonians.jl">PairingHamiltonians.jl</a></p>
+<p>Pairing Hamiltonianというシンプルなモデルを題材にしているとはいえ、単一のコード(プロジェクト)で、
+CI, HF, BCS, MBPT, CC, IM-SRG, Quantum Computingといった多様な手法を実装/解説したコード&amp;資料は、筆者の知る限り他にはないと自負しています。
+このパッケージを使用すれば、本講義資料に載っている全ての結果を受講者が再現することができます。理解の助けになるかとも思うので、ぜひご活用ください。</p>
 <p>筆者はこの他にも</p>
 <ul class="simple">
 <li><p>カイラル核力</p></li>
@@ -547,7 +548,7 @@ CI, HF, BCS, MBPT, CC, IM-SRG, Quantum Computingといった多様な手法を�
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">講義の狙い</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pairinghamiltonian-jl">PairingHamiltonian.jl</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pairinghamiltonians-jl">PairingHamiltonians.jl</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">関連する講義資料</a></li>
 </ul>
   </nav></div>

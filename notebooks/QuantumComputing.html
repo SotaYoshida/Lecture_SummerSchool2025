@@ -171,7 +171,7 @@
                 </a>
             </li>
         </ul>
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">pairing Hamiltonianと多体計算手法</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part1 Pairing Hamiltonianと多体計算手法</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Hamiltonian.html">1. pairing Hamiltonian</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FullCI.html">2. Full-CI/厳密対角化</a></li>
@@ -182,7 +182,7 @@
 <li class="toctree-l1"><a class="reference internal" href="IMSRG.html">7. In-medium Similarity Renormalization Group (IM-SRG)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="EC.html">8. Eigenvector continuation (Emulator/Surrogate model)</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">量子計算</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part2 量子計算</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">9. Quantum Computing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pennylane_VQE.html">10. pennylaneを用いたVQE計算</a></li>
@@ -390,16 +390,18 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">9.2. 重ね合わせ状態</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">9.3. 量子テレポーテーション</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">9.4. 量子コンピュータを用いた量子多体系の計算</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vqe-variational-quantum-eigensolver">9.4.1. VQE (Variational Quantum Eigensolver)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hadamard-test-quantum-phase-estimation-qpe">9.4.2. Hadamard test/Quantum phase estimation (QPE)</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#hadamard-test">9.4.2.1. Hadamard test</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#quantum-phase-estimation-qpe">9.4.2.2. Quantum phase estimation (QPE)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">9.4. 演算子の期待値計算</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">9.5. 量子コンピュータを用いた量子多体系の計算</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vqe-variational-quantum-eigensolver">9.5.1. VQE (Variational Quantum Eigensolver)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hadamard-test-quantum-phase-estimation-qpe">9.5.2. Hadamard test/Quantum phase estimation (QPE)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#hadamard-test">9.5.2.1. Hadamard test</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#quantum-phase-estimation-qpe">9.5.2.2. Quantum phase estimation (QPE)</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-framework-for-quantum-computing">9.5. Python framework for Quantum Computing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-framework-for-quantum-computing">9.6. Python framework for Quantum Computing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">9.7. その他の注</a></li>
 </ul>
             </nav>
         </div>
@@ -414,12 +416,12 @@
   <section class="tex2jax_ignore mathjax_ignore" id="quantum-computing">
 <h1><span class="section-number">9. </span>Quantum Computing<a class="headerlink" href="#quantum-computing" title="Link to this heading">#</a></h1>
 <p>筆者には量子計算のgeneralな説明をするような能力は無いので、必要な最低限の情報をまとめておく。</p>
-<p>より詳細が知りたい場合は、様々なTutorialがあるので、そちらを参照してほしい。</p>
+<p>より詳細が知りたい場合は、様々なTutorialや教材があるので、そちらを参照してほしい。</p>
 <ul class="simple">
 <li><p>Qiskit/IBM: <a class="reference external" href="https://learning.quantum.ibm.com/">IBM Quantum Learning</a></p></li>
 <li><p>Pennylane/Xanadu: <a class="reference external" href="https://pennylane.ai/qml">Learn quantum programming with PennyLane</a></p></li>
 <li><p>(JA) Quantum Native Dojo by Qunasys: <a class="reference external" href="https://dojo.qulacs.org/ja/latest/index.html">Quantum Native Dojo</a></p></li>
-<li><p>(EN/JA) 量子コンピューティング・ワークブック by 東大ICEPP <a class="reference external" href="https://utokyo-icepp.github.io/qc-workbook/ja/welcome.html">量子コンピューティング・ワークブック</a></p></li>
+<li><p>(JA/EN) 量子コンピューティング・ワークブック by 東大ICEPP <a class="reference external" href="https://utokyo-icepp.github.io/qc-workbook/ja/welcome.html">量子コンピューティング・ワークブック</a></p></li>
 </ul>
 <section id="id1">
 <h2><span class="section-number">9.1. </span>基本的な量子ゲート<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
@@ -540,12 +542,129 @@ Alice と Bob は、量子もつれを共有している(もつれのある量�
 </div>
 </section>
 <section id="id5">
-<h2><span class="section-number">9.4. </span>量子コンピュータを用いた量子多体系の計算<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">9.4. </span>演算子の期待値計算<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<p>ターゲット量子ビット上にencodeされた状態<span class="math notranslate nohighlight">\(\ket{\psi}\)</span>に対して、演算子<span class="math notranslate nohighlight">\(O\)</span>の期待値を計算するための一般論を示す。</p>
+<p>第2量子化されたハミルトニアン<span class="math notranslate nohighlight">\(H\)</span>を量子コンピュータ上でシミュレートするためには、<span class="math notranslate nohighlight">\(H\)</span>を量子ビット上にエンコードし、その期待値を計算する必要がある。
+より具体的には、<code class="docutils literal notranslate"><span class="pre">&quot;IZIII&quot;,</span> <span class="pre">&quot;IXXII&quot;,</span> <span class="pre">...</span></code>のようなパウリ演算子のテンソル積を考える必要がある。</p>
+<aside class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>より一般のHamiltonianの場合は、Jordan-Wigner変換やBravyi-Kitaev変換などにより、qubitにmappingすることになるが、その際に現れる演算子の数が多くなるため、計算コストが高くなる。</p>
+</aside>
+<p>Pairing Hamiltonianの場合は、たかだか<span class="math notranslate nohighlight">\(Z\)</span>が単一 or 2つのqubitに<span class="math notranslate nohighlight">\(XX\)</span>または<span class="math notranslate nohighlight">\(YY\)</span>が作用する演算子しか現れない。
+そこで、必要な期待値(より正確にはZ基底(computational basis)での期待値)を計算するための関数を用意しておこう。</p>
+<p>通常、qubitの測定は<span class="math notranslate nohighlight">\(Z\)</span>基底で行われるため、<span class="math notranslate nohighlight">\(X,Y\)</span>の期待値を計算するためには、少し工夫が必要である。
+よくこのことを指して、&quot;basis rotation&quot;などと呼ぶこともあるが、文献によって同じことを別の名前で呼ぶことがあるので注意が必要である。
+<span class="math notranslate nohighlight">\(X,Y\)</span>を計測する際にはそれぞれHadamardゲート(<span class="math notranslate nohighlight">\(S^{\dagger}\)</span>, Hadamardゲート)を適用して<span class="math notranslate nohighlight">\(Z\)</span>の期待値を計測してやれば良い:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+\langle \psi | X | \psi \rangle &amp; = \langle \psi | H Z H | \psi \rangle \\
+\langle \psi | Y | \psi \rangle &amp; = \langle \psi | S X S^{\dagger} | \psi \rangle = \langle \psi | S H Z H S^{\dagger} | \psi \rangle
+\end{align}
+\end{split}\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">expec_Z</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">Qiskit_ordering</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">Zexp</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">n_shot</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">counts</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">bitstr</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">counts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">Qiskit_ordering</span><span class="p">:</span>
+            <span class="n">idx_register</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">i</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">idx_register</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="n">bit</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bitstr</span><span class="p">[</span><span class="n">idx_register</span><span class="p">])</span>
+        <span class="n">Zexp</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">bit</span><span class="p">)</span> <span class="o">*</span> <span class="n">count</span>
+    <span class="n">Zexp</span> <span class="o">/=</span> <span class="n">n_shot</span>
+    <span class="k">return</span> <span class="n">Zexp</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">expec_ZZ</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">Qiskit_ordering</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">ZZexp</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">n_shot</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">counts</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">bitstr</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">counts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">Qiskit_ordering</span><span class="p">:</span>
+            <span class="n">idx_register_i</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">i</span>
+            <span class="n">idx_register_j</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">j</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">idx_register_i</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="n">idx_register_j</span> <span class="o">=</span> <span class="n">j</span>
+        <span class="n">bit_i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bitstr</span><span class="p">[</span><span class="n">idx_register_i</span><span class="p">])</span>
+        <span class="n">bit_j</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bitstr</span><span class="p">[</span><span class="n">idx_register_j</span><span class="p">])</span>
+        <span class="n">ZZexp</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">bit_i</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">bit_j</span><span class="p">)</span> <span class="o">*</span> <span class="n">count</span>
+    <span class="n">ZZexp</span> <span class="o">/=</span> <span class="n">n_shot</span>
+    <span class="k">return</span> <span class="n">ZZexp</span>
+</pre></div>
+</div>
+</div>
+</div>
+<aside class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>Qiskitを使う場合は、bitstring(<code class="docutils literal notranslate"><span class="pre">11001</span></code>)やpauli string(<code class="docutils literal notranslate"><span class="pre">&quot;IXIXI&quot;</span></code>)を右側からindexの若いregisterに対応させることに注意が必要となる。Qiskitや他のライブラリでも使用できるようにしておいた。</p>
+</aside>
+<p>※これらの関数が正しく実装されているかは後ほど、Quantum Krylovの章でチェックしている。</p>
+<p>以下ではより簡単な例として、<span class="math notranslate nohighlight">\(\ket{\psi} = a \ket{11} + b \ket{10} + c \ket{01} + d \ket{00}\)</span>に対して、<span class="math notranslate nohighlight">\(X_0 \otimes X_1\)</span>の期待値を計算することを考えてみよう。</p>
+<p><span class="math notranslate nohighlight">\((X_0 \otimes X_1) \ket{\psi} = d \ket{11} + c \ket{10} + b \ket{01} + a \ket{00}\)</span>であるから、期待値は<span class="math notranslate nohighlight">\(\langle \psi | X_0 \otimes X_1 | \psi \rangle = a^*d + b^*c + c^*b + d^*a\)</span>である。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumCircuit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.quantum_info</span><span class="w"> </span><span class="kn">import</span> <span class="n">Statevector</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_aer.primitives</span><span class="w"> </span><span class="kn">import</span> <span class="n">SamplerV2</span>
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">SamplerV2</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 状態作成 Ryを0,1番目の量子ビットに適用して適当に作る。</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">qc_state</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">qc_state</span><span class="o">.</span><span class="n">ry</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">qc_state</span><span class="o">.</span><span class="n">ry</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Statevectorの計算</span>
+<span class="n">state_vector</span> <span class="o">=</span> <span class="n">Statevector</span><span class="o">.</span><span class="n">from_instruction</span><span class="p">(</span><span class="n">qc_state</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">state_vector</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s1">&#39;latex&#39;</span><span class="p">))</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">state_vector</span><span class="o">.</span><span class="n">data</span>
+
+<span class="c1"># X0X1の期待値を計算する回路 (shot測定)</span>
+<span class="n">qc</span> <span class="o">=</span> <span class="n">qc_state</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">state_vector</span> <span class="o">=</span> <span class="n">Statevector</span><span class="o">.</span><span class="n">from_instruction</span><span class="p">(</span><span class="n">qc</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">state_vector</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s1">&#39;latex&#39;</span><span class="p">))</span>
+
+<span class="n">qc</span><span class="o">.</span><span class="n">measure_all</span><span class="p">()</span>
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">SamplerV2</span><span class="p">()</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">qc</span><span class="p">],</span> <span class="n">shots</span><span class="o">=</span><span class="mi">10</span><span class="o">**</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="n">counts</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">meas</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+<span class="n">counts</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;From statevector, a^*d + c^*b + b^*c + d^*a  =&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">d</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">*</span><span class="n">b</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">*</span><span class="n">c</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">*</span><span class="n">a</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&lt;X0X1&gt; =&quot;</span><span class="p">,</span> <span class="n">expec_ZZ</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[0.622908812 |00\rangle+0.7566270503 |01\rangle+0.1263208434 |10\rangle+0.1534378151 |11\rangle\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[0.8296472605 |00\rangle-0.080417605 |01\rangle+0.5498886019 |10\rangle-0.0533006333 |11\rangle\]</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>From statevector, a^*d + c^*b + b^*c + d^*a  = (0.3823110686155987+0j)
+&lt;X0X1&gt; = 0.38226
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id6">
+<h2><span class="section-number">9.5. </span>量子コンピュータを用いた量子多体系の計算<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
 <p>代表的な量子系に対するアルゴリズムについて説明する。</p>
 <p>適宜、回路図を描きながら説明する。回路図を描くときには上位ビット(ビット列の左側)が上に来るようできるだけ統一して描いたつもりだが、
 Qiskitではビット列の右側が上に来るように描かれるのでそれに引っ張られて誤りがあるかもしれない。</p>
 <section id="vqe-variational-quantum-eigensolver">
-<h3><span class="section-number">9.4.1. </span>VQE (Variational Quantum Eigensolver)<a class="headerlink" href="#vqe-variational-quantum-eigensolver" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">9.5.1. </span>VQE (Variational Quantum Eigensolver)<a class="headerlink" href="#vqe-variational-quantum-eigensolver" title="Link to this heading">#</a></h3>
 <aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>必ずしもこのencodingが最適であるとは限らず、例えばGray codeなど他のencodingもある。</p>
@@ -577,11 +696,11 @@ Qiskitではビット列の右側が上に来るように描かれるのでそ�
 <p>このように、VQEでは量子・古典計算機の双方を駆使して問題を解くアプローチであり、これが良く量子-古典ハイブリッドと呼ばれる所以である。</p>
 </section>
 <section id="hadamard-test-quantum-phase-estimation-qpe">
-<h3><span class="section-number">9.4.2. </span>Hadamard test/Quantum phase estimation (QPE)<a class="headerlink" href="#hadamard-test-quantum-phase-estimation-qpe" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">9.5.2. </span>Hadamard test/Quantum phase estimation (QPE)<a class="headerlink" href="#hadamard-test-quantum-phase-estimation-qpe" title="Link to this heading">#</a></h3>
 <p>次に、long-term algorithmである量子位相推定(QPE)の説明を行う。</p>
 <p>まず初めにHadamard testを紹介し、QPEの説明に移る。</p>
 <section id="hadamard-test">
-<h4><span class="section-number">9.4.2.1. </span>Hadamard test<a class="headerlink" href="#hadamard-test" title="Link to this heading">#</a></h4>
+<h4><span class="section-number">9.5.2.1. </span>Hadamard test<a class="headerlink" href="#hadamard-test" title="Link to this heading">#</a></h4>
 <p>アダマールテストは、1つの補助量子ビットを用いて興味のある系のユニタリ演算子の固有値を得る方法である。</p>
 <p>以下では補助量子ビットのことをancilla、興味のある系を表現するための量子ビットをターゲット量子ビットと呼ぶことにする。
 またターゲット量子ビットが既に、ユニタリ演算子<span class="math notranslate nohighlight">\(U\)</span>の固有状態である<span class="math notranslate nohighlight">\(U\ket{\psi} = e^{i\lambda} \ket{\psi}\)</span>とする。</p>
@@ -626,7 +745,7 @@ Hadamard testでは、必要な精度<span class="math notranslate nohighlight">
 <p>Hadamard testを少し拡張すると、固有値を２進小数の各桁ごとに推定することができる。その工程を一度に行うのが、次に説明する量子位相推定(QPE)である。</p>
 </section>
 <section id="quantum-phase-estimation-qpe">
-<h4><span class="section-number">9.4.2.2. </span>Quantum phase estimation (QPE)<a class="headerlink" href="#quantum-phase-estimation-qpe" title="Link to this heading">#</a></h4>
+<h4><span class="section-number">9.5.2.2. </span>Quantum phase estimation (QPE)<a class="headerlink" href="#quantum-phase-estimation-qpe" title="Link to this heading">#</a></h4>
 <p>次にQPEの概要を示す。
 様々な拡張があるものの、最も代表的(教科書的)なQPEの説明にとどめておく。</p>
 <p>ユニタリ演算子<span class="math notranslate nohighlight">\(U\)</span>とその固有ベクトル<span class="math notranslate nohighlight">\(\ket{\psi}\)</span>に対して、その固有値を求める事を考える。</p>
@@ -705,7 +824,7 @@ QPEでは、必ずしも<span class="math notranslate nohighlight">\(\ket{\psi}\
 </section>
 </section>
 <section id="python-framework-for-quantum-computing">
-<h2><span class="section-number">9.5. </span>Python framework for Quantum Computing<a class="headerlink" href="#python-framework-for-quantum-computing" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">9.6. </span>Python framework for Quantum Computing<a class="headerlink" href="#python-framework-for-quantum-computing" title="Link to this heading">#</a></h2>
 <aside class="margin sidebar">
 <p class="sidebar-title"></p>
 <p>正確に言うと、pytketを使ったことはなかったが、QuantinuumのH-seriesを使ってみたいと思っていたところ、
@@ -747,30 +866,46 @@ Trotter分解、制御ユニタリ演算の構築などの、物理系のシミ�
 <th class="head text-center"><p>回路パラメータの最適化</p></th>
 <th class="head text-center"><p>Hadamar test</p></th>
 <th class="head text-center"><p>QPE</p></th>
+<th class="head text-center"><p>Quantum Krylov</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td class="text-center"><p>Pennylane</p></td>
-<td class="text-center"><p>◯</p></td>
-<td class="text-center"><p>◯※1</p></td>
-<td class="text-center"><p>◯</p></td>
-<td class="text-center"><p>◯</p></td>
+<td class="text-center"><p><a class="reference internal" href="#../pennylane_VQE"><span class="xref myst">◯</span></a></p></td>
+<td class="text-center"><p><a class="reference internal" href="#../pennylane_VQE"><span class="xref myst">◯</span></a>※1</p></td>
+<td class="text-center"><p><a class="reference internal" href="#../pennylane_QPE"><span class="xref myst">◯</span></a></p></td>
+<td class="text-center"><p><a class="reference internal" href="#../pennylane_QPE"><span class="xref myst">◯</span></a></p></td>
+<td class="text-center"><p>-</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p>Qiskit</p></td>
-<td class="text-center"><p>◯</p></td>
+<td class="text-center"><p><a class="reference internal" href="#../qiskit_QC"><span class="xref myst">◯</span></a></p></td>
 <td class="text-center"><p>-</p></td>
-<td class="text-center"><p>◯</p></td>
-<td class="text-center"><p>◯</p></td>
+<td class="text-center"><p><a class="reference internal" href="#../qiskit_QC"><span class="xref myst">◯</span></a></p></td>
+<td class="text-center"><p><a class="reference internal" href="#../qiskit_QC"><span class="xref myst">◯</span></a></p></td>
+<td class="text-center"><p><a class="reference internal" href="#../Quantum_Krylov"><span class="xref myst">◯</span></a></p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p>pytket</p></td>
-<td class="text-center"><p>◯</p></td>
-<td class="text-center"><p>◯※2</p></td>
+<td class="text-center"><p><a class="reference internal" href="#../pytket_VQE"><span class="xref myst">◯</span></a></p></td>
+<td class="text-center"><p><a class="reference internal" href="#../pytket_VQE"><span class="xref myst">◯</span></a>※2</p></td>
+<td class="text-center"><p>-</p></td>
 <td class="text-center"><p>-</p></td>
 <td class="text-center"><p>-</p></td>
 </tr>
 </tbody>
 </table>
 </div>
+</section>
+<section id="id7">
+<h2><span class="section-number">9.7. </span>その他の注<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
+<p>この資料では、いずれの計算においてもStatevectorか、Aerのノイズfreeなsimulatorを用いる計算結果を示し、実機へのジョブの投げ方などは扱っていない。
+simulatorという際、何を指しているのかが初学者に分かりづらい事がある(筆者もそうだった)が、この資料では以下のように使い分けている。
+Statevectorは回路に基づいて全ての状態を陽に計算する方法であり(したがって回路にmeasurementを入れてはいけない)、当然ながら、qubit数が増えると指数関数的に計算量が増える。
+&quot;shotで測る&quot;などと言う際は、回路の終端で量子ビットの状態を測定する。1回の測定で得られるのは、確定的な1つのビット列である。
+これを繰り返してサンプリングし、ビット列の出現回数から確率を推定する方法を指す。
+ノイズが無い場合でも、statevectorよりも、実機での実行を見越した方法になっているが、統計誤差が生じることに注意が必要である。</p>
+<p>他にも、実機で計算を行う際は、それ専用のおまじないを理解する必要がある上、
+意味のある結果を得るためには、エラー抑制(error mitigation)やpost-processingなど重要なステップが必要となるが、
+これらについてはこの資料の範囲外とすることを了承いただきたい。</p>
 </section>
 </section>
 
@@ -783,16 +918,16 @@ Trotter分解、制御ユニタリ演算の構築などの、物理系のシミ�
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "julia-1.10"
+            mode: "python"
         },
         kernelOptions: {
-            name: "julia-1.10",
+            name: "python3",
             path: "./notebooks"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'julia-1.10'</script>
+    <script>kernelName = 'python3'</script>
 
                 </article>
               
@@ -847,16 +982,18 @@ Trotter分解、制御ユニタリ演算の構築などの、物理系のシミ�
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">9.2. 重ね合わせ状態</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">9.3. 量子テレポーテーション</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">9.4. 量子コンピュータを用いた量子多体系の計算</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vqe-variational-quantum-eigensolver">9.4.1. VQE (Variational Quantum Eigensolver)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hadamard-test-quantum-phase-estimation-qpe">9.4.2. Hadamard test/Quantum phase estimation (QPE)</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#hadamard-test">9.4.2.1. Hadamard test</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#quantum-phase-estimation-qpe">9.4.2.2. Quantum phase estimation (QPE)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">9.4. 演算子の期待値計算</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">9.5. 量子コンピュータを用いた量子多体系の計算</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vqe-variational-quantum-eigensolver">9.5.1. VQE (Variational Quantum Eigensolver)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hadamard-test-quantum-phase-estimation-qpe">9.5.2. Hadamard test/Quantum phase estimation (QPE)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#hadamard-test">9.5.2.1. Hadamard test</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#quantum-phase-estimation-qpe">9.5.2.2. Quantum phase estimation (QPE)</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-framework-for-quantum-computing">9.5. Python framework for Quantum Computing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-framework-for-quantum-computing">9.6. Python framework for Quantum Computing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">9.7. その他の注</a></li>
 </ul>
   </nav></div>
 
