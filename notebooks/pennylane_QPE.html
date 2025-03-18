@@ -171,7 +171,11 @@
                 </a>
             </li>
         </ul>
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part1 Pairing Hamiltonianと多体計算手法</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">はじめに</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Julia_lang.html">Julia入門&amp;導入</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part1 Pairing Hamiltonianと多体計算手法</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Hamiltonian.html">1. pairing Hamiltonian</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FullCI.html">2. Full-CI/厳密対角化</a></li>
@@ -190,6 +194,7 @@
 <li class="toctree-l1"><a class="reference internal" href="qiskit_QC.html">12. Qiskitを用いた量子計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pytket_VQE.html">13. pytketを用いたVQE計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="QuantumKrylov.html">14. Quantum Krylov subspace method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Python_env.html">15. Python環境構築</a></li>
 </ul>
 
     </div>
@@ -837,7 +842,7 @@ initial state ansatz trotter_step 100 time_step 1.0e-04 E  1.189850696 error 1.1
 </div>
 </div>
 </div>
-<p>QPEの場合は、厳密解でなくとも</p>
+<p>QPEの場合は、ターゲット量子ビットに作成する状態が厳密解でなくとも、(~ <span class="math notranslate nohighlight">\(/N_q\)</span>)の精度で位相(エネルギー)を推定できる。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">method_state</span> <span class="o">=</span> <span class="s2">&quot;HF&quot;</span>

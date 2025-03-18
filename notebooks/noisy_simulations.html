@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Pennylaneの使い方 &#8212; Julia言語による原子核構造計算入門</title>
+    <title>Noisy simulations with Qiskit &#8212; Julia言語による原子核構造計算入門</title>
   
   
   
@@ -61,9 +61,7 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/tutorial_pennylane';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/noisy_simulations';</script>
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -271,7 +269,7 @@
       
       
       
-      <li><a href="https://github.com/SotaYoshida/Lecture_SummerSchool2025/issues/new?title=Issue%20on%20page%20%2Fnotebooks/tutorial_pennylane.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/SotaYoshida/Lecture_SummerSchool2025/issues/new?title=Issue%20on%20page%20%2Fnotebooks/noisy_simulations.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="問題を報告"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -301,7 +299,7 @@
       
       
       
-      <li><a href="../_sources/notebooks/tutorial_pennylane.ipynb" target="_blank"
+      <li><a href="../_sources/notebooks/noisy_simulations.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="ソースファイルをダウンロード"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -364,9 +362,7 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</button>
+
 </div></div>
       
     </div>
@@ -377,19 +373,11 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Pennylaneの使い方</h1>
+    <h1>Noisy simulations with Qiskit</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> 目次 </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#single-givens-rotation">Single Givens rotation</a></li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -399,60 +387,118 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="pennylane">
-<h1>Pennylaneの使い方<a class="headerlink" href="#pennylane" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="noisy-simulations-with-qiskit">
+<h1>Noisy simulations with Qiskit<a class="headerlink" href="#noisy-simulations-with-qiskit" title="Link to this heading">#</a></h1>
+<p>Qiskitを用いてノイズのあるシミュレーションを行う方法を紹介する。
+これも、v1で変更があったので理解を深めるために書いてみた。</p>
+<p>Qiskitでは、ノイズモデルや実機のcalibration情報のタイムスタンプを用いて、ノイズのあるシミュレーションを行うことができる。
+また、具体的な実機に対応したbackendを指定することで、その実機qubitのレイアウトに応じた回路作成や、
+native gateへのtranspileを行い、より実際の実機実行に向けたシミュレーションを行うことができる。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">combinations</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pennylane</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qml</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pennylane</span><span class="w"> </span><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">openfermion</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">of</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">transpile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.visualization</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_histogram</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_ibm_runtime</span><span class="w"> </span><span class="kn">import</span> <span class="n">SamplerV2</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_ibm_runtime.fake_provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeManilaV2</span><span class="p">,</span> <span class="n">FakeMumbaiV2</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.quantum_info</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparsePauliOp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.circuit.library</span><span class="w"> </span><span class="kn">import</span> <span class="n">PauliEvolutionGate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.synthesis</span><span class="w"> </span><span class="kn">import</span> <span class="n">SuzukiTrotter</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>回路で様々な状態を表現するが、その結果を見る際に、主に下記の二通りを用いる。</p>
-<ul class="simple">
-<li><p>state vector(状態ベクトル) → 閉じた形での重みの表現</p></li>
-<li><p>Pauli-Xの測定　→ shot数の結果によるヒストグラム</p></li>
-</ul>
-<p>前者は、量子状態の重みを見ることができるが、量子ビット数が増えると項の数や勾配などの計算が困難になるため、
-あくまで古典計算が可能な系や、量子ビット数が少ない場合のチェックに用いる。
-後者は、shot数による結果のばらつきがあることに注意が必要であるが、実機での実行結果に近い形で結果を得ることができる。</p>
-<section id="single-givens-rotation">
-<h2>Single Givens rotation<a class="headerlink" href="#single-givens-rotation" title="Link to this heading">#</a></h2>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{align}
-G(\theta) \ket{ 01 } &amp; = \cos(\theta/2) \ket{01} + \sin(\theta/2) \ket{10} \\
-G(\theta) \ket{ 10 } &amp; = \cos(\theta/2) \ket{10} -\sin(\theta/2) \ket{01} 
-\end{align}
-\end{split}\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_qubit</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">dev</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;default.qubit&quot;</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">))</span>
-<span class="nd">@qml</span><span class="o">.</span><span class="n">qnode</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">ansatz</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
-    <span class="n">qml</span><span class="o">.</span><span class="n">PauliX</span><span class="p">(</span><span class="n">wires</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> 
-    <span class="n">qml</span><span class="o">.</span><span class="n">SingleExcitation</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">qml</span><span class="o">.</span><span class="n">state</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">G</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="n">theta_2</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">/</span> <span class="mi">2</span> 
+    <span class="n">circ</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>
+    <span class="n">circ</span><span class="o">.</span><span class="n">ry</span><span class="p">(</span><span class="n">theta_2</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="n">circ</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">circ</span><span class="o">.</span><span class="n">ry</span><span class="p">(</span><span class="o">-</span><span class="n">theta_2</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="n">circ</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">circ</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>  
 
-<span class="n">theta</span> <span class="o">=</span> <span class="p">[</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span> <span class="o">*</span> <span class="mi">2</span> <span class="p">]</span>
-<span class="n">ansatz</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">G_gate</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+    <span class="n">circ</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">G</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+    <span class="n">circ</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;G&quot;</span>    
+    <span class="k">return</span> <span class="n">circ</span><span class="o">.</span><span class="n">to_gate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">obs</span> <span class="o">=</span> <span class="p">[</span> <span class="s2">&quot;II&quot;</span><span class="p">,</span> <span class="s2">&quot;ZI&quot;</span><span class="p">,</span> <span class="s2">&quot;IZ&quot;</span><span class="p">,</span> <span class="s2">&quot;ZZ&quot;</span><span class="p">]</span>
+<span class="n">coeffs</span> <span class="o">=</span> <span class="p">[</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">]</span>
+<span class="n">hamiltonian_op</span> <span class="o">=</span> <span class="n">SparsePauliOp</span><span class="p">(</span><span class="n">obs</span><span class="p">,</span> <span class="n">coeffs</span><span class="p">)</span>
+<span class="n">hamiltonian_op</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([ 0.        +0.j, -0.70710678+0.j,  0.70710678+0.j,
-         0.        +0.j], requires_grad=True)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SparsePauliOp([&#39;II&#39;, &#39;ZI&#39;, &#39;IZ&#39;, &#39;ZZ&#39;],
+              coeffs=[-1.+0.j,  1.+0.j,  1.+0.j, -1.+0.j])
 </pre></div>
 </div>
 </div>
 </div>
-</section>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">delta_t</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">n_qubit</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">U</span> <span class="o">=</span> <span class="n">PauliEvolutionGate</span><span class="p">(</span><span class="n">hamiltonian_op</span><span class="p">,</span> <span class="n">delta_t</span><span class="p">,</span> <span class="n">synthesis</span><span class="o">=</span><span class="n">SuzukiTrotter</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">reps</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;U.data&quot;</span><span class="p">,</span> <span class="n">U</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ansatz</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">):</span>
+    <span class="n">ansatz</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+        <span class="n">ansatz</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">ansatz</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">G_gate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">ansatz</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Ansatz&quot;</span>
+    <span class="k">return</span> <span class="n">ansatz</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">make_cU</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">):</span>
+    <span class="n">circuit_cU</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">Ntar</span><span class="p">)</span>
+    <span class="n">circuit_cU</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ntar</span><span class="p">))</span>
+    <span class="n">circuit_cU</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+    <span class="n">circuit_cU</span> <span class="o">=</span> <span class="n">circuit_cU</span><span class="o">.</span><span class="n">decompose</span><span class="p">(</span><span class="n">reps</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">circuit_cU</span><span class="o">.</span><span class="n">to_gate</span><span class="p">()</span><span class="o">.</span><span class="n">control</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">Uprep</span> <span class="o">=</span> <span class="n">ansatz</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">)</span> 
+<span class="n">gate_cU</span> <span class="o">=</span> <span class="n">make_cU</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">n_qubit</span><span class="p">)</span>
+
+<span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">n_qubit</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gate_cU</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n_qubit</span><span class="o">+</span><span class="mi">1</span><span class="p">)))</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gate_cU</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n_qubit</span><span class="o">+</span><span class="mi">1</span><span class="p">)))</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s1">&#39;mpl&#39;</span><span class="p">)</span>
+<span class="n">qc</span> <span class="o">=</span> <span class="n">qc</span><span class="o">.</span><span class="n">decompose</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>U.data Instruction(name=&#39;PauliEvolution&#39;, num_qubits=2, num_clbits=0, params=[0.01])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Qiskitには、<a class="reference external" href="https://docs.quantum.ibm.com/api/qiskit/providers_fake_provider">Fake Provider</a>モジュールがあり、様々な実機のcalibration情報を提供している。
+これにより、レイアウトに応じた回路作成やtranspileを試したり、ノイズのあるシミュレーションを行うことができる。</p>
+<p><code class="docutils literal notranslate"><span class="pre">FakeMumbaiV2</span></code>を使ってみよう。Mumbaiは27量子ビットのマシンである。
+この他にも様々な都市名がついたマシンがあり、量子ビット・ゲートエラー率のほか、processor(≒ネイティブゲート)なども異なるので、興味があれば試してみるとよいだろう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">backend</span> <span class="o">=</span> <span class="n">FakeMumbaiV2</span><span class="p">()</span>
+<span class="n">tqc</span> <span class="o">=</span> <span class="n">transpile</span><span class="p">(</span><span class="n">qc</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 
     <script type="text/x-thebe-config">
@@ -491,22 +537,6 @@ G(\theta) \ket{ 10 } &amp; = \cos(\theta/2) \ket{10} -\sin(\theta/2) \ket{01}
             </div>
             
             
-              
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> 目次
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#single-givens-rotation">Single Givens rotation</a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>

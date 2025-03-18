@@ -171,7 +171,11 @@
                 </a>
             </li>
         </ul>
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part1 Pairing Hamiltonianと多体計算手法</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">はじめに</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Julia_lang.html">Julia入門&amp;導入</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part1 Pairing Hamiltonianと多体計算手法</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Hamiltonian.html">1. pairing Hamiltonian</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FullCI.html">2. Full-CI/厳密対角化</a></li>
@@ -190,6 +194,7 @@
 <li class="toctree-l1"><a class="reference internal" href="qiskit_QC.html">12. Qiskitを用いた量子計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pytket_VQE.html">13. pytketを用いたVQE計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="QuantumKrylov.html">14. Quantum Krylov subspace method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Python_env.html">15. Python環境構築</a></li>
 </ul>
 
     </div>
@@ -392,7 +397,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gap">4.4. gap方程式の導出</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">4.5. 数値計算</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">4.6. 結果の考察</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hfb-hartree-fock-bogoliubov">4.7. あとがき:HFB(Hartree-Fock-Bogoliubov)への拡張・応用</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">4.7. あとがき:</a></li>
 </ul>
             </nav>
         </div>
@@ -586,7 +591,7 @@ BCS状態(準粒子の真空状態)を考えるので、<span class="math notran
 = 
 &amp; 
 \sum_{\alpha \beta } V_{\alpha -\alpha \beta -\beta} u_a v_a u_b v_b (-1)^{j_a - m_\alpha} (-1)^{j_b - m_\beta} 
-+ \sum_{\alpha \beta } V_{\alpha \beta \alpha \beta} v^2_a v^2_b \\
++ 2\sum_{\alpha \beta } V_{\alpha \beta \alpha \beta} v^2_a v^2_b \\
 &amp; + \{ a^\dagger a \ \text{terms} \} + \{ a^\dagger a^\dagger \&amp; aa \  \text{terms} \} \\
 &amp; + \sum_{\alpha \beta \gamma \delta} V_{\alpha \beta \gamma \delta} 
 \mathcal{N} [ c^\dagger_\alpha c^\dagger_\beta c_\delta c_\gamma ] 
@@ -601,7 +606,7 @@ BCS状態(準粒子の真空状態)を考えるので、<span class="math notran
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align}
-\sum_{\alpha \beta } V_{\alpha -\alpha \beta -\beta} u_a v_a u_b v_b (-1)^{j_a - m_\alpha} (-1)^{j_b - m_\beta} 
+4V = \sum_{\alpha \beta } V_{\alpha -\alpha \beta -\beta} u_a v_a u_b v_b (-1)^{j_a - m_\alpha} (-1)^{j_b - m_\beta} 
 &amp; \to - g \left(\sum_{\alpha}  u_a v_a \right)^2 \\
 2 \sum_{\alpha \beta } V_{\alpha \beta \alpha \beta} v^2_a v^2_b 
 &amp; \to - 2 g \sum_{\alpha} v^4_a
@@ -732,8 +737,9 @@ N &amp; = \sum_{\alpha} v^2_a = \sum_{\alpha} \frac{1}{2} \left( 1 - \frac{\epsi
 <p><img alt="" src="../_images/Energies_Norb20_Nocc10.png" /></p>
 <p>pairing Hamiltonianは、ある<span class="math notranslate nohighlight">\(g\)</span>の値よりも大きい領域からある種の超流動的な性質を持ち、BCS的な描像がよく成り立つようになる。</p>
 </section>
-<section id="hfb-hartree-fock-bogoliubov">
-<h2><span class="section-number">4.7. </span>あとがき:HFB(Hartree-Fock-Bogoliubov)への拡張・応用<a class="headerlink" href="#hfb-hartree-fock-bogoliubov" title="Link to this heading">#</a></h2>
+<section id="id3">
+<h2><span class="section-number">4.7. </span>あとがき:<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p><strong>HFB(Hartree-Fock-Bogoliubov)への拡張・応用</strong></p>
 <p>Hartree-Fock法とBogoliubov変換を組み合わせたHFB法は、原子核物理学において非常に重要な手法である。</p>
 <p>現代的な核構造計算においてにも、HFBを活用した</p>
 <ul class="simple">
@@ -750,7 +756,8 @@ N &amp; = \sum_{\alpha} v^2_a = \sum_{\alpha} \frac{1}{2} \left( 1 - \frac{\epsi
 複素成分を持つランダムユニタリ行列が必要となるが、その場合についてはQR分解を用いれば良い。
 また、角運動量や粒子数・パリティ射影などにおいては、制約付きの最適化をどのように実装するかも重要となる。</p>
 <p>筆者のこれまでの経験では、Juliaで構造計算のコードを書く場合は、C++やFortranなどの既存コードに比べて1/5や1/10程度のコード量で書けることも多い。
-PairingHamiltonian.jlでは、HFBの導出やその応用については扱っていないが、読者の中で興味を持つ人がいれば、是非Juliaでの実装を一緒にやってみたい。</p>
+PairingHamiltonian.jlでは、HFBの導出やその応用については扱っていないが、読者の中で興味を持つ人がいればJuliaでの実装にチャレンジしてみてほしい(その際は一緒にやりましょう)。</p>
+<p>Coupled-Cluster法への拡張・応用については、Coupled Clusterの章で触れることにする。</p>
 </section>
 </section>
 
@@ -829,7 +836,7 @@ PairingHamiltonian.jlでは、HFBの導出やその応用については扱っ�
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gap">4.4. gap方程式の導出</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">4.5. 数値計算</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">4.6. 結果の考察</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hfb-hartree-fock-bogoliubov">4.7. あとがき:HFB(Hartree-Fock-Bogoliubov)への拡張・応用</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">4.7. あとがき:</a></li>
 </ul>
   </nav></div>
 

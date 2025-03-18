@@ -171,7 +171,11 @@
                 </a>
             </li>
         </ul>
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part1 Pairing Hamiltonianと多体計算手法</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">はじめに</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Julia_lang.html">Julia入門&amp;導入</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part1 Pairing Hamiltonianと多体計算手法</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Hamiltonian.html">1. pairing Hamiltonian</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FullCI.html">2. Full-CI/厳密対角化</a></li>
@@ -190,6 +194,7 @@
 <li class="toctree-l1"><a class="reference internal" href="qiskit_QC.html">12. Qiskitを用いた量子計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pytket_VQE.html">13. pytketを用いたVQE計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="QuantumKrylov.html">14. Quantum Krylov subspace method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Python_env.html">15. Python環境構築</a></li>
 </ul>
 
     </div>
@@ -385,7 +390,8 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cc">6.1. CCの概要</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pairing-hamiltonianccd">6.2. pairing HamiltonianのCCD計算</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">6.3. 結果の考察</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clubsuit-unitary-coupled-cluster-ucc">6.4. <span class="math notranslate nohighlight">\(\clubsuit\)</span>量子計算に関連した話題: Unitary Coupled-Cluster (UCC)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">6.4. 準粒子基底への拡張</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clubsuit-unitary-coupled-cluster-ucc">6.5. <span class="math notranslate nohighlight">\(\clubsuit\)</span>量子計算に関連した話題: Unitary Coupled-Cluster (UCC)</a></li>
 </ul>
             </nav>
         </div>
@@ -489,15 +495,18 @@ Triple(<span class="math notranslate nohighlight">\(A=3\)</span>)の効果を部
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align*}
-0 = &amp; \langle ab | \hat{v} | ij \rangle
+t^{ab \mathrm{(new)}}_{ij} =  \frac{1}{\epsilon^{ab}_{ij}} &amp; \left\{ 
+ \langle ab | \hat{v} | ij \rangle
 +\hat{P}(ab) \sum_c \langle b | \chi | c \rangle t^{ac}_{ij}
--\hat{P}(ij) \sum_k \langle k | \chi | j \rangle t^{ab}_{ik} \\
-&amp; + \frac{1}{2} \sum_{cd} \langle ab | \chi | cd \rangle t^{cd}_{ij}
-+ \frac{1}{2} \sum_{kl} \langle kl | \chi | ij \rangle t^{ab}_{kl} \\
-&amp; + \hat{P}(ij) \hat{P}(ab) \sum_{kc} \langle kb | \chi | cj \rangle t^{ac}_{ik} 
+-\hat{P}(ij) \sum_k \langle k | \chi | j \rangle t^{ab}_{ik} \right. \\
+&amp; \left. + \frac{1}{2} \sum_{cd} \langle ab | \chi | cd \rangle t^{cd}_{ij}
++ \frac{1}{2} \sum_{kl} \langle kl | \chi | ij \rangle t^{ab}_{kl} + \hat{P}(ij) \hat{P}(ab) \sum_{kc} \langle kb | \chi | cj \rangle t^{ac}_{ik} \right\}
 \end{align*}
 \end{split}\]</div>
-<p>上では、適宜、<span class="math notranslate nohighlight">\(t\)</span>と<span class="math notranslate nohighlight">\(v\)</span>の行列要素の添字の交換に対する反対称性や、<span class="math notranslate nohighlight">\(\hat{P}\)</span>の性質,Fock行列がhole間・particle間で対角的であることを用いた。</p>
+<p>とt2 amplitudesを更新する式が得られる。
+上では、適宜、<span class="math notranslate nohighlight">\(t\)</span>と<span class="math notranslate nohighlight">\(v\)</span>の行列要素の添字の交換に対する反対称性や、<span class="math notranslate nohighlight">\(\hat{P}\)</span>の性質,Fock行列がhole間・particle間で対角的であることを用いた。
+<span class="math notranslate nohighlight">\(\chi\)</span>の更新を除けば、<span class="math notranslate nohighlight">\(\mathcal{O}(n^2_pn^4_h)\)</span>の計算量になる。
+実際上は、最後の<span class="math notranslate nohighlight">\(\langle kb | \chi | cj \rangle t^{ac}_{ik}\)</span>の部分(<span class="math notranslate nohighlight">\(\mathcal{O}(n^3_pn^3_h)\)</span>)が最も時間がかかるであろう。他の2体相互作用が効く項は、中間生成物を用いて行列演算にできるため、BLASなどを用いて高速に計算できる。</p>
 </section>
 <section id="id1">
 <h2><span class="section-number">6.3. </span>結果の考察<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
@@ -509,8 +518,17 @@ MBPTの結果が示唆するように、厳密解は符号の異なる寄与が�
 <p>実際、IM-SRG(2)はCCDで入る(4次の)ダイアグラムの半数が取り入れられていないことから、truncationの入り方が結果に影響を与えていることがわかる。</p>
 <p>美味しいものを後で食べる人と、すぐに食べる人の違いのようなものだ(?)。最後にはみんな同じものを食べるが、その過程が異なる。</p>
 </section>
+<section id="id2">
+<h2><span class="section-number">6.4. </span>準粒子基底への拡張<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>上で見たように、pairingが強い領域では、coupled cluster法は束縛エネルギーを過大評価してしまう。
+これに対しては、準粒子基底への拡張や粒子数射影を用いて改善できることが知られている。</p>
+<ul class="simple">
+<li><p>Bogoliubov coupled cluster法: <a class="reference external" href="https://doi.org/10.1103/PhysRevC.89.054305">Quasiparticle coupled cluster theory for pairing interactions</a></p></li>
+<li><p>PBCC: <a class="reference external" href="https://doi.org/10.1103/PhysRevC.99.044301">Particle-number projected Bogoliubov-coupled-cluster theory: Application to the pairing Hamiltonian</a></p></li>
+</ul>
+</section>
 <section id="clubsuit-unitary-coupled-cluster-ucc">
-<h2><span class="section-number">6.4. </span><span class="math notranslate nohighlight">\(\clubsuit\)</span>量子計算に関連した話題: Unitary Coupled-Cluster (UCC)<a class="headerlink" href="#clubsuit-unitary-coupled-cluster-ucc" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">6.5. </span><span class="math notranslate nohighlight">\(\clubsuit\)</span>量子計算に関連した話題: Unitary Coupled-Cluster (UCC)<a class="headerlink" href="#clubsuit-unitary-coupled-cluster-ucc" title="Link to this heading">#</a></h2>
 <p>Unitary Coupled Cluster (UCC)法はその名の通り、CC法のユニタリー版である。
 exponential ansatzの肩に、<span class="math notranslate nohighlight">\(\hat{T}\)</span>と<span class="math notranslate nohighlight">\(\hat{T}^\dagger\)</span>を乗せることで、ユニタリー性を保つことができる。</p>
 <div class="math notranslate nohighlight">
@@ -594,7 +612,8 @@ exponential ansatzの肩に、<span class="math notranslate nohighlight">\(\hat{
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cc">6.1. CCの概要</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pairing-hamiltonianccd">6.2. pairing HamiltonianのCCD計算</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">6.3. 結果の考察</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clubsuit-unitary-coupled-cluster-ucc">6.4. <span class="math notranslate nohighlight">\(\clubsuit\)</span>量子計算に関連した話題: Unitary Coupled-Cluster (UCC)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">6.4. 準粒子基底への拡張</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clubsuit-unitary-coupled-cluster-ucc">6.5. <span class="math notranslate nohighlight">\(\clubsuit\)</span>量子計算に関連した話題: Unitary Coupled-Cluster (UCC)</a></li>
 </ul>
   </nav></div>
 

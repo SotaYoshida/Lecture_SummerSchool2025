@@ -66,6 +66,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/QuantumKrylov';</script>
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="15. Python環境構築" href="Python_env.html" />
     <link rel="prev" title="13. pytketを用いたVQE計算" href="pytket_VQE.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="ja"/>
@@ -170,7 +171,11 @@
                 </a>
             </li>
         </ul>
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part1 Pairing Hamiltonianと多体計算手法</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">はじめに</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Julia_lang.html">Julia入門&amp;導入</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part1 Pairing Hamiltonianと多体計算手法</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Hamiltonian.html">1. pairing Hamiltonian</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FullCI.html">2. Full-CI/厳密対角化</a></li>
@@ -189,6 +194,7 @@
 <li class="toctree-l1"><a class="reference internal" href="qiskit_QC.html">12. Qiskitを用いた量子計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pytket_VQE.html">13. pytketを用いたVQE計算</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">14. Quantum Krylov subspace method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Python_env.html">15. Python環境構築</a></li>
 </ul>
 
     </div>
@@ -392,6 +398,7 @@
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantum-krylov">14.2. Quantum Krylov法の実装</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">14.3. 関連する話題</a></li>
 </ul>
             </nav>
         </div>
@@ -548,64 +555,32 @@ N_{kl} &amp; = \langle \Phi_k \ket{\Phi_l} = \bra{\Phi_0} e^{-i(t_l-t_k)H} \ket{
             <span class="n">idx_ancilla</span> <span class="o">=</span> <span class="n">ancilla</span>
     <span class="k">return</span> <span class="n">idx_ancilla</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">expec_Z</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">Qiskit_ordering</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">target_qubits</span><span class="o">=</span><span class="p">[],</span> <span class="n">ancilla_qubit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="n">Zexp</span> <span class="o">=</span> <span class="n">Zexp_p0</span> <span class="o">=</span> <span class="n">Zexp_p1</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">n_shot</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">counts</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-    <span class="n">n_qubit</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">counts</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">expec_Zstring</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">,</span> <span class="n">Qiskit_ordering</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">target_qubits</span><span class="o">=</span><span class="p">[],</span> <span class="n">ancilla_qubit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">exp_val</span> <span class="o">=</span> <span class="n">exp_val_p0</span> <span class="o">=</span> <span class="n">exp_val_p1</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">n_shot</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="n">n_qubit</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">idx_ancilla</span> <span class="o">=</span> <span class="n">get_idx_ancilla_in_string</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">,</span> <span class="n">ancilla_qubit</span><span class="p">,</span> <span class="n">Qiskit_ordering</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">bitstr</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">counts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">bitstr</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">ancilla_qubit</span> <span class="o">!=</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">target_qubits</span> <span class="o">!=</span> <span class="p">[]:</span>
             <span class="n">bitstr_target</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">bitstr</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">)</span> <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="n">idx_ancilla</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">bitstr_target</span> <span class="o">=</span> <span class="n">bitstr</span>
-
-        <span class="k">if</span> <span class="n">Qiskit_ordering</span><span class="p">:</span>
-            <span class="n">idx_register</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">i</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">idx_register</span> <span class="o">=</span> <span class="n">i</span>
-        <span class="n">bit</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bitstr_target</span><span class="p">[</span><span class="n">idx_register</span><span class="p">])</span>
-        <span class="n">tmp</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">bit</span><span class="p">)</span> <span class="o">*</span> <span class="n">count</span>
-        <span class="n">Zexp</span> <span class="o">+=</span> <span class="n">tmp</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">idx_relevant</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">Qiskit_ordering</span><span class="p">:</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">idx</span>
+            <span class="n">bit</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bitstr_target</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>            
+            <span class="n">tmp</span> <span class="o">*=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">bit</span><span class="p">)</span>
+        <span class="n">exp_val</span> <span class="o">+=</span> <span class="n">tmp</span> <span class="o">*</span> <span class="n">count</span>
+        
         <span class="k">if</span> <span class="n">ancilla_qubit</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">bitstr</span><span class="p">[</span><span class="n">idx_ancilla</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">Zexp_p0</span> <span class="o">+=</span> <span class="n">tmp</span>
+                <span class="n">exp_val_p0</span> <span class="o">+=</span> <span class="n">tmp</span> <span class="o">*</span> <span class="n">count</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">Zexp_p1</span> <span class="o">+=</span> <span class="n">tmp</span>
-    <span class="n">Zexp</span> <span class="o">/=</span> <span class="n">n_shot</span>
-    <span class="n">Zexp_p0</span> <span class="o">/=</span> <span class="n">n_shot</span>
-    <span class="n">Zexp_p1</span> <span class="o">/=</span> <span class="n">n_shot</span>
-    <span class="k">return</span> <span class="n">Zexp</span><span class="p">,</span> <span class="n">Zexp_p0</span><span class="p">,</span> <span class="n">Zexp_p1</span>
+                <span class="n">exp_val_p1</span> <span class="o">+=</span> <span class="n">tmp</span> <span class="o">*</span> <span class="n">count</span>
+    <span class="n">exp_val</span> <span class="o">/=</span> <span class="n">n_shot</span><span class="p">;</span> <span class="n">exp_val_p0</span> <span class="o">/=</span> <span class="n">n_shot</span><span class="p">;</span> <span class="n">exp_val_p1</span> <span class="o">/=</span> <span class="n">n_shot</span>
+    <span class="k">return</span> <span class="n">exp_val</span><span class="p">,</span> <span class="n">exp_val_p0</span><span class="p">,</span> <span class="n">exp_val_p1</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">expec_ZZ</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">Qiskit_ordering</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">target_qubits</span><span class="o">=</span><span class="p">[],</span> <span class="n">ancilla_qubit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="n">ZZexp</span> <span class="o">=</span> <span class="n">ZZexp_p0</span> <span class="o">=</span> <span class="n">ZZexp_p1</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">n_shot</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">counts</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-    <span class="n">n_qubit</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">counts</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">idx_ancilla</span> <span class="o">=</span> <span class="n">get_idx_ancilla_in_string</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">,</span> <span class="n">ancilla_qubit</span><span class="p">,</span> <span class="n">Qiskit_ordering</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">bitstr</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">counts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">ancilla_qubit</span> <span class="o">!=</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">target_qubits</span> <span class="o">!=</span> <span class="p">[]:</span>
-            <span class="n">bitstr_target</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">bitstr</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">)</span> <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="n">idx_ancilla</span><span class="p">])</span>
-            <span class="c1">#print(bitstr ,&quot;=&gt;?? &quot;, bitstr_target)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">bitstr_target</span> <span class="o">=</span> <span class="n">bitstr</span>
-
-        <span class="k">if</span> <span class="n">Qiskit_ordering</span><span class="p">:</span>
-            <span class="n">idx_register_i</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">i</span>
-            <span class="n">idx_register_j</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">j</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">idx_register_i</span> <span class="o">=</span> <span class="n">i</span>
-            <span class="n">idx_register_j</span> <span class="o">=</span> <span class="n">j</span>
-        <span class="n">bit_i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bitstr_target</span><span class="p">[</span><span class="n">idx_register_i</span><span class="p">])</span>
-        <span class="n">bit_j</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bitstr_target</span><span class="p">[</span><span class="n">idx_register_j</span><span class="p">])</span>
-        <span class="n">tmp</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">bit_i</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">bit_j</span><span class="p">)</span> <span class="o">*</span> <span class="n">count</span>
-        <span class="n">ZZexp</span> <span class="o">+=</span> <span class="n">tmp</span>
-        <span class="k">if</span> <span class="n">ancilla_qubit</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">bitstr</span><span class="p">[</span><span class="n">idx_ancilla</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">ZZexp_p0</span> <span class="o">+=</span> <span class="n">tmp</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">ZZexp_p1</span> <span class="o">+=</span> <span class="n">tmp</span>
-    <span class="n">ZZexp</span> <span class="o">/=</span> <span class="n">n_shot</span><span class="p">;</span> <span class="n">ZZexp_p0</span> <span class="o">/=</span> <span class="n">n_shot</span><span class="p">;</span> <span class="n">ZZexp_p1</span> <span class="o">/=</span> <span class="n">n_shot</span>
-    <span class="k">return</span> <span class="n">ZZexp</span><span class="p">,</span> <span class="n">ZZexp_p0</span><span class="p">,</span> <span class="n">ZZexp_p1</span>
 
 <span class="n">params_exact</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.48104276</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.03976498</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.98963981</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.18481738</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.54832984</span><span class="p">])</span>
 
@@ -986,8 +961,8 @@ cos(t_i-t_j) 0.9985358702188959 sin(t_i-t_j) -0.05409358451972206
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Estimated Re&lt;psi_i|psi_j&gt; =   0.99868  Exact:   0.99854 Error: 1.44e-04
-Estimated Im&lt;psi_i|psi_j&gt; =  -0.06076  Exact:  -0.05409 Error: 6.67e-03
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Estimated Re&lt;psi_i|psi_j&gt; =   0.99864  Exact:   0.99854 Error: 1.04e-04
+Estimated Im&lt;psi_i|psi_j&gt; =  -0.05926  Exact:  -0.05409 Error: 5.17e-03
 </pre></div>
 </div>
 </div>
@@ -1003,7 +978,7 @@ Estimated Im&lt;psi_i|psi_j&gt; =  -0.06076  Exact:  -0.05409 Error: 6.67e-03
 <section id="id2">
 <h3><span class="section-number">14.1.3. </span>ハミルトニアンの各項の期待値測定のための回路<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">&quot;IIXIXII&quot;</span></code>のようなpauli string(的な変数)に対して、必要なbasis rotationを足す関数を作っておこう。
-ここでは、pairing Hamiltonianの構造から高々<span class="math notranslate nohighlight">\(X_iX_j\)</span>や<span class="math notranslate nohighlight">\(Y_iY_j\)</span>しかないことを利用しよう。</p>
+必要な操作は<span class="math notranslate nohighlight">\(X\)</span>と<span class="math notranslate nohighlight">\(Y\)</span>の測定のための回路の追加と、そのZ基底での測定である。</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1012,51 +987,25 @@ Estimated Im&lt;psi_i|psi_j&gt; =  -0.06076  Exact:  -0.05409 Error: 6.67e-03
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">additional_qc</span><span class="p">(</span><span class="n">qc_in</span><span class="p">,</span> <span class="n">pauli_str</span><span class="p">,</span> <span class="n">register_target</span><span class="p">,</span> <span class="n">Qiskit_order</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="n">numX</span> <span class="o">=</span> <span class="n">pauli_str</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)</span>
-    <span class="n">numY</span> <span class="o">=</span> <span class="n">pauli_str</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">)</span>
-    <span class="n">numZ</span> <span class="o">=</span> <span class="n">pauli_str</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">numX</span> <span class="o">==</span> <span class="n">numY</span> <span class="o">==</span> <span class="n">numZ</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">numZ</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">numX</span> <span class="o">==</span> <span class="n">numY</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span> <span class="c1">#I or Z, no need to add gate</span>
-        <span class="k">return</span> <span class="kc">None</span>
-    <span class="k">elif</span> <span class="n">numX</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">numY</span> <span class="o">==</span> <span class="n">numZ</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># X_i X_j</span>
-        <span class="k">if</span> <span class="n">Qiskit_order</span><span class="p">:</span>
-            <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pauli_str</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pauli_str</span><span class="o">.</span><span class="n">rindex</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)</span>
+    <span class="n">pauli_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">pauli_str</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">Qiskit_order</span><span class="p">:</span>
+        <span class="n">pauli_str</span> <span class="o">=</span> <span class="n">pauli_str</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pauli_str</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">pauli_str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span>
+            <span class="n">qc_in</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="n">register_target</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">pauli_str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span>
+            <span class="n">qc_in</span><span class="o">.</span><span class="n">sdg</span><span class="p">(</span><span class="n">register_target</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span> <span class="n">qc_in</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="n">register_target</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">pauli_str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Z&quot;</span> <span class="ow">or</span> <span class="n">pauli_str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;I&quot;</span><span class="p">:</span>
+            <span class="k">pass</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">pauli_str</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">),</span> <span class="n">pauli_str</span><span class="o">.</span><span class="n">rindex</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)</span>
-        <span class="n">qc_in</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="n">register_target</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-        <span class="n">qc_in</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="n">register_target</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
-    <span class="k">elif</span> <span class="n">numY</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">numX</span> <span class="o">==</span> <span class="n">numZ</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># Y_i Y_j</span>
-        <span class="k">if</span> <span class="n">Qiskit_order</span><span class="p">:</span>
-            <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pauli_str</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pauli_str</span><span class="o">.</span><span class="n">rindex</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">pauli_str</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">),</span> <span class="n">pauli_str</span><span class="o">.</span><span class="n">rindex</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">)</span>
-        <span class="n">qc_in</span><span class="o">.</span><span class="n">sdg</span><span class="p">(</span><span class="n">register_target</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span> <span class="n">qc_in</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="n">register_target</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-        <span class="n">qc_in</span><span class="o">.</span><span class="n">sdg</span><span class="p">(</span><span class="n">register_target</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span> <span class="n">qc_in</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="n">register_target</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
-    <span class="k">else</span><span class="p">:</span> 
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;This must not happen:&quot;</span><span class="p">,</span> <span class="n">pauli_str</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid Pauli string: &quot;</span><span class="p">,</span> <span class="n">pauli_str</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">get_idx_to_measure</span><span class="p">(</span><span class="n">pauli_str</span><span class="p">,</span> <span class="n">Qiskit_order</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="n">numX</span> <span class="o">=</span> <span class="n">pauli_str</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)</span>
-    <span class="n">numY</span> <span class="o">=</span> <span class="n">pauli_str</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">)</span>
-    <span class="n">numZ</span> <span class="o">=</span> <span class="n">pauli_str</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">numX</span> <span class="o">==</span> <span class="n">numY</span> <span class="o">==</span> <span class="n">numZ</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1">#I</span>
-        <span class="k">return</span> <span class="p">[</span> <span class="p">]</span>
-    <span class="k">elif</span> <span class="n">numZ</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">numX</span> <span class="o">==</span> <span class="n">numY</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># Z</span>
-        <span class="k">if</span> <span class="n">Qiskit_order</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pauli_str</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">)]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="n">pauli_str</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">)]</span>
-    <span class="k">elif</span> <span class="n">numX</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">numY</span> <span class="o">==</span> <span class="n">numZ</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># X_i X_j</span>
-        <span class="k">if</span> <span class="n">Qiskit_order</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pauli_str</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pauli_str</span><span class="o">.</span><span class="n">rindex</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="n">pauli_str</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">),</span> <span class="n">pauli_str</span><span class="o">.</span><span class="n">rindex</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)</span> <span class="p">]</span>
-    <span class="k">elif</span> <span class="n">numY</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">numX</span> <span class="o">==</span> <span class="n">numZ</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># Y_i Y_j</span>
-        <span class="k">if</span> <span class="n">Qiskit_order</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pauli_str</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pauli_str</span><span class="o">.</span><span class="n">rindex</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">)]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="n">pauli_str</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">),</span> <span class="n">pauli_str</span><span class="o">.</span><span class="n">rindex</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">)]</span>
-    <span class="k">else</span><span class="p">:</span> 
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;This must not happen:&quot;</span><span class="p">,</span> <span class="n">pauli_str</span><span class="p">)</span>
+    <span class="n">idxs</span> <span class="o">=</span> <span class="p">[</span> <span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pauli_str</span><span class="p">)</span> <span class="k">if</span> <span class="n">p</span> <span class="o">!=</span> <span class="s2">&quot;I&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">Qiskit_order</span><span class="p">:</span>
+        <span class="n">idxs</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">len</span><span class="p">(</span><span class="n">pauli_str</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">idxs</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">idxs</span>
 
 <span class="n">hamil</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;XXII&quot;</span><span class="p">,</span> <span class="s2">&quot;IYIY&quot;</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">hamil</span><span class="p">:</span>
@@ -1086,9 +1035,14 @@ Estimated Im&lt;psi_i|psi_j&gt; =  -0.06076  Exact:  -0.05409 Error: 6.67e-03
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">ansatz</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;FCI&quot;</span><span class="p">):</span>
     <span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">Norb</span><span class="p">)</span>
-    <span class="n">qc</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">qc</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># HF</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nocc</span><span class="p">):</span>
+        <span class="n">qc</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="c1"># Additional gates</span>
     <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;FCI&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">Norb</span> <span class="o">!=</span> <span class="mi">4</span> <span class="ow">or</span> <span class="n">Nocc</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;You are using parameters to reproduce the FCI wavefunction for Norb=4 and Nocc=2&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Please make sure whether this is correct for your case!&quot;</span><span class="p">)</span>
         <span class="n">qc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">G_gate</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
         <span class="n">qc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">G_gate</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
         <span class="n">qc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cG1_gate</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
@@ -1136,12 +1090,8 @@ Estimated Im&lt;psi_i|psi_j&gt; =  -0.06076  Exact:  -0.05409 Error: 6.67e-03
         <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">meas</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_relevant</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># I term</span>
-        <span class="n">expval</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_relevant</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c1"># Z term</span>
-        <span class="n">expval</span><span class="p">,</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy_</span> <span class="o">=</span> <span class="n">expec_Z</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_relevant</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span> <span class="c1"># ZZ term</span>
-        <span class="n">expval</span><span class="p">,</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy_</span> <span class="o">=</span> <span class="n">expec_ZZ</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">idx_relevant</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">expval</span><span class="p">,</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy_</span> <span class="o">=</span> <span class="n">expec_Zstring</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">h_term</span><span class="o">.</span><span class="n">to_label</span><span class="p">(),</span> <span class="n">Hamil_coeffs</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">expval</span><span class="p">)</span>
     <span class="n">Esum</span> <span class="o">+=</span> <span class="n">Hamil_coeffs</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">*</span> <span class="n">expval</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Esum&quot;</span><span class="p">,</span> <span class="n">Esum</span><span class="p">,</span> <span class="s2">&quot;Egs_exact&quot;</span><span class="p">,</span> <span class="n">Egs_exact</span><span class="p">)</span>
@@ -1221,13 +1171,7 @@ Esum (1.1898518352304355+0j) Egs_exact 1.1898518351360725
         <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">meas</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_relevant</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># I term</span>
-        <span class="n">expval</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_relevant</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> 
-        <span class="n">expval</span><span class="p">,</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy_</span> <span class="o">=</span> <span class="n">expec_Z</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_relevant</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span> 
-        <span class="n">expval</span><span class="p">,</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy_</span> <span class="o">=</span> <span class="n">expec_ZZ</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">idx_relevant</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-
+    <span class="n">expval</span><span class="p">,</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy_</span> <span class="o">=</span> <span class="n">expec_Zstring</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">)</span>
     <span class="n">Hsum</span> <span class="o">+=</span> <span class="n">Hamil_coeffs</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span> <span class="o">*</span> <span class="n">expval</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;operator: &quot;</span><span class="p">,</span> <span class="n">op_string</span><span class="p">,</span> <span class="s2">&quot;coeff: &quot;</span><span class="p">,</span> <span class="n">Hamil_coeffs</span><span class="p">[</span><span class="n">idx_H</span><span class="p">],</span> <span class="s2">&quot;exp. val: &quot;</span><span class="p">,</span>  <span class="n">expval</span><span class="p">)</span>
 
@@ -1327,13 +1271,7 @@ Hsum should be close to Egs_exact 1.1898518351360725 diff. (9.436296188880533e-1
         <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">meas</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>   
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_relevant</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># I term</span>
-        <span class="n">p0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="p">[</span> <span class="n">count</span> <span class="k">for</span> <span class="n">bitstr</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">bitstr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;0&#39;</span> <span class="p">]</span> <span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
-        <span class="n">p1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="p">[</span> <span class="n">count</span> <span class="k">for</span> <span class="n">bitstr</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">bitstr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span> <span class="p">]</span> <span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_relevant</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> 
-        <span class="n">dummy_e</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">expec_Z</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">target_qubits</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target_qubits</span><span class="p">)),</span> <span class="n">ancilla_qubit</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_relevant</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span> 
-        <span class="n">dummy_e</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">expec_ZZ</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">idx_relevant</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">target_qubits</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target_qubits</span><span class="p">)),</span> <span class="n">ancilla_qubit</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">dummy_e</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">expec_Zstring</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">,</span> <span class="n">target_qubits</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target_qubits</span><span class="p">)),</span> <span class="n">ancilla_qubit</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">expval</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">-</span> <span class="n">p1</span>
     <span class="n">Re_H_ij</span> <span class="o">+=</span> <span class="n">Hamil_coeffs</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span> <span class="o">*</span> <span class="n">expval</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;operator: &quot;</span><span class="p">,</span> <span class="n">op_string</span><span class="p">,</span> <span class="s2">&quot;coeff: &quot;</span><span class="p">,</span> <span class="n">Hamil_coeffs</span><span class="p">[</span><span class="n">idx_H</span><span class="p">],</span> <span class="s2">&quot;exp. val: &quot;</span><span class="p">,</span>  <span class="n">expval</span><span class="p">)</span>
@@ -1431,28 +1369,34 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
 
     <span class="k">return</span> <span class="n">qc_re</span><span class="p">,</span> <span class="n">qc_im</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">measure_overlap</span><span class="p">(</span><span class="n">num_shot</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">,</span> <span class="n">gate_cUi</span><span class="p">,</span> <span class="n">gate_cUj</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">sampler</span><span class="p">,</span> <span class="n">using_statevector</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">measure_overlap</span><span class="p">(</span><span class="n">num_shot</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">,</span> <span class="n">gate_cUi</span><span class="p">,</span> <span class="n">gate_cUj</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">sampler</span><span class="p">,</span> <span class="n">using_statevector</span><span class="p">,</span>
+                    <span class="n">do_simulation</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">qc_re</span><span class="p">,</span> <span class="n">qc_im</span> <span class="o">=</span> <span class="n">make_overlap_qc</span><span class="p">(</span><span class="n">Ntar</span><span class="p">,</span> <span class="n">gate_cUi</span><span class="p">,</span> <span class="n">gate_cUj</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">using_statevector</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">using_statevector</span><span class="p">:</span>
-        <span class="n">results</span> <span class="o">=</span> <span class="p">[</span> <span class="n">Statevector</span><span class="o">.</span><span class="n">from_instruction</span><span class="p">(</span><span class="n">qc</span><span class="p">)</span><span class="o">.</span><span class="n">probabilities_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">qc</span> <span class="ow">in</span> <span class="p">[</span><span class="n">qc_re</span><span class="p">,</span> <span class="n">qc_im</span><span class="p">]]</span>
-        <span class="n">prob_Re</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">prob_Im</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> 
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">job</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">qc_re</span><span class="p">,</span> <span class="n">qc_im</span><span class="p">],</span> <span class="n">shots</span><span class="o">=</span><span class="n">num_shot</span><span class="p">)</span>
-        <span class="n">results</span>  <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
-        <span class="n">prob_Re</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
-        <span class="n">prob_Im</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">do_simulation</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">using_statevector</span><span class="p">:</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="p">[</span> <span class="n">Statevector</span><span class="o">.</span><span class="n">from_instruction</span><span class="p">(</span><span class="n">qc</span><span class="p">)</span><span class="o">.</span><span class="n">probabilities_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">qc</span> <span class="ow">in</span> <span class="p">[</span><span class="n">qc_re</span><span class="p">,</span> <span class="n">qc_im</span><span class="p">]]</span>
+            <span class="n">prob_Re</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">prob_Im</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> 
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">job</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">qc_re</span><span class="p">,</span> <span class="n">qc_im</span><span class="p">],</span> <span class="n">shots</span><span class="o">=</span><span class="n">num_shot</span><span class="p">)</span>
+            <span class="n">results</span>  <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+            <span class="n">prob_Re</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+            <span class="n">prob_Im</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
 
-    <span class="n">p0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="p">[</span> <span class="n">count</span> <span class="k">for</span> <span class="n">bitstr</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">prob_Re</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">bitstr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;0&#39;</span> <span class="p">]</span> <span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">prob_Re</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
-    <span class="n">p1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="p">[</span> <span class="n">count</span> <span class="k">for</span> <span class="n">bitstr</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">prob_Re</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">bitstr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span> <span class="p">]</span> <span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">prob_Re</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
-    <span class="n">ReN</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">-</span> <span class="n">p1</span>
+        <span class="n">p0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="p">[</span> <span class="n">count</span> <span class="k">for</span> <span class="n">bitstr</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">prob_Re</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">bitstr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;0&#39;</span> <span class="p">]</span> <span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">prob_Re</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="p">[</span> <span class="n">count</span> <span class="k">for</span> <span class="n">bitstr</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">prob_Re</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">bitstr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span> <span class="p">]</span> <span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">prob_Re</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+        <span class="n">ReN</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">-</span> <span class="n">p1</span>
 
-    <span class="n">p0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="p">[</span> <span class="n">count</span> <span class="k">for</span> <span class="n">bitstr</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">prob_Im</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">bitstr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;0&#39;</span> <span class="p">]</span> <span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">prob_Im</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
-    <span class="n">p1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="p">[</span> <span class="n">count</span> <span class="k">for</span> <span class="n">bitstr</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">prob_Im</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">bitstr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span> <span class="p">]</span> <span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">prob_Im</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
-    <span class="n">ImN</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">-</span> <span class="n">p1</span>
+        <span class="n">p0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="p">[</span> <span class="n">count</span> <span class="k">for</span> <span class="n">bitstr</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">prob_Im</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">bitstr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;0&#39;</span> <span class="p">]</span> <span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">prob_Im</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="p">[</span> <span class="n">count</span> <span class="k">for</span> <span class="n">bitstr</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">prob_Im</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">bitstr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span> <span class="p">]</span> <span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">prob_Im</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+        <span class="n">ImN</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">-</span> <span class="n">p1</span>
 
-    <span class="n">U_ij</span> <span class="o">=</span> <span class="n">ReN</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">ImN</span>
-    <span class="k">return</span> <span class="n">U_ij</span>
+        <span class="n">U_ij</span> <span class="o">=</span> <span class="n">ReN</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">ImN</span>
+        <span class="k">return</span> <span class="n">U_ij</span>
+    <span class="k">else</span><span class="p">:</span> <span class="c1">#only resource estimation</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;qc_re:&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">qc_re</span><span class="o">.</span><span class="n">count_ops</span><span class="p">()))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;qc_im:&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">qc_im</span><span class="o">.</span><span class="n">count_ops</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="kc">None</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">make_cU</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="n">Ui</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">):</span>
     <span class="n">circuit_cUi</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">Ntar</span><span class="p">)</span>
@@ -1514,18 +1458,36 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
 
 <span class="k">def</span><span class="w"> </span><span class="nf">QuantumKrylov</span><span class="p">(</span><span class="n">Uprep</span><span class="p">:</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="c1"># circuit to prepare a reference state</span>
                  <span class="n">hamiltonian_op</span><span class="p">:</span> <span class="n">SparsePauliOp</span><span class="p">,</span> <span class="c1"># Hamiltonian operator</span>
+                 <span class="n">sampler</span><span class="p">,</span>
                  <span class="n">delta_t</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
                  <span class="n">max_iterations</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
                  <span class="n">trotter_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
-                 <span class="n">num_shot</span><span class="o">=</span><span class="mi">10</span><span class="o">**</span><span class="mi">5</span><span class="p">,</span> 
-                 <span class="n">ancilla_qubits</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">target_qubits</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">Norb</span><span class="o">+</span><span class="mi">1</span><span class="p">)),</span>
-                 <span class="n">using_statevector</span><span class="o">=</span><span class="kc">False</span>
+                 <span class="n">num_shot</span><span class="o">=</span><span class="mi">10</span><span class="o">**</span><span class="mi">4</span><span class="p">,</span> 
+                 <span class="n">ancilla_qubits</span><span class="o">=</span><span class="p">[],</span> <span class="n">target_qubits</span><span class="o">=</span><span class="p">[],</span>
+                 <span class="n">using_statevector</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">do_simulation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="p">):</span>
     <span class="n">Ntar</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">target_qubits</span><span class="p">)</span>
     <span class="n">N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">max_iterations</span><span class="p">,</span> <span class="n">max_iterations</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
     <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">max_iterations</span><span class="p">,</span> <span class="n">max_iterations</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
     <span class="n">ws</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">Unitaries</span> <span class="o">=</span> <span class="p">[</span> <span class="p">]</span>
+    <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">Ui</span> <span class="o">=</span> <span class="n">PauliEvolutionGate</span><span class="p">(</span><span class="n">hamiltonian_op</span><span class="p">,</span> <span class="n">delta_t</span><span class="p">,</span> <span class="n">synthesis</span><span class="o">=</span><span class="n">SuzukiTrotter</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">reps</span><span class="o">=</span><span class="n">trotter_steps</span><span class="p">))</span>
+        <span class="n">gate_cUi</span> <span class="o">=</span> <span class="n">make_cU</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="n">Ui</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">)</span>
+        <span class="n">Uj</span> <span class="o">=</span> <span class="n">PauliEvolutionGate</span><span class="p">(</span><span class="n">hamiltonian_op</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">delta_t</span><span class="p">,</span> <span class="n">synthesis</span><span class="o">=</span><span class="n">SuzukiTrotter</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">reps</span><span class="o">=</span><span class="n">trotter_steps</span><span class="p">))</span>
+        <span class="n">gate_cUj</span> <span class="o">=</span> <span class="n">make_cU</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="n">Uj</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">)</span>
+
+        <span class="n">qc_Ui</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">Ntar</span><span class="p">)</span>
+        <span class="n">qc_Ui</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gate_cUi</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ntar</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">qc_Ui</span> <span class="o">=</span> <span class="n">qc_Ui</span><span class="o">.</span><span class="n">decompose</span><span class="p">(</span><span class="n">reps</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Circuit for c-UiUp:&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">qc_Ui</span><span class="o">.</span><span class="n">count_ops</span><span class="p">()))</span>
+        <span class="n">U_ij</span> <span class="o">=</span> <span class="n">measure_overlap</span><span class="p">(</span><span class="n">num_shot</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">,</span> <span class="n">gate_cUi</span><span class="p">,</span> <span class="n">gate_cUj</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">sampler</span><span class="p">,</span> <span class="n">using_statevector</span><span class="p">,</span> <span class="n">do_simulation</span><span class="p">)</span>
+        <span class="n">num_of_Hamil_term</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">hamiltonian_op</span><span class="o">.</span><span class="n">paulis</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;num of Hamil term: &quot;</span><span class="p">,</span> <span class="n">num_of_Hamil_term</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">do_simulation</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    
     <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iterations</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;iteration: &quot;</span><span class="p">,</span> <span class="n">it</span><span class="p">)</span>
         <span class="c1">## make controlled U = exp(-iHδt * it)</span>
@@ -1536,7 +1498,7 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
         <span class="c1">## evaluate overlap to previous states</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">it</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
             <span class="n">gate_cUj</span> <span class="o">=</span> <span class="n">Unitaries</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
-            <span class="n">U_ij</span> <span class="o">=</span> <span class="n">measure_overlap</span><span class="p">(</span><span class="n">num_shot</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">,</span> <span class="n">gate_cUi</span><span class="p">,</span> <span class="n">gate_cUj</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">sampler</span><span class="p">,</span> <span class="n">using_statevector</span><span class="p">)</span>
+            <span class="n">U_ij</span> <span class="o">=</span> <span class="n">measure_overlap</span><span class="p">(</span><span class="n">num_shot</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">,</span> <span class="n">gate_cUi</span><span class="p">,</span> <span class="n">gate_cUj</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">sampler</span><span class="p">,</span> <span class="n">using_statevector</span><span class="p">,</span> <span class="n">do_simulation</span><span class="p">)</span>
             <span class="n">N</span><span class="p">[</span><span class="n">it</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">U_ij</span>
             <span class="n">N</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">it</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">U_ij</span><span class="p">)</span>
         <span class="c1">### evaluate H_ii no need ancilla qubit</span>
@@ -1566,13 +1528,7 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
                 <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">meas</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_relevant</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># I term</span>
-                <span class="n">expval</span> <span class="o">=</span> <span class="mf">1.0</span>
-            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_relevant</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> 
-                <span class="n">expval</span><span class="p">,</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy_</span> <span class="o">=</span> <span class="n">expec_Z</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_relevant</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span> 
-                <span class="n">expval</span><span class="p">,</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy_</span> <span class="o">=</span> <span class="n">expec_ZZ</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">idx_relevant</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-
+            <span class="n">expval</span><span class="p">,</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy_</span> <span class="o">=</span> <span class="n">expec_Zstring</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">)</span>
             <span class="n">Hsum</span> <span class="o">+=</span> <span class="n">Hamil_coeffs</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span> <span class="o">*</span> <span class="n">expval</span>
             <span class="c1">##print(&quot;operator: &quot;, op_string, &quot;coeff: &quot;, Hamil_coeffs[idx_H], &quot;exp. val: &quot;,  expval)</span>
         <span class="c1">#print(&quot;H[it, it]&quot;, it, Hsum)</span>
@@ -1600,13 +1556,7 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
                     <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">meas</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_relevant</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># I term</span>
-                    <span class="n">p0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="p">[</span> <span class="n">count</span> <span class="k">for</span> <span class="n">bitstr</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">bitstr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;0&#39;</span> <span class="p">]</span> <span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
-                    <span class="n">p1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="p">[</span> <span class="n">count</span> <span class="k">for</span> <span class="n">bitstr</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">bitstr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span> <span class="p">]</span> <span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
-                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_relevant</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> 
-                    <span class="n">dummy_e</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">expec_Z</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">target_qubits</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target_qubits</span><span class="p">)),</span> <span class="n">ancilla_qubit</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_relevant</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span> 
-                    <span class="n">dummy_e</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">expec_ZZ</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">idx_relevant</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">target_qubits</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target_qubits</span><span class="p">)),</span> <span class="n">ancilla_qubit</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">dummy_e</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">expec_Zstring</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">,</span> <span class="n">target_qubits</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target_qubits</span><span class="p">)),</span> <span class="n">ancilla_qubit</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
                 <span class="n">expval</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">-</span> <span class="n">p1</span>
                 <span class="n">Re_H_ij</span> <span class="o">+=</span> <span class="n">Hamil_coeffs</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span> <span class="o">*</span> <span class="n">expval</span>
                 <span class="c1">#print(&quot;operator: &quot;, op_string, &quot;coeff: &quot;, Hamil_coeffs[idx_H], &quot;exp. val: &quot;,  expval)</span>
@@ -1626,13 +1576,7 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
                     <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">meas</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>   
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_relevant</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">p0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="p">[</span> <span class="n">count</span> <span class="k">for</span> <span class="n">bitstr</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">bitstr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;0&#39;</span> <span class="p">]</span> <span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
-                    <span class="n">p1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="p">[</span> <span class="n">count</span> <span class="k">for</span> <span class="n">bitstr</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">bitstr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span> <span class="p">]</span> <span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
-                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_relevant</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> 
-                    <span class="n">dummy_e</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">expec_Z</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">target_qubits</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target_qubits</span><span class="p">)),</span> <span class="n">ancilla_qubit</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_relevant</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span> 
-                    <span class="n">dummy_e</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">expec_ZZ</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">idx_relevant</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">target_qubits</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target_qubits</span><span class="p">)),</span> <span class="n">ancilla_qubit</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">dummy_e</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">expec_Zstring</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">,</span> <span class="n">target_qubits</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target_qubits</span><span class="p">)),</span> <span class="n">ancilla_qubit</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
                 <span class="n">expval</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">-</span> <span class="n">p1</span>
                 <span class="n">Im_H_ij</span> <span class="o">+=</span> <span class="n">Hamil_coeffs</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span> <span class="o">*</span> <span class="n">expval</span>
             <span class="c1">#print(&quot;Im H_{ij}&quot;, Im_H_ij)</span>
@@ -1679,10 +1623,11 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
 
 <span class="n">using_statevector</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="c1">#using_statevector = False</span>
-<span class="n">Hmat</span><span class="p">,</span> <span class="n">Nmat</span><span class="p">,</span> <span class="n">Ens</span> <span class="o">=</span> <span class="n">QuantumKrylov</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="n">hamiltonian_op</span><span class="p">,</span> <span class="n">delta_t</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">max_iterations</span><span class="o">=</span><span class="nb">min</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">evecs</span><span class="p">)]),</span> <span class="n">trotter_steps</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> 
+<span class="n">Hmat</span><span class="p">,</span> <span class="n">Nmat</span><span class="p">,</span> <span class="n">Ens</span> <span class="o">=</span> <span class="n">QuantumKrylov</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="n">hamiltonian_op</span><span class="p">,</span> <span class="n">sampler</span><span class="p">,</span> <span class="n">delta_t</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">max_iterations</span><span class="o">=</span><span class="nb">min</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">evecs</span><span class="p">)]),</span> <span class="n">trotter_steps</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> 
                            <span class="n">num_shot</span><span class="o">=</span><span class="mi">10</span><span class="o">**</span><span class="mi">4</span><span class="p">,</span> 
                            <span class="n">ancilla_qubits</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">target_qubits</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">Norb</span><span class="o">+</span><span class="mi">1</span><span class="p">)),</span>
                            <span class="n">using_statevector</span><span class="o">=</span><span class="n">using_statevector</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Eexact&quot;</span><span class="p">,</span> <span class="n">evals</span><span class="p">)</span>
 <span class="n">plot_convergence</span><span class="p">(</span><span class="n">Ens</span><span class="p">,</span> <span class="n">evals</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="n">initial</span> <span class="o">==</span> <span class="s2">&quot;exact&quot;</span><span class="p">:</span>
@@ -1696,31 +1641,35 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration:  0
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Circuit for c-UiUp: {&#39;u&#39;: 11185, &#39;cx&#39;: 6280}
+num of Hamil term:  17
+iteration:  0
 eigs of N:  [1.] cond 1.0 r: 1
 w: [1.61127485]
 
 iteration:  1
-eigs of N:  [0.24613258 1.75386742] cond 7.125702008712668 r: 2
-w: [1.28130161 3.36283518]
+eigs of N:  [0.2458579 1.7541421] cond 7.134780216944254 r: 2
+w: [1.27321303 3.35359765]
 
 iteration:  2
-eigs of N:  [0.00897771 0.49099419 2.5000281 ] cond 278.47059276233756 r: 3
-w: [1.24644148 3.31118394 5.36006201]
+eigs of N:  [0.00826746 0.49858876 2.49314379] cond 301.5611013988385 r: 3
+w: [1.24902173 3.31208999 5.35070515]
 
 iteration:  3
-eigs of N:  [1.96918287e-04 1.08151567e-02 6.13422764e-01 3.37556516e+00] cond 17141.95881793069 r: 4
-w: [1.20831603 3.30420795 5.35200804 7.95738144]
+eigs of N:  [1.29344560e-04 9.94465747e-03 6.17854557e-01 3.37207144e+00] cond 26070.45439089142 r: 4
+w: [1.21235523 3.30438719 5.34426495 8.04823827]
 
 iteration:  4
-eigs of N:  [4.91429146e-05 5.25975373e-04 3.19150748e-02 8.10630123e-01
- 4.15687968e+00] cond 84587.56904869163 r: 5
-w: [1.20643003 3.30182614 5.34       5.65826495 8.01269121]
+eigs of N:  [3.43778353e-05 2.59020054e-04 1.82356214e-02 8.07696117e-01
+ 4.17377486e+00] cond 121408.89122291954 r: 5
+w: [1.20356938 3.3003931  5.34       6.28446185 8.23399773]
 
 iteration:  5
-eigs of N:  [4.49091919e-05 4.23701580e-04 1.38597481e-03 4.69810969e-02
- 9.77184924e-01 4.97397939e+00] cond 110756.37714868881 r: 6
+eigs of N:  [1.65876983e-05 1.25943366e-04 4.91424981e-04 2.29889501e-02
+ 9.95820982e-01 4.98055611e+00] cond 300256.0107413335 r: 6
 w: [1.18985184 3.29649666 5.34       5.34       7.42853393 9.44511758]
+
+Eexact [1.18985184 3.29649666 5.34       5.34       7.42853393 9.44511758]
 </pre></div>
 </div>
 </div>
@@ -1729,12 +1678,17 @@ w: [1.18985184 3.29649666 5.34       5.34       7.42853393 9.44511758]
 ちなみに、3番目の状態は縮退しているので、緑と赤のシンボルが近づいていくのは誤りではない。</p>
 <p><img alt="" src="../_images/QKrylov_Norb4Nocc2_statevector.png" /></p>
 <p>もう少しサイズの大きな<span class="math notranslate nohighlight">\(N_\mathrm{orb}=6, N_\mathrm{occ}=2\)</span>の場合の結果(次元=15)も示しておく。</p>
-<p><img alt="" src="notebooks/pic/QKrylov_Norb6Nocc2_statevector.png" /></p>
+<p><img alt="" src="../_images/QKrylov_Norb6Nocc2_statevector.png" /></p>
 <p>statevectorを用いた場合は上のように、厳密解へと収束する様子が見て取れるが、
 shotで測る場合は、ノイズなしのsimulator(shot errorのみ)でも、<span class="math notranslate nohighlight">\(H,N\)</span>の精度により疑似固有値が得られてしまう。
 <span class="math notranslate nohighlight">\(N_\mathrm{orb}=4, N_\mathrm{occ}=2\)</span>で、<span class="math notranslate nohighlight">\(10^4\)</span> shotで計算した結果を示しておく。</p>
 <p><img alt="" src="../_images/QKrylov_Norb4Nocc2_shot.png" /></p>
 <p>今の実装では、overlapを対角化し小さな固有値を捨てることで、一般化固有値問題をより安定的に解いているものの、それでもshot測定の場合は反復に対して計算が不安定になってしまう。実機のノイズがあると、overlapやHが悪条件になり計算がさらに不安定になることが予想されるため、応用の上ではさらなる検討が必要であろう。</p>
+</section>
+<section id="id3">
+<h2><span class="section-number">14.3. </span>関連する話題<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>multi-referenceによるQuantum Krylov法は、<a class="reference external" href="https://doi.org/10.1021/acs.jctc.9b01125">J. Chem. Theory Comput. 2020, 16, 2326</a>が参考になる。</p>
+<p>overlap行列の計算については、Hadamard test以外にも、上で述べた方法など制御ユニタリを必要としない方法も提案されていて、様々な進展があるようだ。</p>
 </section>
 </section>
 
@@ -1777,6 +1731,15 @@ shotで測る場合は、ノイズなしのsimulator(shot errorのみ)でも、<
         <p class="prev-next-title"><span class="section-number">13. </span>pytketを用いたVQE計算</p>
       </div>
     </a>
+    <a class="right-next"
+       href="Python_env.html"
+       title="次ページ">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">次へ</p>
+        <p class="prev-next-title"><span class="section-number">15. </span>Python環境構築</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -1805,6 +1768,7 @@ shotで測る場合は、ノイズなしのsimulator(shot errorのみ)でも、<
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantum-krylov">14.2. Quantum Krylov法の実装</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">14.3. 関連する話題</a></li>
 </ul>
   </nav></div>
 
