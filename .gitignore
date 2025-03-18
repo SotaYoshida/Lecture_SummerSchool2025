@@ -7,4 +7,7 @@ _build
 *.sh
 myenv
 
+notebooks/Observable_DMD.ipynb
+notebooks/noisy_simulations.ipynb
+
 reference_*

@@ -8,6 +8,10 @@ defaults:  # The defaults key will be applied to all chapters and sub-sections
   titlesonly: True
 
 parts: 
+- caption: はじめに
+  numbered: false
+  chapters:
+  - file: notebooks/Julia_lang
 - caption: Part1 Pairing Hamiltonianと多体計算手法
   numbered: true
   chapters:  
@@ -28,4 +32,4 @@ parts:
   - file: notebooks/qiskit_QC
   - file: notebooks/pytket_VQE
   - file: notebooks/QuantumKrylov
-
+  - file: notebooks/Python_env  
