@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>14. Quantum Krylov subspace method &#8212; Julia言語による原子核構造計算入門</title>
+    <title>15. Quantum Krylov subspace method &#8212; Julia言語による原子核構造計算入門</title>
   
   
   
@@ -30,7 +30,7 @@
   <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -66,8 +66,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/QuantumKrylov';</script>
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
-    <link rel="next" title="15. Python環境構築" href="Python_env.html" />
-    <link rel="prev" title="13. pytketを用いたVQE計算" href="pytket_VQE.html" />
+    <link rel="next" title="16. Python環境構築" href="Python_env.html" />
+    <link rel="prev" title="14. pytketを用いたVQE計算" href="pytket_VQE.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="ja"/>
   <meta name="docsearch:version" content="" />
@@ -192,9 +192,10 @@
 <li class="toctree-l1"><a class="reference internal" href="pennylane_VQE.html">10. pennylaneを用いたVQE計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pennylane_QPE.html">11. pennylaneを用いたQPE計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qiskit_QC.html">12. Qiskitを用いた量子計算</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pytket_VQE.html">13. pytketを用いたVQE計算</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">14. Quantum Krylov subspace method</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Python_env.html">15. Python環境構築</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ucc.html">13. Unitary Coupled Cluster (UCC) for pairing Hamiltonians</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pytket_VQE.html">14. pytketを用いたVQE計算</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">15. Quantum Krylov subspace method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Python_env.html">16. Python環境構築</a></li>
 </ul>
 
     </div>
@@ -387,18 +388,18 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#n-kl-tilde-h-kl">14.1. 量子コンピュータ上での<span class="math notranslate nohighlight">\(N_{kl}, \tilde{H}_{kl}\)</span>の計算</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overlap-langle-psi-a-psi-b-rangle">14.1.1. overlap <span class="math notranslate nohighlight">\(\langle \Psi_a | \Psi_b \rangle\)</span> の計算</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">14.1.1.1. 計算例</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#n-kl-tilde-h-kl">15.1. 量子コンピュータ上での<span class="math notranslate nohighlight">\(N_{kl}, \tilde{H}_{kl}\)</span>の計算</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overlap-langle-psi-a-psi-b-rangle">15.1.1. overlap <span class="math notranslate nohighlight">\(\langle \Psi_a | \Psi_b \rangle\)</span> の計算</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">15.1.1.1. 計算例</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langle-psi-a-h-psi-b-rangle">14.1.2. <span class="math notranslate nohighlight">\(\langle \Psi_a | H | \Psi_b \rangle \)</span>の計算</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">14.1.3. ハミルトニアンの各項の期待値測定のための回路</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langle-psi-a-h-psi-a-rangle">14.1.4. 対角成分 <span class="math notranslate nohighlight">\(\langle \Psi_a | H | \Psi_a \rangle\)</span> の計算</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langle-psi-a-h-psi-b-rangle">15.1.2. <span class="math notranslate nohighlight">\(\langle \Psi_a | H | \Psi_b \rangle \)</span>の計算</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">15.1.3. ハミルトニアンの各項の期待値測定のための回路</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langle-psi-a-h-psi-a-rangle">15.1.4. 対角成分 <span class="math notranslate nohighlight">\(\langle \Psi_a | H | \Psi_a \rangle\)</span> の計算</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantum-krylov">14.2. Quantum Krylov法の実装</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">14.3. 関連する話題</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantum-krylov">15.2. Quantum Krylov法の実装</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">15.3. 関連する話題</a></li>
 </ul>
             </nav>
         </div>
@@ -411,7 +412,7 @@
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="quantum-krylov-subspace-method">
-<h1><span class="section-number">14. </span>Quantum Krylov subspace method<a class="headerlink" href="#quantum-krylov-subspace-method" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">15. </span>Quantum Krylov subspace method<a class="headerlink" href="#quantum-krylov-subspace-method" title="Link to this heading">#</a></h1>
 <p>この章では、発展的な話題として、Quantum Krylov subspace method、とくにLanczos法の量子版について説明する。</p>
 <p>Full-CIの章でも述べたように、Krylov部分空間法は、与えられたハミルトニアン<span class="math notranslate nohighlight">\(H\)</span>と初期状態<span class="math notranslate nohighlight">\(\ket{\psi}\)</span>から生成されるKrylov部分空間</p>
 <div class="math notranslate nohighlight">
@@ -429,7 +430,7 @@
 <p>を順次生成し、これらの非直交基底を用いて、問題をsubspaceで解く。
 つまり、</p>
 <div class="math notranslate nohighlight" id="equation-qkrylovme">
-<span class="eqno">(14.1)<a class="headerlink" href="#equation-qkrylovme" title="Link to this equation">#</a></span>\[\begin{split}
+<span class="eqno">(15.1)<a class="headerlink" href="#equation-qkrylovme" title="Link to this equation">#</a></span>\[\begin{split}
 \begin{align}
 N_{kl} &amp; = \langle \Phi_k \ket{\Phi_l} = \bra{\Phi_0} e^{-i(t_l-t_k)H} \ket{\Phi_0} \\
 \tilde{H}_{kl} &amp; = \bra{\Phi_k} H \ket{\Phi_l} = \bra{\Phi_0} H e^{-i(t_l-t_k)H} \ket{\Phi_0}
@@ -449,20 +450,20 @@ N_{kl} &amp; = \langle \Phi_k \ket{\Phi_l} = \bra{\Phi_0} e^{-i(t_l-t_k)H} \ket{
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">scipy</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">combinations</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">transpile</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.circuit.library</span><span class="w"> </span><span class="kn">import</span> <span class="n">PauliEvolutionGate</span><span class="p">,</span> <span class="n">PauliGate</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.quantum_info</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparsePauliOp</span><span class="p">,</span> <span class="n">Statevector</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.synthesis</span><span class="w"> </span><span class="kn">import</span> <span class="n">SuzukiTrotter</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.visualization</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_histogram</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">qiskit</span> <span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">transpile</span>
+<span class="kn">from</span> <span class="nn">qiskit.circuit.library</span> <span class="kn">import</span> <span class="n">PauliEvolutionGate</span><span class="p">,</span> <span class="n">PauliGate</span>
+<span class="kn">from</span> <span class="nn">qiskit.quantum_info</span> <span class="kn">import</span> <span class="n">SparsePauliOp</span><span class="p">,</span> <span class="n">Statevector</span>
+<span class="kn">from</span> <span class="nn">qiskit.synthesis</span> <span class="kn">import</span> <span class="n">SuzukiTrotter</span>
+<span class="kn">from</span> <span class="nn">qiskit.visualization</span> <span class="kn">import</span> <span class="n">plot_histogram</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">PairingHamiltonian</span><span class="p">:</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">Nocc</span><span class="p">,</span> <span class="n">gval</span><span class="p">,</span> <span class="n">delta_eps</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">PairingHamiltonian</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">Nocc</span><span class="p">,</span> <span class="n">gval</span><span class="p">,</span> <span class="n">delta_eps</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Norb</span> <span class="o">=</span> <span class="n">Norb</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Nocc</span> <span class="o">=</span> <span class="n">Nocc</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delta_eps</span> <span class="o">=</span> <span class="n">delta_eps</span>
@@ -471,18 +472,18 @@ N_{kl} &amp; = \langle \Phi_k \ket{\Phi_l} = \bra{\Phi_0} e^{-i(t_l-t_k)H} \ket{
         <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_epsilon</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Hmat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_Hmat</span><span class="p">()</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">make_basis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">make_basis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">basis</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">occ</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Norb</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nocc</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">occ</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">basis</span>
     
-    <span class="k">def</span><span class="w"> </span><span class="nf">eval_epsilon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">eval_epsilon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_eps</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Norb</span><span class="p">)</span> <span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span>
     
-    <span class="k">def</span><span class="w"> </span><span class="nf">eval_Hmat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">eval_Hmat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Hmat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">bra_idx</span><span class="p">,</span> <span class="n">bra</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="p">):</span>
@@ -500,7 +501,7 @@ N_{kl} &amp; = \langle \Phi_k \ket{\Phi_l} = \bra{\Phi_0} e^{-i(t_l-t_k)H} \ket{
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Hmat</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">tuple_to_bitstring</span><span class="p">(</span><span class="n">tup</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">rev</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">tuple_to_bitstring</span><span class="p">(</span><span class="n">tup</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">rev</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">bitint</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tup</span><span class="p">:</span>
         <span class="n">bitint</span> <span class="o">+=</span> <span class="mi">2</span><span class="o">**</span><span class="n">i</span>
@@ -510,7 +511,7 @@ N_{kl} &amp; = \langle \Phi_k \ket{\Phi_l} = \bra{\Phi_0} e^{-i(t_l-t_k)H} \ket{
         <span class="n">bitstring</span> <span class="o">=</span> <span class="s2">&quot;|&quot;</span><span class="o">+</span><span class="nb">format</span><span class="p">(</span><span class="n">bitint</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;0</span><span class="si">{</span><span class="n">Norb</span><span class="si">}</span><span class="s1">b&#39;</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;&gt;&quot;</span>        
     <span class="k">return</span> <span class="n">bitstring</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">cG1</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="n">c_qubit</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">cG1</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="n">c_qubit</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
     <span class="n">theta_4</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">/</span> <span class="mi">4</span> 
     <span class="n">circ</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">ry</span><span class="p">(</span><span class="n">theta_4</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
@@ -523,7 +524,7 @@ N_{kl} &amp; = \langle \Phi_k \ket{\Phi_l} = \bra{\Phi_0} e^{-i(t_l-t_k)H} \ket{
     <span class="n">circ</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="n">c_qubit</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">cG1_gate</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">cG1_gate</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
     <span class="n">circ</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">G</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;cG1&quot;</span>   
@@ -531,7 +532,7 @@ N_{kl} &amp; = \langle \Phi_k \ket{\Phi_l} = \bra{\Phi_0} e^{-i(t_l-t_k)H} \ket{
     <span class="n">circ</span> <span class="o">=</span> <span class="n">circ</span><span class="o">.</span><span class="n">control</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> 
     <span class="k">return</span> <span class="n">circ</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">G</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">G</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
     <span class="n">theta_2</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">/</span> <span class="mi">2</span> 
     <span class="n">circ</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">ry</span><span class="p">(</span><span class="n">theta_2</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
@@ -540,13 +541,13 @@ N_{kl} &amp; = \langle \Phi_k \ket{\Phi_l} = \bra{\Phi_0} e^{-i(t_l-t_k)H} \ket{
     <span class="n">circ</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>  
 
-<span class="k">def</span><span class="w"> </span><span class="nf">G_gate</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">G_gate</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
     <span class="n">circ</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">G</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;G&quot;</span>    
     <span class="k">return</span> <span class="n">circ</span><span class="o">.</span><span class="n">to_gate</span><span class="p">()</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">get_idx_ancilla_in_string</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">,</span> <span class="n">ancilla</span><span class="p">,</span> <span class="n">Qiskit_ordering</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_idx_ancilla_in_string</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">,</span> <span class="n">ancilla</span><span class="p">,</span> <span class="n">Qiskit_ordering</span><span class="p">):</span>
     <span class="n">idx_ancilla</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">ancilla</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">Qiskit_ordering</span><span class="p">:</span>
@@ -555,7 +556,7 @@ N_{kl} &amp; = \langle \Phi_k \ket{\Phi_l} = \bra{\Phi_0} e^{-i(t_l-t_k)H} \ket{
             <span class="n">idx_ancilla</span> <span class="o">=</span> <span class="n">ancilla</span>
     <span class="k">return</span> <span class="n">idx_ancilla</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">expec_Zstring</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">,</span> <span class="n">Qiskit_ordering</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">target_qubits</span><span class="o">=</span><span class="p">[],</span> <span class="n">ancilla_qubit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">expec_Zstring</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">,</span> <span class="n">Qiskit_ordering</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">target_qubits</span><span class="o">=</span><span class="p">[],</span> <span class="n">ancilla_qubit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">exp_val</span> <span class="o">=</span> <span class="n">exp_val_p0</span> <span class="o">=</span> <span class="n">exp_val_p1</span> <span class="o">=</span> <span class="mf">0.0</span>
     <span class="n">n_shot</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
     <span class="n">n_qubit</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">])</span>
@@ -651,8 +652,8 @@ N_{kl} &amp; = \langle \Phi_k \ket{\Phi_l} = \bra{\Phi_0} e^{-i(t_l-t_k)H} \ket{
 </div>
 </div>
 <section id="n-kl-tilde-h-kl">
-<h2><span class="section-number">14.1. </span>量子コンピュータ上での<span class="math notranslate nohighlight">\(N_{kl}, \tilde{H}_{kl}\)</span>の計算<a class="headerlink" href="#n-kl-tilde-h-kl" title="Link to this heading">#</a></h2>
-<p>式<a class="reference internal" href="#equation-qkrylovme">(14.1)</a>の各要素を量子コンピュータでどう測るか、が問題となる。</p>
+<h2><span class="section-number">15.1. </span>量子コンピュータ上での<span class="math notranslate nohighlight">\(N_{kl}, \tilde{H}_{kl}\)</span>の計算<a class="headerlink" href="#n-kl-tilde-h-kl" title="Link to this heading">#</a></h2>
+<p>式<a class="reference internal" href="#equation-qkrylovme">(15.1)</a>の各要素を量子コンピュータでどう測るか、が問題となる。</p>
 <p>このような行列要素の計算を含め、線形代数演算を量子コンピュータで行う方法については<a class="reference external" href="https://arxiv.org/abs/1902.10394">arXiv:1902.10394</a>が詳しい。</p>
 <p>最も代表的な方法は、ancilla qubitを用いて(修正0Hadamard testを用いる方法で、以下でもこの方法を説明する。
 この他にも、異なるsymmetry sectorに属する状態の重ね合わせを作ることでancillaや制御ユニタリを用いずに行列要素を測定する方法も提案されている。
@@ -665,7 +666,7 @@ reference state作成を行うためのユニタリ演算子を<span class="math
 ハミルトニアンの時間発展演算子を<span class="math notranslate nohighlight">\(U_H(t)\)</span>と書くことにして、
 これらを組み合わせたユニタリ演算子を<span class="math notranslate nohighlight">\(U_i \equiv U_H(t_i) U_p\)</span>とする。</p>
 <section id="overlap-langle-psi-a-psi-b-rangle">
-<h3><span class="section-number">14.1.1. </span>overlap <span class="math notranslate nohighlight">\(\langle \Psi_a | \Psi_b \rangle\)</span> の計算<a class="headerlink" href="#overlap-langle-psi-a-psi-b-rangle" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">15.1.1. </span>overlap <span class="math notranslate nohighlight">\(\langle \Psi_a | \Psi_b \rangle\)</span> の計算<a class="headerlink" href="#overlap-langle-psi-a-psi-b-rangle" title="Link to this heading">#</a></h3>
 <p>まず</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -717,7 +718,7 @@ P(0) &amp; = \frac{1}{2} \left( \bra{x} + i \bra{y} \right) \left( \ket{x} - i \
 <p><img alt="" src="../_images/overlap_Re.png" /></p>
 <p><img alt="" src="../_images/overlap_Im.png" /></p>
 <section id="id1">
-<h4><span class="section-number">14.1.1.1. </span>計算例<a class="headerlink" href="#id1" title="Link to this heading">#</a></h4>
+<h4><span class="section-number">15.1.1.1. </span>計算例<a class="headerlink" href="#id1" title="Link to this heading">#</a></h4>
 <p>ターゲット量子ビットが4つあるとして、適当な初期状態から、これまた適当なオペレータで時間発展させた場合のオーバーラップを計算してみよう。</p>
 <p>検算しやすいように、</p>
 <div class="math notranslate nohighlight">
@@ -939,7 +940,7 @@ cos(t_i-t_j) 0.9985358702188959 sin(t_i-t_j) -0.05409358451972206
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_aer.primitives</span><span class="w"> </span><span class="kn">import</span> <span class="n">SamplerV2</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit_aer.primitives</span> <span class="kn">import</span> <span class="n">SamplerV2</span>
 <span class="n">sampler</span> <span class="o">=</span> <span class="n">SamplerV2</span><span class="p">()</span>
 <span class="n">num_shot</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">5</span>
 
@@ -970,13 +971,13 @@ Estimated Im&lt;psi_i|psi_j&gt; =  -0.05926  Exact:  -0.05409 Error: 5.17e-03
 </section>
 </section>
 <section id="langle-psi-a-h-psi-b-rangle">
-<h3><span class="section-number">14.1.2. </span><span class="math notranslate nohighlight">\(\langle \Psi_a | H | \Psi_b \rangle \)</span>の計算<a class="headerlink" href="#langle-psi-a-h-psi-b-rangle" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">15.1.2. </span><span class="math notranslate nohighlight">\(\langle \Psi_a | H | \Psi_b \rangle \)</span>の計算<a class="headerlink" href="#langle-psi-a-h-psi-b-rangle" title="Link to this heading">#</a></h3>
 <p>次に、<span class="math notranslate nohighlight">\(\langle \Psi_a | H | \Psi_b \rangle\)</span>の計算を考える。</p>
 <p>対角成分は、状態作成の回路を用いて、<span class="math notranslate nohighlight">\( \langle \hat{H} \rangle = \sum_n \langle \Psi_i | \hat{H}_n | \Psi_i \rangle\)</span>を測定すれば良い。
 ここで、Hamiltonianの各項は、<span class="math notranslate nohighlight">\(\hat{H}_n = G_0 \otimes G_1 \otimes G_2 \otimes \ldots, G \equiv \{I, X, Y, Z\}\)</span>と、各パウリ演算子の積で表現してある。</p>
 </section>
 <section id="id2">
-<h3><span class="section-number">14.1.3. </span>ハミルトニアンの各項の期待値測定のための回路<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">15.1.3. </span>ハミルトニアンの各項の期待値測定のための回路<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">&quot;IIXIXII&quot;</span></code>のようなpauli string(的な変数)に対して、必要なbasis rotationを足す関数を作っておこう。
 必要な操作は<span class="math notranslate nohighlight">\(X\)</span>と<span class="math notranslate nohighlight">\(Y\)</span>の測定のための回路の追加と、そのZ基底での測定である。</p>
 <div class="cell tag_hide-input docutils container">
@@ -986,7 +987,7 @@ Estimated Im&lt;psi_i|psi_j&gt; =  -0.05926  Exact:  -0.05409 Error: 5.17e-03
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">additional_qc</span><span class="p">(</span><span class="n">qc_in</span><span class="p">,</span> <span class="n">pauli_str</span><span class="p">,</span> <span class="n">register_target</span><span class="p">,</span> <span class="n">Qiskit_order</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">additional_qc</span><span class="p">(</span><span class="n">qc_in</span><span class="p">,</span> <span class="n">pauli_str</span><span class="p">,</span> <span class="n">register_target</span><span class="p">,</span> <span class="n">Qiskit_order</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">pauli_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">pauli_str</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">Qiskit_order</span><span class="p">:</span>
         <span class="n">pauli_str</span> <span class="o">=</span> <span class="n">pauli_str</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -1001,7 +1002,7 @@ Estimated Im&lt;psi_i|psi_j&gt; =  -0.05926  Exact:  -0.05409 Error: 5.17e-03
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid Pauli string: &quot;</span><span class="p">,</span> <span class="n">pauli_str</span><span class="p">)</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">get_idx_to_measure</span><span class="p">(</span><span class="n">pauli_str</span><span class="p">,</span> <span class="n">Qiskit_order</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_idx_to_measure</span><span class="p">(</span><span class="n">pauli_str</span><span class="p">,</span> <span class="n">Qiskit_order</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">idxs</span> <span class="o">=</span> <span class="p">[</span> <span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pauli_str</span><span class="p">)</span> <span class="k">if</span> <span class="n">p</span> <span class="o">!=</span> <span class="s2">&quot;I&quot;</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">Qiskit_order</span><span class="p">:</span>
         <span class="n">idxs</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">len</span><span class="p">(</span><span class="n">pauli_str</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">idxs</span><span class="p">]</span>
@@ -1033,7 +1034,7 @@ Estimated Im&lt;psi_i|psi_j&gt; =  -0.05926  Exact:  -0.05409 Error: 5.17e-03
 <p>既にQiskitの章で作った、pairing Hamiltonianの状態作成回路などを用いて期待値計算が正しく出来ることを確認しておこう。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">ansatz</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;FCI&quot;</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ansatz</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;FCI&quot;</span><span class="p">):</span>
     <span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">Norb</span><span class="p">)</span>
     <span class="c1"># HF</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nocc</span><span class="p">):</span>
@@ -1124,7 +1125,7 @@ Esum (1.1898518352304355+0j) Egs_exact 1.1898518351360725
 <p>無事、期待値を計算するための回路追加(≒basis rotation)と自作関数が正しく動いたことが確認できた。</p>
 </section>
 <section id="langle-psi-a-h-psi-a-rangle">
-<h3><span class="section-number">14.1.4. </span>対角成分 <span class="math notranslate nohighlight">\(\langle \Psi_a | H | \Psi_a \rangle\)</span> の計算<a class="headerlink" href="#langle-psi-a-h-psi-a-rangle" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">15.1.4. </span>対角成分 <span class="math notranslate nohighlight">\(\langle \Psi_a | H | \Psi_a \rangle\)</span> の計算<a class="headerlink" href="#langle-psi-a-h-psi-a-rangle" title="Link to this heading">#</a></h3>
 <p>まず対角成分の計算をする。</p>
 <p>Hamiltonianの固有状態にすればエネルギーの推定値が得られるはずで、チェックになる。
 加えて、適当な時間発展した状態の場合もあわせて考えよう。その際は時間発展は適当な値にしておく。</p>
@@ -1306,7 +1307,7 @@ Re H_{ij} (1.1556023355807894+0j)
 </section>
 </section>
 <section id="quantum-krylov">
-<h2><span class="section-number">14.2. </span>Quantum Krylov法の実装<a class="headerlink" href="#quantum-krylov" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">15.2. </span>Quantum Krylov法の実装<a class="headerlink" href="#quantum-krylov" title="Link to this heading">#</a></h2>
 <p>iterationごとに、<span class="math notranslate nohighlight">\(n\)</span>回目の状態<span class="math notranslate nohighlight">\(\ket{\Psi_n} = \exp(-iHn \delta t ) \ket{\Phi_0}\)</span>を作成し、<span class="math notranslate nohighlight">\(n-1\)</span>回目overlap行列の要素を計算する。</p>
 <p>検算のために、固有状態<span class="math notranslate nohighlight">\(\ket{\Phi}\)</span>の時間発展を考えよう。</p>
 <p><span class="math notranslate nohighlight">\(H \ket{\Phi} = E \ket{\Phi}\)</span>なので、<span class="math notranslate nohighlight">\(e^{-iHt} \ket{\Phi} = e^{-iEt} \ket{\Phi}\)</span>から、
@@ -1328,7 +1329,7 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">make_U_and_cU</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">delta_t</span><span class="p">,</span> <span class="n">trotter_steps</span><span class="p">,</span> <span class="n">hamiltonian_op</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">Uprep</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">make_U_and_cU</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">delta_t</span><span class="p">,</span> <span class="n">trotter_steps</span><span class="p">,</span> <span class="n">hamiltonian_op</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">Uprep</span><span class="p">):</span>
     <span class="n">Ntar</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">target_qubits</span><span class="p">)</span>
     <span class="n">time</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">delta_t</span>
     <span class="n">circuit_U</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">Ntar</span><span class="p">)</span>
@@ -1344,7 +1345,7 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
 
     <span class="k">return</span> <span class="n">qc_U</span><span class="p">,</span> <span class="n">qc_cU</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">make_overlap_qc</span><span class="p">(</span><span class="n">Ntar</span><span class="p">,</span> <span class="n">gate_cUi</span><span class="p">,</span> <span class="n">gate_cUj</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">using_statevector</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">make_overlap_qc</span><span class="p">(</span><span class="n">Ntar</span><span class="p">,</span> <span class="n">gate_cUi</span><span class="p">,</span> <span class="n">gate_cUj</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">using_statevector</span><span class="p">):</span>
     <span class="n">qc_re</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">Ntar</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">qc_re</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">qc_re</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gate_cUi</span><span class="p">,</span> <span class="n">ancilla_qubits</span> <span class="o">+</span> <span class="n">target_qubits</span><span class="p">)</span>
@@ -1369,7 +1370,7 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
 
     <span class="k">return</span> <span class="n">qc_re</span><span class="p">,</span> <span class="n">qc_im</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">measure_overlap</span><span class="p">(</span><span class="n">num_shot</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">,</span> <span class="n">gate_cUi</span><span class="p">,</span> <span class="n">gate_cUj</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">sampler</span><span class="p">,</span> <span class="n">using_statevector</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">measure_overlap</span><span class="p">(</span><span class="n">num_shot</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">,</span> <span class="n">gate_cUi</span><span class="p">,</span> <span class="n">gate_cUj</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">sampler</span><span class="p">,</span> <span class="n">using_statevector</span><span class="p">,</span>
                     <span class="n">do_simulation</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">qc_re</span><span class="p">,</span> <span class="n">qc_im</span> <span class="o">=</span> <span class="n">make_overlap_qc</span><span class="p">(</span><span class="n">Ntar</span><span class="p">,</span> <span class="n">gate_cUi</span><span class="p">,</span> <span class="n">gate_cUj</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">using_statevector</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">do_simulation</span><span class="p">:</span>
@@ -1398,14 +1399,14 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;qc_im:&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">qc_im</span><span class="o">.</span><span class="n">count_ops</span><span class="p">()))</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">make_cU</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="n">Ui</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">make_cU</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="n">Ui</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">):</span>
     <span class="n">circuit_cUi</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">Ntar</span><span class="p">)</span>
     <span class="n">circuit_cUi</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ntar</span><span class="p">))</span>
     <span class="n">circuit_cUi</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Ui</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ntar</span><span class="p">))</span>
     <span class="n">circuit_cUi</span> <span class="o">=</span> <span class="n">circuit_cUi</span><span class="o">.</span><span class="n">decompose</span><span class="p">()</span><span class="o">.</span><span class="n">decompose</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">circuit_cUi</span><span class="o">.</span><span class="n">to_gate</span><span class="p">()</span><span class="o">.</span><span class="n">control</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">make_nonD_H_qc</span><span class="p">(</span><span class="n">op_string</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">gate_cUi</span><span class="p">,</span> <span class="n">gate_cUj</span><span class="p">,</span> <span class="n">qcs_re</span><span class="p">,</span> <span class="n">qcs_im</span><span class="p">,</span> <span class="n">using_statevector</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">make_nonD_H_qc</span><span class="p">(</span><span class="n">op_string</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">gate_cUi</span><span class="p">,</span> <span class="n">gate_cUj</span><span class="p">,</span> <span class="n">qcs_re</span><span class="p">,</span> <span class="n">qcs_im</span><span class="p">,</span> <span class="n">using_statevector</span><span class="p">):</span>
     <span class="c1"># real part</span>
     <span class="n">qc_reH_nonD</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">Ntar</span><span class="p">)</span>
     <span class="n">qc_reH_nonD</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -1435,7 +1436,7 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
 
     <span class="k">return</span> <span class="kc">None</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">plot_convergence</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">evals</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">plot_convergence</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">evals</span><span class="p">):</span>
     <span class="n">cols</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;deep&quot;</span><span class="p">,</span> <span class="n">n_colors</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">evals</span><span class="p">))</span>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -1456,7 +1457,7 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
         <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;QKrylov_Norb&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">Norb</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;Nocc&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">Nocc</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_shot.pdf&quot;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">QuantumKrylov</span><span class="p">(</span><span class="n">Uprep</span><span class="p">:</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="c1"># circuit to prepare a reference state</span>
+<span class="k">def</span> <span class="nf">QuantumKrylov</span><span class="p">(</span><span class="n">Uprep</span><span class="p">:</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="c1"># circuit to prepare a reference state</span>
                  <span class="n">hamiltonian_op</span><span class="p">:</span> <span class="n">SparsePauliOp</span><span class="p">,</span> <span class="c1"># Hamiltonian operator</span>
                  <span class="n">sampler</span><span class="p">,</span>
                  <span class="n">delta_t</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
@@ -1686,7 +1687,7 @@ shotで測る場合は、ノイズなしのsimulator(shot errorのみ)でも、<
 <p>今の実装では、overlapを対角化し小さな固有値を捨てることで、一般化固有値問題をより安定的に解いているものの、それでもshot測定の場合は反復に対して計算が不安定になってしまう。実機のノイズがあると、overlapやHが悪条件になり計算がさらに不安定になることが予想されるため、応用の上ではさらなる検討が必要であろう。</p>
 </section>
 <section id="id3">
-<h2><span class="section-number">14.3. </span>関連する話題<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">15.3. </span>関連する話題<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
 <p>multi-referenceによるQuantum Krylov法は、<a class="reference external" href="https://doi.org/10.1021/acs.jctc.9b01125">J. Chem. Theory Comput. 2020, 16, 2326</a>が参考になる。</p>
 <p>overlap行列の計算については、Hadamard test以外にも、上で述べた方法など制御ユニタリを必要としない方法も提案されていて、様々な進展があるようだ。</p>
 </section>
@@ -1728,7 +1729,7 @@ shotで測る場合は、ノイズなしのsimulator(shot errorのみ)でも、<
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">前へ</p>
-        <p class="prev-next-title"><span class="section-number">13. </span>pytketを用いたVQE計算</p>
+        <p class="prev-next-title"><span class="section-number">14. </span>pytketを用いたVQE計算</p>
       </div>
     </a>
     <a class="right-next"
@@ -1736,7 +1737,7 @@ shotで測る場合は、ノイズなしのsimulator(shot errorのみ)でも、<
        title="次ページ">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">次へ</p>
-        <p class="prev-next-title"><span class="section-number">15. </span>Python環境構築</p>
+        <p class="prev-next-title"><span class="section-number">16. </span>Python環境構築</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1757,18 +1758,18 @@ shotで測る場合は、ノイズなしのsimulator(shot errorのみ)でも、<
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#n-kl-tilde-h-kl">14.1. 量子コンピュータ上での<span class="math notranslate nohighlight">\(N_{kl}, \tilde{H}_{kl}\)</span>の計算</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overlap-langle-psi-a-psi-b-rangle">14.1.1. overlap <span class="math notranslate nohighlight">\(\langle \Psi_a | \Psi_b \rangle\)</span> の計算</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">14.1.1.1. 計算例</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#n-kl-tilde-h-kl">15.1. 量子コンピュータ上での<span class="math notranslate nohighlight">\(N_{kl}, \tilde{H}_{kl}\)</span>の計算</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overlap-langle-psi-a-psi-b-rangle">15.1.1. overlap <span class="math notranslate nohighlight">\(\langle \Psi_a | \Psi_b \rangle\)</span> の計算</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">15.1.1.1. 計算例</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langle-psi-a-h-psi-b-rangle">14.1.2. <span class="math notranslate nohighlight">\(\langle \Psi_a | H | \Psi_b \rangle \)</span>の計算</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">14.1.3. ハミルトニアンの各項の期待値測定のための回路</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langle-psi-a-h-psi-a-rangle">14.1.4. 対角成分 <span class="math notranslate nohighlight">\(\langle \Psi_a | H | \Psi_a \rangle\)</span> の計算</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langle-psi-a-h-psi-b-rangle">15.1.2. <span class="math notranslate nohighlight">\(\langle \Psi_a | H | \Psi_b \rangle \)</span>の計算</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">15.1.3. ハミルトニアンの各項の期待値測定のための回路</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langle-psi-a-h-psi-a-rangle">15.1.4. 対角成分 <span class="math notranslate nohighlight">\(\langle \Psi_a | H | \Psi_a \rangle\)</span> の計算</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantum-krylov">14.2. Quantum Krylov法の実装</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">14.3. 関連する話題</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantum-krylov">15.2. Quantum Krylov法の実装</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">15.3. 関連する話題</a></li>
 </ul>
   </nav></div>
 

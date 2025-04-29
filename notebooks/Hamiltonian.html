@@ -30,7 +30,7 @@
   <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -192,9 +192,10 @@
 <li class="toctree-l1"><a class="reference internal" href="pennylane_VQE.html">10. pennylaneを用いたVQE計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pennylane_QPE.html">11. pennylaneを用いたQPE計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qiskit_QC.html">12. Qiskitを用いた量子計算</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pytket_VQE.html">13. pytketを用いたVQE計算</a></li>
-<li class="toctree-l1"><a class="reference internal" href="QuantumKrylov.html">14. Quantum Krylov subspace method</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Python_env.html">15. Python環境構築</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ucc.html">13. Unitary Coupled Cluster (UCC) for pairing Hamiltonians</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pytket_VQE.html">14. pytketを用いたVQE計算</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QuantumKrylov.html">15. Quantum Krylov subspace method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Python_env.html">16. Python環境構築</a></li>
 </ul>
 
     </div>
@@ -388,7 +389,11 @@
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hamiltonian">1.1. Hamiltonian</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1.2. 発展的な注</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1.2. 発展的な注</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.2.1. 実装上の注: 波動関数の反対称化について</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.2.2. pairing Hamiltonianの拡張</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -434,8 +439,17 @@ H_\mathrm{pair} = \sum_{i=1}^{N} \epsilon_i a_i^\dagger a_i - \frac{g}{4} \sum_{
 P^{\dagger}_p \equiv a^{\dagger}_p a^{\dagger}_{\bar{p}}, \quad P_p \equiv a_{\bar{p}} a_p, \quad N_p \equiv a^{\dagger}_p a_p + a^{\dagger}_{\bar{p}} a_{\bar{p}}
 \]</div>
 <p>ここで、<span class="math notranslate nohighlight">\(\bar{p}\)</span>は<span class="math notranslate nohighlight">\(p\)</span>に対応するペアの(元の表示での)indexである。
-右辺では元の１粒子軌道のindex, 左辺ではペアのindexが同じ<span class="math notranslate nohighlight">\(p\)</span>で表現されていることに注意。</p>
-<p>この表示のもとでは、Hamiltonianは次のように書き換えられる。</p>
+右辺では元の１粒子軌道のindex, 左辺ではペアのindexが同じ<span class="math notranslate nohighlight">\(p\)</span>で表現されていることに注意。
+元の演算子がFermionの反交換関係を満たすのに対し、ペア生成・消滅演算子、ペアの数演算子は次のような交換関係を満たす。</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+[ P_{p}, P^{\dagger}_{q} ] &amp;= \delta_{pq} (1 - N_{p}) \\
+[ N_{p}, P^{\dagger}_{q} ] &amp;= 2 P^{\dagger}_{p} \delta_{pq} \\
+[ N_{p}, P_{q} ] &amp;= -2 P_{q} \delta_{pq}
+\end{align}
+\end{split}\]</div>
+<p>この粒子対による表示のもとでは、Hamiltonianは次のように書き換えられる。</p>
 <div class="math notranslate nohighlight">
 \[
 H = \sum_{p} \epsilon_p N_p - g \sum_{pq} P^{\dagger}_p P_q
@@ -455,6 +469,18 @@ Full-CI法と量子計算の章では、この表現を用いることにする�
 </section>
 <section id="id1">
 <h2><span class="section-number">1.2. </span>発展的な注<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<section id="id2">
+<h3><span class="section-number">1.2.1. </span>実装上の注: 波動関数の反対称化について<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>一般のCI計算でHamiltonianによる遷移行列要素を求める際には、operatorの並び順を考慮してきちんと(反)対称化する必要がある。</p>
+<p>例えば、<span class="math notranslate nohighlight">\(a^{\dag}_i a^{\dag}_j a_k a_l\)</span>と<span class="math notranslate nohighlight">\(a^{\dag}_i a^{\dag}_j a_l a_k\)</span>の
+それぞれにひっつく相互作用の係数は、全体として適切な対称性を担保していなければならない。
+よりgeneralな(例えばHO基底での)相互作用の場合、こうしたphase/factorを相互作用ファイルに持たせるのか、
+redundantな項は書き出さず、特定のindexの並びについてのみ相互作用の係数を書き出しておいて、
+CG係数やphase/factorなどは実際の計算コードの中で考慮にいれるのかなど、詳細について理解しておく必要がある。</p>
+<p>pairing Hamiltonianの場合、indexの入れ替えで余計なお釣りが発生しないことを積極的に用いて実装を簡略化してある。</p>
+</section>
+<section id="id3">
+<h3><span class="section-number">1.2.2. </span>pairing Hamiltonianの拡張<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
 <p>上で考えたpairing Hamiltonianは、グローバルパラメータ<span class="math notranslate nohighlight">\(g\)</span>を一つ持つだけの、最も簡単な例である。</p>
 <p>より現実の核子系を記述することを目的として、様々な拡張も考えられてきた。</p>
 <p>最も単純な拡張は、軌道角運動量に依存する相互作用を考えることである。</p>
@@ -473,6 +499,7 @@ H = \sum_{j,m} \epsilon_j n_{jm} -\frac{1}{4} \sum_{J} \sum_{jj'}
 G^J_{jj'} \sum_M \sum_{mm'nn'} C^{JM}_{jmjn} C^{JM}_{j'm'j'n'} a^{\dagger}_{jm} a^{\dagger}_{jn} a_{j'n'} a_{j'm'}
 \end{align}
 \]</div>
+</section>
 </section>
 </section>
 
@@ -542,7 +569,11 @@ G^J_{jj'} \sum_M \sum_{mm'nn'} C^{JM}_{jmjn} C^{JM}_{j'm'j'n'} a^{\dagger}_{jm} 
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hamiltonian">1.1. Hamiltonian</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1.2. 発展的な注</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1.2. 発展的な注</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.2.1. 実装上の注: 波動関数の反対称化について</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.2.2. pairing Hamiltonianの拡張</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

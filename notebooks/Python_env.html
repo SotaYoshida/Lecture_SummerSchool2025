@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>15. Python環境構築 &#8212; Julia言語による原子核構造計算入門</title>
+    <title>16. Python環境構築 &#8212; Julia言語による原子核構造計算入門</title>
   
   
   
@@ -30,7 +30,7 @@
   <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -64,7 +64,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/Python_env';</script>
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
-    <link rel="prev" title="14. Quantum Krylov subspace method" href="QuantumKrylov.html" />
+    <link rel="prev" title="15. Quantum Krylov subspace method" href="QuantumKrylov.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="ja"/>
   <meta name="docsearch:version" content="" />
@@ -189,9 +189,10 @@
 <li class="toctree-l1"><a class="reference internal" href="pennylane_VQE.html">10. pennylaneを用いたVQE計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pennylane_QPE.html">11. pennylaneを用いたQPE計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qiskit_QC.html">12. Qiskitを用いた量子計算</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pytket_VQE.html">13. pytketを用いたVQE計算</a></li>
-<li class="toctree-l1"><a class="reference internal" href="QuantumKrylov.html">14. Quantum Krylov subspace method</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">15. Python環境構築</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ucc.html">13. Unitary Coupled Cluster (UCC) for pairing Hamiltonians</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pytket_VQE.html">14. pytketを用いたVQE計算</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QuantumKrylov.html">15. Quantum Krylov subspace method</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">16. Python環境構築</a></li>
 </ul>
 
     </div>
@@ -384,9 +385,9 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-activate-deactivate">15.1. Python仮想環境の作成&amp;activate/deactivate</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">15.2. 依存関係のインストール</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vs-codeipynb">15.3. VS Code上でipynb形式のコードを実行する</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-activate-deactivate">16.1. Python仮想環境の作成&amp;activate/deactivate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">16.2. 依存関係のインストール</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vs-codeipynb">16.3. VS Code上でipynb形式のコードを実行する</a></li>
 </ul>
             </nav>
         </div>
@@ -399,7 +400,7 @@
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="python">
-<h1><span class="section-number">15. </span>Python環境構築<a class="headerlink" href="#python" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">16. </span>Python環境構築<a class="headerlink" href="#python" title="Link to this heading">#</a></h1>
 <p>この章では、本資料にあるsimulatorによる量子計算を実際に手元で実行するために必要なPythonの環境構築について説明する。</p>
 <p>PythonにはPEP(Python Enhancement Proposals)と呼ばれる、Pythonコミュニティーにおける、Pythonの機能拡張や変更についての提案がまとめられたドキュメントがある。
 2021年の5月に提案された<a class="reference external" href="https://peps.python.org/pep-0668/">PEP668</a>は、
@@ -453,7 +454,7 @@ hint:<span class="w"> </span>See<span class="w"> </span>PEP<span class="w"> </sp
 <p>結論から言うと、Pythonの仮想環境の構築/使用を行うのが結果として最も煩わしくない方法と思われる。</p>
 <p>以下では、仮想環境を作成しライブラリのインストールを行う方法に加えて、当該の仮想環境を用いてVS Code上でipynb形式のコードを実行する方法についても説明する。</p>
 <section id="python-activate-deactivate">
-<h2><span class="section-number">15.1. </span>Python仮想環境の作成&amp;activate/deactivate<a class="headerlink" href="#python-activate-deactivate" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">16.1. </span>Python仮想環境の作成&amp;activate/deactivate<a class="headerlink" href="#python-activate-deactivate" title="Link to this heading">#</a></h2>
 <p>Pythonの仮想環境を作成するには、ターミナルで以下のコマンドを実行する。</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>name_of_venv
 </pre></div>
@@ -471,7 +472,7 @@ hint:<span class="w"> </span>See<span class="w"> </span>PEP<span class="w"> </sp
 </div>
 </section>
 <section id="id1">
-<h2><span class="section-number">15.2. </span>依存関係のインストール<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">16.2. </span>依存関係のインストール<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <p>本講義資料のレポジトリには、<code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code>というファイルがあり、このファイルには、本講義資料を実行するために必要なライブラリが記述されている。
 仮想環境を作成した後、以下のコマンドを実行することで、<code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code>に記述されたライブラリを一括でインストールすることができる。</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>path_to_file/requirements.txt
@@ -479,7 +480,7 @@ hint:<span class="w"> </span>See<span class="w"> </span>PEP<span class="w"> </sp
 </div>
 </section>
 <section id="vs-codeipynb">
-<h2><span class="section-number">15.3. </span>VS Code上でipynb形式のコードを実行する<a class="headerlink" href="#vs-codeipynb" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">16.3. </span>VS Code上でipynb形式のコードを実行する<a class="headerlink" href="#vs-codeipynb" title="Link to this heading">#</a></h2>
 <p>VS Code上でipynb形式のコードを実行するためには、以下の手順を踏む。</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">ipykernel</span></code> (Jupyter Notebook 用の Python カーネル)を仮想環境のpipでインストールする</p></li>
@@ -532,7 +533,7 @@ hint:<span class="w"> </span>See<span class="w"> </span>PEP<span class="w"> </sp
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">前へ</p>
-        <p class="prev-next-title"><span class="section-number">14. </span>Quantum Krylov subspace method</p>
+        <p class="prev-next-title"><span class="section-number">15. </span>Quantum Krylov subspace method</p>
       </div>
     </a>
 </div>
@@ -552,9 +553,9 @@ hint:<span class="w"> </span>See<span class="w"> </span>PEP<span class="w"> </sp
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-activate-deactivate">15.1. Python仮想環境の作成&amp;activate/deactivate</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">15.2. 依存関係のインストール</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vs-codeipynb">15.3. VS Code上でipynb形式のコードを実行する</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-activate-deactivate">16.1. Python仮想環境の作成&amp;activate/deactivate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">16.2. 依存関係のインストール</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vs-codeipynb">16.3. VS Code上でipynb形式のコードを実行する</a></li>
 </ul>
   </nav></div>
 

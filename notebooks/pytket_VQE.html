@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>13. pytketを用いたVQE計算 &#8212; Julia言語による原子核構造計算入門</title>
+    <title>14. pytketを用いたVQE計算 &#8212; Julia言語による原子核構造計算入門</title>
   
   
   
@@ -30,7 +30,7 @@
   <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -66,8 +66,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/pytket_VQE';</script>
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
-    <link rel="next" title="14. Quantum Krylov subspace method" href="QuantumKrylov.html" />
-    <link rel="prev" title="12. Qiskitを用いた量子計算" href="qiskit_QC.html" />
+    <link rel="next" title="15. Quantum Krylov subspace method" href="QuantumKrylov.html" />
+    <link rel="prev" title="13. Unitary Coupled Cluster (UCC) for pairing Hamiltonians" href="ucc.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="ja"/>
   <meta name="docsearch:version" content="" />
@@ -192,9 +192,10 @@
 <li class="toctree-l1"><a class="reference internal" href="pennylane_VQE.html">10. pennylaneを用いたVQE計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pennylane_QPE.html">11. pennylaneを用いたQPE計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qiskit_QC.html">12. Qiskitを用いた量子計算</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">13. pytketを用いたVQE計算</a></li>
-<li class="toctree-l1"><a class="reference internal" href="QuantumKrylov.html">14. Quantum Krylov subspace method</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Python_env.html">15. Python環境構築</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ucc.html">13. Unitary Coupled Cluster (UCC) for pairing Hamiltonians</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">14. pytketを用いたVQE計算</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QuantumKrylov.html">15. Quantum Krylov subspace method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Python_env.html">16. Python環境構築</a></li>
 </ul>
 
     </div>
@@ -387,16 +388,16 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytket">13.1. pytketでの回路作成</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#givens-rotation">13.1.1. Givens rotation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#full-ci-ansatz">13.1.2. Full-CI ansatz</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytket">14.1. pytketでの回路作成</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#givens-rotation">14.1.1. Givens rotation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#full-ci-ansatz">14.1.2. Full-CI ansatz</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">13.2. pytketでの演算子表現</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">13.2.1. エネルギーの測定</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">14.2. pytketでの演算子表現</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">14.2.1. エネルギーの測定</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">13.3. 回路パラメータの最適化</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">14.3. 回路パラメータの最適化</a></li>
 </ul>
             </nav>
         </div>
@@ -409,7 +410,7 @@
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="pytketvqe">
-<h1><span class="section-number">13. </span>pytketを用いたVQE計算<a class="headerlink" href="#pytketvqe" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">14. </span>pytketを用いたVQE計算<a class="headerlink" href="#pytketvqe" title="Link to this heading">#</a></h1>
 <p>この章では、Quantinuumによるpytketを使ったVQE計算について述べる。
 <a class="reference external" href="https://docs.quantinuum.com/tket/user-guide/index.html">pytket user guide</a>が役に立つ。</p>
 <p>大きな注意点としては、(大変ややこしいことに)pytketの回転ゲートの角度パラメータは<span class="math notranslate nohighlight">\(\pi/2\)</span>単位で与えられることである。</p>
@@ -422,21 +423,21 @@
 <span class="c1">#!pip install openfermion</span>
 <span class="c1">#!pip install seaborn</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">combinations</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="n">cols</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;deep&quot;</span><span class="p">)</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">openfermion</span><span class="w"> </span><span class="kn">import</span> <span class="n">QubitOperator</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pytket.circuit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Circuit</span><span class="p">,</span> <span class="n">Qubit</span><span class="p">,</span> <span class="n">Bit</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pytket.circuit.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">render_circuit_jupyter</span> <span class="k">as</span> <span class="n">draw</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pytket.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">gate_counts</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pytket.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">probs_from_state</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pytket.utils.expectations</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_operator_expectation_value</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pytket.extensions.qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">AerStateBackend</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pytket.extensions.qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">AerBackend</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">openfermion</span> <span class="kn">import</span> <span class="n">QubitOperator</span>
+<span class="kn">from</span> <span class="nn">pytket.circuit</span> <span class="kn">import</span> <span class="n">Circuit</span><span class="p">,</span> <span class="n">Qubit</span><span class="p">,</span> <span class="n">Bit</span>
+<span class="kn">from</span> <span class="nn">pytket.circuit.display</span> <span class="kn">import</span> <span class="n">render_circuit_jupyter</span> <span class="k">as</span> <span class="n">draw</span>
+<span class="kn">from</span> <span class="nn">pytket.utils</span> <span class="kn">import</span> <span class="n">gate_counts</span>
+<span class="kn">from</span> <span class="nn">pytket.utils</span> <span class="kn">import</span> <span class="n">probs_from_state</span>
+<span class="kn">from</span> <span class="nn">pytket.utils.expectations</span> <span class="kn">import</span> <span class="n">get_operator_expectation_value</span>
+<span class="kn">from</span> <span class="nn">pytket.extensions.qiskit</span> <span class="kn">import</span> <span class="n">AerStateBackend</span>
+<span class="kn">from</span> <span class="nn">pytket.extensions.qiskit</span> <span class="kn">import</span> <span class="n">AerBackend</span>
 </pre></div>
 </div>
 </div>
@@ -449,8 +450,8 @@
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">PairingHamiltonian</span><span class="p">:</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">Nocc</span><span class="p">,</span> <span class="n">gval</span><span class="p">,</span> <span class="n">delta_eps</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">PairingHamiltonian</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">Nocc</span><span class="p">,</span> <span class="n">gval</span><span class="p">,</span> <span class="n">delta_eps</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Norb</span> <span class="o">=</span> <span class="n">Norb</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Nocc</span> <span class="o">=</span> <span class="n">Nocc</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delta_eps</span> <span class="o">=</span> <span class="n">delta_eps</span>
@@ -459,18 +460,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_epsilon</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Hmat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_Hmat</span><span class="p">()</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">make_basis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">make_basis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">basis</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">occ</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Norb</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nocc</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">occ</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">basis</span>
     
-    <span class="k">def</span><span class="w"> </span><span class="nf">eval_epsilon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">eval_epsilon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_eps</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Norb</span><span class="p">)</span> <span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span>
     
-    <span class="k">def</span><span class="w"> </span><span class="nf">eval_Hmat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">eval_Hmat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Hmat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">bra_idx</span><span class="p">,</span> <span class="n">bra</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="p">):</span>
@@ -488,7 +489,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Hmat</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">tuple_to_bitstring</span><span class="p">(</span><span class="n">tup</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">rev</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">tuple_to_bitstring</span><span class="p">(</span><span class="n">tup</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">rev</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">bitint</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tup</span><span class="p">:</span>
         <span class="n">bitint</span> <span class="o">+=</span> <span class="mi">2</span><span class="o">**</span><span class="n">i</span>
@@ -546,13 +547,13 @@ gs prob [9.43255208e-01 3.31024447e-02 9.63810492e-03 9.63810492e-03
 </div>
 </div>
 <section id="pytket">
-<h2><span class="section-number">13.1. </span>pytketでの回路作成<a class="headerlink" href="#pytket" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">14.1. </span>pytketでの回路作成<a class="headerlink" href="#pytket" title="Link to this heading">#</a></h2>
 <section id="givens-rotation">
-<h3><span class="section-number">13.1.1. </span>Givens rotation<a class="headerlink" href="#givens-rotation" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">14.1.1. </span>Givens rotation<a class="headerlink" href="#givens-rotation" title="Link to this heading">#</a></h3>
 <p>どうやらpytketにはGivens rotationの実装がなさそうなので自作しておく</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">cG1</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="n">c_qubit</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cG1</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="n">c_qubit</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
     <span class="n">theta_4</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">/</span> <span class="mi">4</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">CX</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">Ry</span><span class="p">(</span><span class="n">theta_4</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
@@ -565,7 +566,7 @@ gs prob [9.43255208e-01 3.31024447e-02 9.63810492e-03 9.63810492e-03
     <span class="n">circ</span><span class="o">.</span><span class="n">CX</span><span class="p">(</span><span class="n">c_qubit</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">CX</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">G</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">G</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
     <span class="n">theta_2</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">CX</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">Ry</span><span class="p">(</span><span class="n">theta_2</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
@@ -617,7 +618,7 @@ gs prob [9.43255208e-01 3.31024447e-02 9.63810492e-03 9.63810492e-03
 &lt;body&gt;
 
 
-    &lt;div id=&#34;circuit-display-vue-container-a8085d12-6d3c-4592-869c-54d68d48c3e7&#34; class=&#34;pytket-circuit-display-container&#34;&gt;
+    &lt;div id=&#34;circuit-display-vue-container-a327ca95-d33a-4fe0-b51b-8aea6550fb03&#34; class=&#34;pytket-circuit-display-container&#34;&gt;
         &lt;div style=&#34;display: none&#34;&gt;
             &lt;div id=&#34;circuit-json-to-display&#34;&gt;{&#34;bits&#34;: [], &#34;commands&#34;: [{&#34;args&#34;: [[&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;type&#34;: &#34;X&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]], [&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;params&#34;: [&#34;0.159154943091895&#34;], &#34;type&#34;: &#34;Ry&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]], [&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;params&#34;: [&#34;-0.159154943091895&#34;], &#34;type&#34;: &#34;Ry&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]], [&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]], [&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}], &#34;created_qubits&#34;: [], &#34;discarded_qubits&#34;: [], &#34;implicit_permutation&#34;: [[[&#34;q&#34;, [0]], [&#34;q&#34;, [0]]], [[&#34;q&#34;, [1]], [&#34;q&#34;, [1]]]], &#34;phase&#34;: &#34;0.0&#34;, &#34;qubits&#34;: [[&#34;q&#34;, [0]], [&#34;q&#34;, [1]]]}&lt;/div&gt;
         &lt;/div&gt;
@@ -628,7 +629,7 @@ gs prob [9.43255208e-01 3.31024447e-02 9.63810492e-03 9.63810492e-03
         &gt;&lt;/circuit-display-container&gt;
     &lt;/div&gt;
     &lt;script type=&#34;application/javascript&#34;&gt;
-      const circuitRendererUid = &#34;a8085d12-6d3c-4592-869c-54d68d48c3e7&#34;;
+      const circuitRendererUid = &#34;a327ca95-d33a-4fe0-b51b-8aea6550fb03&#34;;
       const displayOptions = JSON.parse(&#39;{}&#39;);
 
       // Script to initialise the circuit renderer app
@@ -671,7 +672,7 @@ window.pytketCircuitDisplays[circuitRendererUid] = app;
 <p>できた。</p>
 </section>
 <section id="full-ci-ansatz">
-<h3><span class="section-number">13.1.2. </span>Full-CI ansatz<a class="headerlink" href="#full-ci-ansatz" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">14.1.2. </span>Full-CI ansatz<a class="headerlink" href="#full-ci-ansatz" title="Link to this heading">#</a></h3>
 <p>では次に、軌道が4つ、占有数が2に対応する回路を考え、<span class="math notranslate nohighlight">\(g=0.33\)</span>の結果を再現する角度パラメータを指定してやると...</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -715,7 +716,7 @@ window.pytketCircuitDisplays[circuitRendererUid] = app;
 &lt;body&gt;
 
 
-    &lt;div id=&#34;circuit-display-vue-container-a099742d-ca18-4cad-b8d2-54bba26b6d8c&#34; class=&#34;pytket-circuit-display-container&#34;&gt;
+    &lt;div id=&#34;circuit-display-vue-container-5495164f-b6fc-4a6e-89c2-142905fad22c&#34; class=&#34;pytket-circuit-display-container&#34;&gt;
         &lt;div style=&#34;display: none&#34;&gt;
             &lt;div id=&#34;circuit-json-to-display&#34;&gt;{&#34;bits&#34;: [], &#34;commands&#34;: [{&#34;args&#34;: [[&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;type&#34;: &#34;X&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;X&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]], [&#34;q&#34;, [2]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;params&#34;: [&#34;-0.0765603330925683&#34;], &#34;type&#34;: &#34;Ry&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [2]], [&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;params&#34;: [&#34;0.0765603330925683&#34;], &#34;type&#34;: &#34;Ry&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [2]], [&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]], [&#34;q&#34;, [2]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]], [&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [2]], [&#34;q&#34;, [3]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;params&#34;: [&#34;-0.0787530338210121&#34;], &#34;type&#34;: &#34;Ry&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [2]]], &#34;op&#34;: {&#34;params&#34;: [&#34;-0.165483736220846&#34;], &#34;type&#34;: &#34;Ry&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]], [&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [3]], [&#34;q&#34;, [2]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;params&#34;: [&#34;0.0787530338210121&#34;], &#34;type&#34;: &#34;Ry&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [2]]], &#34;op&#34;: {&#34;params&#34;: [&#34;0.165483736220846&#34;], &#34;type&#34;: &#34;Ry&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [3]], [&#34;q&#34;, [2]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [2]], [&#34;q&#34;, [3]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [2]], [&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;params&#34;: [&#34;-0.0787530338210121&#34;], &#34;type&#34;: &#34;Ry&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]], [&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;params&#34;: [&#34;0.0787530338210121&#34;], &#34;type&#34;: &#34;Ry&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [2]], [&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]], [&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]], [&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;params&#34;: [&#34;-0.0942847713440943&#34;], &#34;type&#34;: &#34;Ry&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]], [&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;params&#34;: [&#34;0.0942847713440943&#34;], &#34;type&#34;: &#34;Ry&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [3]], [&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;params&#34;: [&#34;-0.0942847713440943&#34;], &#34;type&#34;: &#34;Ry&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]], [&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;params&#34;: [&#34;0.0942847713440943&#34;], &#34;type&#34;: &#34;Ry&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [3]], [&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]], [&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]], [&#34;q&#34;, [2]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;params&#34;: [&#34;-0.043634702240394&#34;], &#34;type&#34;: &#34;Ry&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [2]], [&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;params&#34;: [&#34;0.043634702240394&#34;], &#34;type&#34;: &#34;Ry&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [3]], [&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;params&#34;: [&#34;-0.043634702240394&#34;], &#34;type&#34;: &#34;Ry&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [2]], [&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;params&#34;: [&#34;0.043634702240394&#34;], &#34;type&#34;: &#34;Ry&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [3]], [&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]], [&#34;q&#34;, [2]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}], &#34;created_qubits&#34;: [], &#34;discarded_qubits&#34;: [], &#34;implicit_permutation&#34;: [[[&#34;q&#34;, [0]], [&#34;q&#34;, [0]]], [[&#34;q&#34;, [1]], [&#34;q&#34;, [1]]], [[&#34;q&#34;, [2]], [&#34;q&#34;, [2]]], [[&#34;q&#34;, [3]], [&#34;q&#34;, [3]]]], &#34;phase&#34;: &#34;0.0&#34;, &#34;qubits&#34;: [[&#34;q&#34;, [0]], [&#34;q&#34;, [1]], [&#34;q&#34;, [2]], [&#34;q&#34;, [3]]]}&lt;/div&gt;
         &lt;/div&gt;
@@ -726,7 +727,7 @@ window.pytketCircuitDisplays[circuitRendererUid] = app;
         &gt;&lt;/circuit-display-container&gt;
     &lt;/div&gt;
     &lt;script type=&#34;application/javascript&#34;&gt;
-      const circuitRendererUid = &#34;a099742d-ca18-4cad-b8d2-54bba26b6d8c&#34;;
+      const circuitRendererUid = &#34;5495164f-b6fc-4a6e-89c2-142905fad22c&#34;;
       const displayOptions = JSON.parse(&#39;{}&#39;);
 
       // Script to initialise the circuit renderer app
@@ -767,7 +768,7 @@ window.pytketCircuitDisplays[circuitRendererUid] = app;
 </div>
 </div>
 <p>回路を保存することもできる:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;circuit_pytket.pkl&quot;</span><span class="p">,</span><span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">my_circ_1</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
 </pre></div>
@@ -821,7 +822,7 @@ window.pytketCircuitDisplays[circuitRendererUid] = app;
 </section>
 </section>
 <section id="id1">
-<h2><span class="section-number">13.2. </span>pytketでの演算子表現<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">14.2. </span>pytketでの演算子表現<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <p>pytketでもHamiltonianの表現方法は幾つかある。ひとつは<code class="docutils literal notranslate"><span class="pre">OpenFermion</span></code>の<code class="docutils literal notranslate"><span class="pre">QubitOperator</span></code>を用いる方法で...</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -875,11 +876,11 @@ window.pytketCircuitDisplays[circuitRendererUid] = app;
 <p>Documentの<a class="reference external" href="https://docs.quantinuum.com/tket/user-guide/examples/algorithms_and_protocols/expectation_value_example.html">Expectation values</a>を参考にしつつ、pytketの<code class="docutils literal notranslate"><span class="pre">QubitPauliOperator</span></code>に変換してみよう。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pytket.pauli</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pauli</span><span class="p">,</span> <span class="n">QubitPauliString</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pytket.utils.operators</span><span class="w"> </span><span class="kn">import</span> <span class="n">QubitPauliOperator</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pytket.pauli</span> <span class="kn">import</span> <span class="n">Pauli</span><span class="p">,</span> <span class="n">QubitPauliString</span>
+<span class="kn">from</span> <span class="nn">pytket.utils.operators</span> <span class="kn">import</span> <span class="n">QubitPauliOperator</span>
 <span class="n">pauli_sym</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;I&quot;</span><span class="p">:</span> <span class="n">Pauli</span><span class="o">.</span><span class="n">I</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">Pauli</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="n">Pauli</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">:</span> <span class="n">Pauli</span><span class="o">.</span><span class="n">Z</span><span class="p">}</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">qps_from_openfermion</span><span class="p">(</span><span class="n">paulis</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">qps_from_openfermion</span><span class="p">(</span><span class="n">paulis</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert OpenFermion tensor of Paulis to pytket QubitPauliString.&quot;&quot;&quot;</span>
     <span class="n">qlist</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">plist</span> <span class="o">=</span> <span class="p">[]</span>
@@ -888,7 +889,7 @@ window.pytketCircuitDisplays[circuitRendererUid] = app;
         <span class="n">plist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pauli_sym</span><span class="p">[</span><span class="n">p</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">QubitPauliString</span><span class="p">(</span><span class="n">qlist</span><span class="p">,</span> <span class="n">plist</span><span class="p">)</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">qpo_from_openfermion</span><span class="p">(</span><span class="n">openf_op</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">qpo_from_openfermion</span><span class="p">(</span><span class="n">openf_op</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert OpenFermion QubitOperator to pytket QubitPauliOperator.&quot;&quot;&quot;</span>
     <span class="n">tk_op</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">term</span><span class="p">,</span> <span class="n">coeff</span> <span class="ow">in</span> <span class="n">openf_op</span><span class="o">.</span><span class="n">terms</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -907,10 +908,55 @@ window.pytketCircuitDisplays[circuitRendererUid] = app;
 </div>
 </div>
 </div>
+<p>あるいはQiskitのSparsePauliOpを変換しても良い。</p>
+<p>pytketの<a class="reference external" href="https://docs.quantinuum.com/systems/trainings/knowledge_articles/Quantinuum_high_energy_physics_experiment.html">document</a>に、コード例が書いてあるが、(2025年4月時点では)Qiskitのbitの並び方を意識しない書き方になっていて誤りがあるので、注意が必要だ。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit.quantum_info</span> <span class="kn">import</span> <span class="n">SparsePauliOp</span>
+<span class="kn">from</span> <span class="nn">pytket.pauli</span> <span class="kn">import</span> <span class="n">Pauli</span><span class="p">,</span> <span class="n">QubitPauliString</span>
+<span class="kn">from</span> <span class="nn">pytket.utils.operators</span> <span class="kn">import</span> <span class="n">QubitPauliOperator</span>
+<span class="kn">from</span> <span class="nn">pytket</span> <span class="kn">import</span> <span class="n">Qubit</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
+<span class="k">def</span> <span class="nf">qps_from_sparsepauliop</span><span class="p">(</span><span class="n">paulis</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert SparsePauliOp tensor of Paulis to pytket QubitPauliString.&quot;&quot;&quot;</span>
+    <span class="n">pauli_sym</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;I&quot;</span><span class="p">:</span> <span class="n">Pauli</span><span class="o">.</span><span class="n">I</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">Pauli</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="n">Pauli</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">:</span> <span class="n">Pauli</span><span class="o">.</span><span class="n">Z</span><span class="p">}</span>
+    <span class="n">qlist</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">plist</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">q</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">paulis</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">p</span> <span class="o">!=</span> <span class="s2">&quot;I&quot;</span><span class="p">:</span>
+            <span class="n">qlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Qubit</span><span class="p">(</span><span class="n">q</span><span class="p">))</span>
+            <span class="n">plist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pauli_sym</span><span class="p">[</span><span class="n">p</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">QubitPauliString</span><span class="p">(</span><span class="n">qlist</span><span class="p">,</span> <span class="n">plist</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">qpo_from_sparsepauliop</span><span class="p">(</span><span class="n">sp_op</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert SparsePauliOp QubitOperator to pytket QubitPauliOperator.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tk_op</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">complex</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">term</span><span class="p">,</span> <span class="n">coeff</span> <span class="ow">in</span> <span class="n">sp_op</span><span class="o">.</span><span class="n">to_list</span><span class="p">():</span>
+        <span class="c1"># ↓の追加が必要</span>
+        <span class="n">term</span> <span class="o">=</span> <span class="n">term</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">qps_from_sparsepauliop</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+        <span class="n">tk_op</span><span class="p">[</span><span class="n">string</span><span class="p">]</span> <span class="o">+=</span> <span class="n">coeff</span>
+    <span class="k">return</span> <span class="n">QubitPauliOperator</span><span class="p">(</span><span class="n">tk_op</span><span class="p">)</span>
+
+<span class="n">op_qiskit</span> <span class="o">=</span> <span class="n">SparsePauliOp</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">([</span><span class="s2">&quot;IIIZIZ&quot;</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">]</span> <span class="p">)))</span>
+<span class="n">qpo_from_sparsepauliop</span><span class="p">(</span><span class="n">op_qiskit</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{(Zq[0], Zq[2]): -0.500000000000000}
+</pre></div>
+</div>
+</div>
+</div>
 <section id="id2">
-<h3><span class="section-number">13.2.1. </span>エネルギーの測定<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">14.2.1. </span>エネルギーの測定<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
 <p>作ったansatzとHamiltonian operatorを、指定したバックエンドに投げて
-<code class="docutils literal notranslate"><span class="pre">pytket.utils.expectations</span></code>に用意された<code class="docutils literal notranslate"><span class="pre">get_operator_expectation_value</span></code>関数で期待値を測定してみよう。</p>
+<code class="docutils literal notranslate"><span class="pre">pytket.utils.expectations</span></code>に用意された<code class="docutils literal notranslate"><span class="pre">get_operator_expectation_value</span></code>関数で期待値を測定してみよう。
+回路とオブザーバブル(に対応する演算子)を指定する、QiskitでいうとEstimatorのようなものだ。</p>
 <p>以下ではQiskit AerのStatevecvtor simulatorを用いる。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -927,10 +973,33 @@ window.pytketCircuitDisplays[circuitRendererUid] = app;
 </div>
 </div>
 </div>
+<p>Z基底での測定結果を集めるQiskitでいうSampler的な使い方をしたい場合は、backendを指定して回路とショット数などを指定すると良い。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pytket.extensions.qiskit</span> <span class="kn">import</span> <span class="n">AerBackend</span>
+<span class="n">ansatz</span> <span class="o">=</span> <span class="n">my_circ_1</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">ansatz</span><span class="o">.</span><span class="n">measure_all</span><span class="p">()</span>
+<span class="n">pytket_backend</span> <span class="o">=</span> <span class="n">AerBackend</span><span class="p">()</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">pytket_backend</span><span class="o">.</span><span class="n">run_circuit</span><span class="p">(</span><span class="n">ansatz</span><span class="p">,</span> <span class="n">n_shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">)</span>
+<span class="n">results</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counter({(1, 1, 0, 0): 3853,
+         (1, 0, 1, 0): 140,
+         (1, 0, 0, 1): 45,
+         (0, 1, 1, 0): 43,
+         (0, 1, 0, 1): 13,
+         (0, 0, 1, 1): 2})
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
 <section id="id3">
-<h2><span class="section-number">13.3. </span>回路パラメータの最適化<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">14.3. </span>回路パラメータの最適化<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
 <p>pytketを使ったVQE計算(回路の最適化)も試してみよう。</p>
 <p>(勾配降下やAdamなどの最適化手法を使った方法がすぐにはわからなかったので)Nakanishi-Fujii-Todo法を実装して、逐次最適化してみよう。
 参考: <a class="reference external" href="https://doi.org/10.1103/PhysRevResearch.2.043158">Phys. Rev. Research 2, 043158 (2020)</a></p>
@@ -950,9 +1019,9 @@ window.pytketCircuitDisplays[circuitRendererUid] = app;
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">minimize_scalar</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize_scalar</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">ansatz</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">ansatz</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
     <span class="n">circ</span> <span class="o">=</span> <span class="n">Circuit</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -963,13 +1032,13 @@ window.pytketCircuitDisplays[circuitRendererUid] = app;
     <span class="n">cG1</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">circ</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">objective</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">objective</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
     <span class="n">circ</span> <span class="o">=</span> <span class="n">ansatz</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span>
         <span class="n">get_operator_expectation_value</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="n">hamiltonian_op</span><span class="p">,</span> <span class="n">backend</span><span class="p">)</span>
     <span class="p">)</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">draw_DFT_curve</span><span class="p">(</span><span class="n">xplot</span><span class="p">,</span> <span class="n">DFTcurve</span><span class="p">,</span> <span class="n">spot</span><span class="p">,</span> <span class="n">Es</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">y_min</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">draw_DFT_curve</span><span class="p">(</span><span class="n">xplot</span><span class="p">,</span> <span class="n">DFTcurve</span><span class="p">,</span> <span class="n">spot</span><span class="p">,</span> <span class="n">Es</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">y_min</span><span class="p">):</span>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xplot</span><span class="p">,</span> <span class="n">DFTcurve</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;DFT curve&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -979,7 +1048,7 @@ window.pytketCircuitDisplays[circuitRendererUid] = app;
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">eval_DFT_coeff</span><span class="p">(</span><span class="n">Es</span><span class="p">,</span> <span class="n">spot</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">eval_DFT_coeff</span><span class="p">(</span><span class="n">Es</span><span class="p">,</span> <span class="n">spot</span><span class="p">):</span>
     <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Es</span><span class="p">)</span>    
     <span class="n">DFT_coef</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
@@ -1002,8 +1071,8 @@ window.pytketCircuitDisplays[circuitRendererUid] = app;
         <span class="n">exit</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">DFT_coef</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">func_DFT_coeff</span><span class="p">(</span><span class="n">DFT_coef</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">DFTcurve</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">func_DFT_coeff</span><span class="p">(</span><span class="n">DFT_coef</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">DFTcurve</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
         <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">DFT_coef</span><span class="p">)):</span>
             <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">DFT_coef</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
@@ -1017,7 +1086,7 @@ window.pytketCircuitDisplays[circuitRendererUid] = app;
         <span class="k">return</span> <span class="n">y</span>
     <span class="k">return</span> <span class="n">DFTcurve</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">DFT</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">Es</span><span class="p">,</span> <span class="n">spot</span><span class="p">,</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;scipy&quot;</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">DFT</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">Es</span><span class="p">,</span> <span class="n">spot</span><span class="p">,</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;scipy&quot;</span><span class="p">):</span>
     <span class="n">N_duration</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Es</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
     <span class="n">DFT_coef</span> <span class="o">=</span> <span class="n">eval_DFT_coeff</span><span class="p">(</span><span class="n">Es</span><span class="p">,</span> <span class="n">spot</span><span class="p">)</span>
     <span class="n">theta_current</span> <span class="o">=</span> <span class="n">spot</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> 
@@ -1037,7 +1106,7 @@ window.pytketCircuitDisplays[circuitRendererUid] = app;
     <span class="n">new_theta</span> <span class="o">=</span> <span class="n">x_min</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">N_duration</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">new_theta</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">NFTmethod</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">Ecurrent</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">which_Gate</span><span class="p">,</span> <span class="n">verbose</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">NFTmethod</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">Ecurrent</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">which_Gate</span><span class="p">,</span> <span class="n">verbose</span><span class="p">):</span>
     <span class="n">params_</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="c1"># Making point to measure for Discrete Fourier Transformation</span>
     <span class="c1"># GやcG1で使われる角度は中で2(4)で割って使われる。これらが0から2piの範囲をカバーしなければならないことに注意してfactorをかけている。</span>
@@ -1190,12 +1259,12 @@ E_initial 1.4867657043426625  最適化 =&gt; 1.1898518351361973 Egs_exact 1.189
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="qiskit_QC.html"
+       href="ucc.html"
        title="前のページ">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">前へ</p>
-        <p class="prev-next-title"><span class="section-number">12. </span>Qiskitを用いた量子計算</p>
+        <p class="prev-next-title"><span class="section-number">13. </span>Unitary Coupled Cluster (UCC) for pairing Hamiltonians</p>
       </div>
     </a>
     <a class="right-next"
@@ -1203,7 +1272,7 @@ E_initial 1.4867657043426625  最適化 =&gt; 1.1898518351361973 Egs_exact 1.189
        title="次ページ">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">次へ</p>
-        <p class="prev-next-title"><span class="section-number">14. </span>Quantum Krylov subspace method</p>
+        <p class="prev-next-title"><span class="section-number">15. </span>Quantum Krylov subspace method</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1224,16 +1293,16 @@ E_initial 1.4867657043426625  最適化 =&gt; 1.1898518351361973 Egs_exact 1.189
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytket">13.1. pytketでの回路作成</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#givens-rotation">13.1.1. Givens rotation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#full-ci-ansatz">13.1.2. Full-CI ansatz</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytket">14.1. pytketでの回路作成</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#givens-rotation">14.1.1. Givens rotation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#full-ci-ansatz">14.1.2. Full-CI ansatz</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">13.2. pytketでの演算子表現</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">13.2.1. エネルギーの測定</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">14.2. pytketでの演算子表現</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">14.2.1. エネルギーの測定</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">13.3. 回路パラメータの最適化</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">14.3. 回路パラメータの最適化</a></li>
 </ul>
   </nav></div>
 

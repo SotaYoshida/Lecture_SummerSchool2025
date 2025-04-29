@@ -30,7 +30,7 @@
   <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -192,9 +192,10 @@
 <li class="toctree-l1"><a class="reference internal" href="pennylane_VQE.html">10. pennylaneを用いたVQE計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pennylane_QPE.html">11. pennylaneを用いたQPE計算</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qiskit_QC.html">12. Qiskitを用いた量子計算</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pytket_VQE.html">13. pytketを用いたVQE計算</a></li>
-<li class="toctree-l1"><a class="reference internal" href="QuantumKrylov.html">14. Quantum Krylov subspace method</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Python_env.html">15. Python環境構築</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ucc.html">13. Unitary Coupled Cluster (UCC) for pairing Hamiltonians</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pytket_VQE.html">14. pytketを用いたVQE計算</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QuantumKrylov.html">15. Quantum Krylov subspace method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Python_env.html">16. Python環境構築</a></li>
 </ul>
 
     </div>
@@ -575,7 +576,7 @@ v_{k} = v_k - \sum_{i=1}^{k-1} \frac{\langle v_k | v_i \rangle}{\langle v_i | v_
 <span class="math notranslate nohighlight">\(H\)</span>のすべての要素を持つ代わりに、非ゼロ要素だけを持つ行列を考える。</p>
 <p>Juliaには、<code class="docutils literal notranslate"><span class="pre">SparseArrays</span></code>パッケージが用意されており、スパース行列を扱うための関数が用意されているが、
 (筆者のJulia v1.0あたりの経験なので誤りがあるかもしれないが)performanceがあまり優れないためDictを使うことにする。
-ただし、Dictのキーに配列を用いると、ハッシュ計算のコストがかかるため、ビット列を整数に変換してキーとすることにする。</p>
+ただし、Dictのキーに配列を用いると、ハッシュ計算のコストが余計にかかるため、ビット列を整数に変換してキーとすることにする。</p>
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span><span class="n">hash_key2</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span><span class="o">::</span><span class="kt">UInt64</span>
 <span class="w">    </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">UInt64</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">32</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">  </span><span class="kt">UInt64</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">key</span>
@@ -595,11 +596,29 @@ v_{k} = v_k - \sum_{i=1}^{k-1} \frac{\langle v_k | v_i \rangle}{\langle v_i | v_
 v^{k+1}_i := H_{ij} v^{k}_j
 \end{align}
 \]</div>
-<p>を計算したいので</p>
+<p>を計算したいが、<span class="math notranslate nohighlight">\(H_{ij}\)</span>が大次元の行列だとすると、メモリには行列として載せたくない。
+ここで、<span class="math notranslate nohighlight">\(i,j\)</span>はそれぞれ配位に対応するラベルである。</p>
+<p>そこで、非ゼロ要素をもつindex<span class="math notranslate nohighlight">\({i,j}\)</span>を(上記の方法でUInt64に変換して)保持しておくと、行列ベクトル積は下記のようなコードで効率的に実装することができる。</p>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span><span class="n">operate_H_on_vec!</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="n">Hamil_mat</span><span class="o">::</span><span class="kt">Dict</span><span class="p">{</span><span class="kt">UInt64</span><span class="p">,</span><span class="w"> </span><span class="kt">Float64</span><span class="p">},</span><span class="w"> </span><span class="n">v</span><span class="p">)</span>
+<span class="w">    </span><span class="n">w</span><span class="w"> </span><span class="o">.=</span><span class="w"> </span><span class="mf">0.0</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">nkey</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">keys</span><span class="p">(</span><span class="n">Hamil_mat</span><span class="p">)</span>
+<span class="w">        </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Hamil_mat</span><span class="p">[</span><span class="n">nkey</span><span class="p">]</span>
+<span class="w">        </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unhash_key2</span><span class="p">(</span><span class="n">nkey</span><span class="p">)</span>
+<span class="w">        </span><span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">val</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">v</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">j</span>
+<span class="w">            </span><span class="n">w</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">val</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">nothing</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>なお、Juliaでは新たな配列の確保が生じるコードの書き方をすると遅くなりやすいので、あらかじめ用意した配列の値を書き換える(破壊的)関数として実装してある。</p>
 </section>
 </section>
 <section id="id4">
 <h2><span class="section-number">2.3. </span>結果を眺める<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p><img alt="" src="../_images/Energies_Norb20_Nocc10.png" /></p>
 <p>厳密対角化の場合は、<span class="math notranslate nohighlight">\(g\)</span>の値に応じて不得意な領域(数値的な不安定性)などが特にないため、
 実際に得られる波動関数を眺めながら、他の手法の挙動の理解にも役立てることができる。</p>
 <p>pairing Hamiltonianでは<span class="math notranslate nohighlight">\(g&lt;0では\)</span>、波動関数がnaive filling (=HF)+少量の相関効果で記述できる状態になっている一方で、<span class="math notranslate nohighlight">\(g&gt;0\)</span>では、超流動的な状態が形成されている。</p>
