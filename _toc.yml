@@ -30,6 +30,7 @@ parts:
   - file: notebooks/pennylane_VQE
   - file: notebooks/pennylane_QPE
   - file: notebooks/qiskit_QC
+  - file: notebooks/ucc
   - file: notebooks/pytket_VQE
   - file: notebooks/QuantumKrylov
   - file: notebooks/Python_env  

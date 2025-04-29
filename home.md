@@ -25,7 +25,7 @@
 | Coupled Cluster (CC)|  [6章](notebooks/CoupledCluster.html)  | 
 | In-Medium Similarity Renormalization Group (IM-SRG) | [7章](notebooks/IMSRG.html) | 
 | Eigenvector Continuation | [8章](notebooks/EC.html)  |  
-| Quantum Computing ※2 | [9章](notebooks/QuantumComputing.html) [10章](notebooks/pennylane_VQE.html) [11章](notebooks/pennylane_QPE.html) [12章](notebooks/qiskit_QC.html) [13章](notebooks/pytket_VQE.html) [14章](notebooks/QuantumKrylov) |  
+| Quantum Computing ※2 | [9章](notebooks/QuantumComputing.html) [10章](notebooks/pennylane_VQE.html) [11章](notebooks/pennylane_QPE.html) [12章](notebooks/qiskit_QC.html) [13章](notebooks/ucc.html)[14章](notebooks/pytket_VQE.html) [15章](notebooks/QuantumKrylov) |  
 
 :::{margin}
 ※Julia言語による...と資料の題にありますが、量子計算の部分は全てPythonです。
