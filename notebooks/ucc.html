@@ -400,11 +400,15 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="unitary-coupled-cluster-ucc-for-pairing-hamiltonians">
 <h1><span class="section-number">13. </span>Unitary Coupled Cluster (UCC) for pairing Hamiltonians<a class="headerlink" href="#unitary-coupled-cluster-ucc-for-pairing-hamiltonians" title="Link to this heading">#</a></h1>
-<p>Qiskitには、Qiskit Natureの中に、UCC系のansatzの実装がある。
-これを利用してpairing HamiltonianでUCC計算を行ってみよう。</p>
-<p>QiskitのUCC実装は、軌道をup/down spinに分けるなど、電子系での実装を念頭においている。
+<p>Qiskitには、Qiskit Natureの中に、UCC系のansatzの実装がある:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://qiskit-community.github.io/qiskit-nature/stubs/qiskit_nature.second_q.circuit.library.UCC.html">Qiskit Nature/UCC</a></p></li>
+<li><p><a class="reference external" href="https://qiskit-community.github.io/qiskit-algorithms/stubs/qiskit_algorithms.VQE.html">Qiskit Algorithms/VQE</a></p></li>
+</ul>
+<p>これらを利用してpairing HamiltonianでUCC計算を行ってみよう。
+QiskitのUCC実装は、軌道をup/down spinに分けるなど、電子系/量子化学での計算を念頭においている。
 したがって、核子系や、pairingのpair自由度を畳んでhard-core boson化した場合は、適切なオプションの指定が必要となる。</p>
-<p>その他、<code class="docutils literal notranslate"><span class="pre">qiskit_algorithms.minimum_eigensolvers.VQE</span></code>が、古い(v2ではduplicated)Estimatorを使うので、将来的にはコードの修正が必要となるであろう点に注意。</p>
+<p>その他、<code class="docutils literal notranslate"><span class="pre">qiskit_algorithms.minimum_eigensolvers.VQE</span></code>が、古い(v2ではduplicated)Estimatorを使うので、将来的にはコードの修正が必要となるであろう点に注意となる。</p>
 <p>Nq = 6, Nocc = 3の場合の厳密解を求めておこう。</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
@@ -539,6 +543,14 @@
 <h2><span class="section-number">13.1. </span>UCCによるVQE計算<a class="headerlink" href="#uccvqe" title="Link to this heading">#</a></h2>
 <p>以下では、UCCのsingle(UCCS)とsingle+double(UCCSD)を用いて、pairing Hamiltonianのground stateを求める。
 ※singleといっても、pairの自由度を考慮しているので、エネルギーを稼ぐことができる。</p>
+<p>UCCやUCCSDクラスを使う場合は、</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Norb</span></code>: 軌道数(up+down spinそれぞれを同じ数持つことが想定されている)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_particles</span></code>: up/down spinのparticle数</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">generalized</span></code>: <code class="docutils literal notranslate"><span class="pre">True</span></code>にすると、hole-holeのような項も考慮される。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">preserve_spin</span></code>: <code class="docutils literal notranslate"><span class="pre">True</span></code>にすると、up/down spinの数を保持するようなUCCが実装される。(proton/neutronに応用できる)</p></li>
+</ul>
+<p>などのオプションがある。詳しくは<a class="reference external" href="https://qiskit-community.github.io/qiskit-nature/stubs/qiskit_nature.second_q.circuit.library.UCC.html">documentation</a>を参照のこと。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_particles</span> <span class="o">=</span> <span class="p">(</span><span class="n">Nocc</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="n">Nocc</span><span class="o">-</span><span class="n">Nocc</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
