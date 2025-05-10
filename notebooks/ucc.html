@@ -400,7 +400,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="unitary-coupled-cluster-ucc-for-pairing-hamiltonians">
 <h1><span class="section-number">13. </span>Unitary Coupled Cluster (UCC) for pairing Hamiltonians<a class="headerlink" href="#unitary-coupled-cluster-ucc-for-pairing-hamiltonians" title="Link to this heading">#</a></h1>
-<p>Qiskitには、Qiskit Natureの中に、UCC系のansatzの実装がある:</p>
+<p>Qiskit Natureの中に、UCC系のansatz及びVQEの実装がある:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://qiskit-community.github.io/qiskit-nature/stubs/qiskit_nature.second_q.circuit.library.UCC.html">Qiskit Nature/UCC</a></p></li>
 <li><p><a class="reference external" href="https://qiskit-community.github.io/qiskit-algorithms/stubs/qiskit_algorithms.VQE.html">Qiskit Algorithms/VQE</a></p></li>
@@ -541,8 +541,6 @@ QiskitのUCC実装は、軌道をup/down spinに分けるなど、電子系/量�
 </div>
 <section id="uccvqe">
 <h2><span class="section-number">13.1. </span>UCCによるVQE計算<a class="headerlink" href="#uccvqe" title="Link to this heading">#</a></h2>
-<p>以下では、UCCのsingle(UCCS)とsingle+double(UCCSD)を用いて、pairing Hamiltonianのground stateを求める。
-※singleといっても、pairの自由度を考慮しているので、エネルギーを稼ぐことができる。</p>
 <p>UCCやUCCSDクラスを使う場合は、</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Norb</span></code>: 軌道数(up+down spinそれぞれを同じ数持つことが想定されている)</p></li>
@@ -551,6 +549,7 @@ QiskitのUCC実装は、軌道をup/down spinに分けるなど、電子系/量�
 <li><p><code class="docutils literal notranslate"><span class="pre">preserve_spin</span></code>: <code class="docutils literal notranslate"><span class="pre">True</span></code>にすると、up/down spinの数を保持するようなUCCが実装される。(proton/neutronに応用できる)</p></li>
 </ul>
 <p>などのオプションがある。詳しくは<a class="reference external" href="https://qiskit-community.github.io/qiskit-nature/stubs/qiskit_nature.second_q.circuit.library.UCC.html">documentation</a>を参照のこと。</p>
+<p>いま、pairの自由度を畳んでいるので、UCCS的な使い方で、pUCCDに対応する。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_particles</span> <span class="o">=</span> <span class="p">(</span><span class="n">Nocc</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="n">Nocc</span><span class="o">-</span><span class="n">Nocc</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span> <span class="c1">#←粒子数が多いとき、α/β側の軌道を全部埋めると励起が考えられないようなので、少し変な実装にした。</span>
@@ -571,26 +570,14 @@ QiskitのUCC実装は、軌道をup/down spinに分けるなど、電子系/量�
     <span class="n">qubit_mapper</span> <span class="o">=</span> <span class="n">mapper</span><span class="p">,</span>
     <span class="n">generalized</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">initial_state</span><span class="o">=</span><span class="n">init_state</span><span class="p">,</span>
-    <span class="n">preserve_spin</span><span class="o">=</span><span class="kc">False</span>
+    <span class="n">preserve_spin</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">reps</span><span class="o">=</span><span class="mi">1</span>
 <span class="p">)</span>
 
-<span class="n">ucc_sd</span> <span class="o">=</span> <span class="n">UCC</span><span class="p">(</span>
-    <span class="n">Norb</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span>
-    <span class="n">num_particles</span><span class="o">=</span><span class="n">num_particles</span><span class="p">,</span>
-    <span class="n">excitations</span><span class="o">=</span><span class="s2">&quot;sd&quot;</span><span class="p">,</span>
-    <span class="n">qubit_mapper</span> <span class="o">=</span> <span class="n">mapper</span><span class="p">,</span>
-    <span class="n">generalized</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">initial_state</span><span class="o">=</span><span class="n">init_state</span><span class="p">,</span>
-    <span class="n">preserve_spin</span><span class="o">=</span><span class="kc">False</span>
-<span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;UCCS: &quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Excitation list: &quot;</span><span class="p">,</span> <span class="n">ucc_s</span><span class="o">.</span><span class="n">excitation_list</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of parameters: &quot;</span><span class="p">,</span> <span class="n">ucc_s</span><span class="o">.</span><span class="n">num_parameters</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;UCCSD: &quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Excitation list: &quot;</span><span class="p">,</span> <span class="n">ucc_sd</span><span class="o">.</span><span class="n">excitation_list</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of parameters: &quot;</span><span class="p">,</span> <span class="n">ucc_sd</span><span class="o">.</span><span class="n">num_parameters</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -610,9 +597,6 @@ q_5: ─────
           </pre></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>UCCS: 
 Excitation list:  [((0,), (1,)), ((0,), (2,)), ((0,), (5,)), ((3,), (1,)), ((3,), (2,)), ((3,), (5,)), ((4,), (1,)), ((4,), (2,)), ((4,), (5,))]
 Number of parameters:  9
-UCCSD: 
-Excitation list:  [((0,), (1,)), ((0,), (2,)), ((0,), (5,)), ((3,), (1,)), ((3,), (2,)), ((3,), (5,)), ((4,), (1,)), ((4,), (2,)), ((4,), (5,)), ((0, 3), (1, 2)), ((0, 3), (1, 5)), ((0, 4), (1, 2)), ((0, 4), (1, 5)), ((0, 3), (2, 5)), ((0, 4), (2, 5)), ((3, 4), (1, 2)), ((3, 4), (1, 5)), ((3, 4), (2, 5))]
-Number of parameters:  18
 </pre></div>
 </div>
 </div>
@@ -628,35 +612,21 @@ Number of parameters:  18
 <span class="n">vqe</span><span class="o">.</span><span class="n">initial_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">ucc_s</span><span class="o">.</span><span class="n">num_parameters</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 <span class="n">vqe_result</span> <span class="o">=</span> <span class="n">vqe</span><span class="o">.</span><span class="n">compute_minimum_eigenvalue</span><span class="p">(</span><span class="n">hamiltonian_op</span><span class="p">)</span>
 <span class="n">binding_energy</span> <span class="o">=</span> <span class="n">vqe_result</span><span class="o">.</span><span class="n">optimal_value</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;E(UCCS): &quot;</span><span class="p">,</span> <span class="n">binding_energy</span><span class="p">,</span> <span class="s2">&quot;Egs_exact: &quot;</span><span class="p">,</span> <span class="n">Egs_exact</span><span class="p">,</span> <span class="s2">&quot; E_HF&quot;</span><span class="p">,</span> <span class="n">E_HF</span><span class="p">)</span>
-
-<span class="n">vqe</span> <span class="o">=</span> <span class="n">VQE</span><span class="p">(</span><span class="n">oEstimator</span><span class="p">(),</span> <span class="n">ucc_sd</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">)</span>
-<span class="n">vqe</span><span class="o">.</span><span class="n">initial_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">ucc_sd</span><span class="o">.</span><span class="n">num_parameters</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<span class="n">vqe_result</span> <span class="o">=</span> <span class="n">vqe</span><span class="o">.</span><span class="n">compute_minimum_eigenvalue</span><span class="p">(</span><span class="n">hamiltonian_op</span><span class="p">)</span>
-<span class="n">binding_energy</span> <span class="o">=</span> <span class="n">vqe_result</span><span class="o">.</span><span class="n">optimal_value</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;E(UCCSD): &quot;</span><span class="p">,</span> <span class="n">binding_energy</span><span class="p">,</span> <span class="s2">&quot;Egs_exact: &quot;</span><span class="p">,</span> <span class="n">Egs_exact</span><span class="p">,</span> <span class="s2">&quot; E_HF&quot;</span><span class="p">,</span> <span class="n">E_HF</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;E(pUCCD): &quot;</span><span class="p">,</span> <span class="n">binding_energy</span><span class="p">,</span> <span class="s2">&quot;Egs_exact: &quot;</span><span class="p">,</span> <span class="n">Egs_exact</span><span class="p">,</span> <span class="s2">&quot; E_HF&quot;</span><span class="p">,</span> <span class="n">E_HF</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/w4/qfsp76x90732_cjtryhq_19w0000gn/T/ipykernel_56100/3666880401.py:4: DeprecationWarning: The class ``qiskit.primitives.estimator.Estimator`` is deprecated as of qiskit 1.2. It will be removed no earlier than 3 months after the release date. All implementations of the `BaseEstimatorV1` interface have been deprecated in favor of their V2 counterparts. The V2 alternative for the `Estimator` class is `StatevectorEstimator`.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/w4/qfsp76x90732_cjtryhq_19w0000gn/T/ipykernel_19095/3267568472.py:4: DeprecationWarning: The class ``qiskit.primitives.estimator.Estimator`` is deprecated as of qiskit 1.2. It will be removed no earlier than 3 months after the release date. All implementations of the `BaseEstimatorV1` interface have been deprecated in favor of their V2 counterparts. The V2 alternative for the `Estimator` class is `StatevectorEstimator`.
   vqe = VQE(oEstimator(), ucc_s, optimizer)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>E(UCCS):  4.750238826425197 Egs_exact:  4.741264131588444  E_HF 5.01
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/w4/qfsp76x90732_cjtryhq_19w0000gn/T/ipykernel_56100/3666880401.py:10: DeprecationWarning: The class ``qiskit.primitives.estimator.Estimator`` is deprecated as of qiskit 1.2. It will be removed no earlier than 3 months after the release date. All implementations of the `BaseEstimatorV1` interface have been deprecated in favor of their V2 counterparts. The V2 alternative for the `Estimator` class is `StatevectorEstimator`.
-  vqe = VQE(oEstimator(), ucc_sd, optimizer)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>E(UCCSD):  4.744960373051082 Egs_exact:  4.741264131588444  E_HF 5.01
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>E(pUCCD):  4.750238826425197 Egs_exact:  4.741264131588444  E_HF 5.01
 </pre></div>
 </div>
 </div>
 </div>
-<p>iteration回数やoptimizerにも依存するが、期待する通り、UCCS &lt; UCCSDの順に精度が良いことも見えた。</p>
-<p>なお、Nq=6, Nocc=3の場合は、配位の数が20であるので、UCCSDのパラメータ18はほぼすべての自由度(19)を取り尽くしている。一方で、UCCSはその半分の自由度でcorrelation energy(ここではE(HF)-E(FCI))の95%以上を説明していることもわかる。</p>
+<p>DOCIの場合の配位が20個、pUCCDでは9個の自由度でcorrelation energy(ここではE(HF)-E(FCI))の95%以上を説明していることがわかる。</p>
 </section>
 </section>
 
