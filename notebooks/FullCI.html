@@ -30,7 +30,7 @@
   <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -398,6 +398,7 @@
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2.3. 結果を眺める</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2.4. 配位生成に関する余談</a></li>
 </ul>
             </nav>
         </div>
@@ -2990,6 +2991,34 @@ G/peAAAAAABJRU5ErkJggg==
 </div>
 <p><span class="math notranslate nohighlight">\(g \approx 0.35\)</span>(★)程度を境にoverlapの構造が変化しており、このあたりを境に波動関数の<strong>質的な変化</strong>が生じていることが見て取れる。</p>
 </section>
+<section id="id5">
+<h2><span class="section-number">2.4. </span>配位生成に関する余談<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<p>PairingHamiltonians.jlでは、愚直な方法で配位を生成しているが、NCSMなどのより規模の大きな問題に適用したい場合は、さらなる工夫が必要になる。
+<span class="math notranslate nohighlight">\(N_q\)</span>個の軌道から<span class="math notranslate nohighlight">\(N_{\rm occ}\)</span>個の粒子を選ぶ場合、<span class="math notranslate nohighlight">\(N_q\)</span>が大きくなると、<span class="math notranslate nohighlight">\(2^{N_q}\)</span>通りの配位を生成し、それらのうちから
+<span class="math notranslate nohighlight">\(N_{\rm occ}\)</span>個の粒子が詰まった配位を選ぶのは、非常に非効率である。</p>
+<p>そこで、Gosper's hackと呼ばれる方法を用いると、効率的に配位を生成することができる。
+<span class="math notranslate nohighlight">\(N_q\)</span>個の軌道から<span class="math notranslate nohighlight">\(N_{\rm occ}\)</span>個詰まった配位がすでにあるとき、次の(つまり整数にして次に大きい)所望の配位を生成する事を考える。</p>
+<ol class="arabic">
+<li><p><code class="docutils literal notranslate"><span class="pre">u</span> <span class="pre">=</span> <span class="pre">x</span> <span class="pre">&amp;</span> <span class="pre">-x</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">-x</span></code>が<code class="docutils literal notranslate"><span class="pre">x</span></code>の補数に1を加えたものとなるため、ビットANDを取ると最下位の1ビットだけが残る
+つまり、数値xの最下位の1ビット（右端にある最初の1）を取得する。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">v</span> <span class="pre">=</span> <span class="pre">x</span> <span class="pre">+</span> <span class="pre">u</span></code></p></li>
+</ol>
+<p>最下位の1ビットを加えることで、次の(左側の)0にまでの1ビットをすべて0にする。
+(要は、次に占有数の同じ大きい数を計算するのに、どこが変わるかが次の排他的論理和でわかる)</p>
+<ol class="arabic" start="3">
+<li><p><code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">((x</span> <span class="pre">^</span> <span class="pre">v)</span> <span class="pre">&gt;&gt;</span> <span class="pre">2)</span> <span class="pre">/u</span> <span class="pre">|</span> <span class="pre">v</span></code></p>
+<p>(いくつか等価な表現があるが...)この操作の意味は:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">x</span></code>と<code class="docutils literal notranslate"><span class="pre">v</span></code>の排他的論理和を取ることで、変化分を取得する。</p></li>
+<li><p>その後、2つ右シフトして、最下位の2ビットを削除する。</p></li>
+<li><p>最後に、<code class="docutils literal notranslate"><span class="pre">u</span></code>で割り(今は<code class="docutils literal notranslate"><span class="pre">u</span></code>が2^?なので?回右シフト)、<code class="docutils literal notranslate"><span class="pre">v</span></code>とORを取る。</p></li>
+</ul>
+</li>
+</ol>
+<p>さらに効率化したければ、この工程を並列化すれば良い。</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -3067,6 +3096,7 @@ G/peAAAAAABJRU5ErkJggg==
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2.3. 結果を眺める</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2.4. 配位生成に関する余談</a></li>
 </ul>
   </nav></div>
 
