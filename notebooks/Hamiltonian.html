@@ -30,7 +30,7 @@
   <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -472,7 +472,7 @@ Full-CI法と量子計算の章では、この表現を用いることにする�
 <section id="id2">
 <h3><span class="section-number">1.2.1. </span>実装上の注: 波動関数の反対称化について<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
 <p>一般のCI計算でHamiltonianによる遷移行列要素を求める際には、operatorの並び順を考慮してきちんと(反)対称化する必要がある。</p>
-<p>例えば、<span class="math notranslate nohighlight">\(a^{\dag}_i a^{\dag}_j a_k a_l\)</span>と<span class="math notranslate nohighlight">\(a^{\dag}_i a^{\dag}_j a_l a_k\)</span>の
+<p>例えば、<span class="math notranslate nohighlight">\(a^{\dagger}_i a^{\dagger}_j a_k a_l\)</span>と<span class="math notranslate nohighlight">\(a^{\dagger}_i a^{\dagger}_j a_l a_k\)</span>の
 それぞれにひっつく相互作用の係数は、全体として適切な対称性を担保していなければならない。
 よりgeneralな(例えばHO基底での)相互作用の場合、こうしたphase/factorを相互作用ファイルに持たせるのか、
 redundantな項は書き出さず、特定のindexの並びについてのみ相互作用の係数を書き出しておいて、
