@@ -71,4 +71,3 @@ CI, HF, BCS, MBPT, CC, IM-SRG, Quantum Computingといった多様な手法を�
 - [計算物理春の学校2024: NuclearToolkit.jlによる原子核構造計算入門](https://sotayoshida.github.io/Lecture_CompPhys_SpSchool24/home.html)  
   カイラル核力から、IM-SRG, 殻模型, 代理モデルまでを扱った講義資料です。この講義のあとであれば、よりスムーズに理解できるかも。
 
-
