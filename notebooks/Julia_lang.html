@@ -559,8 +559,8 @@ Juliaをインストールしてターミナル(VS code経由など含む)ない
 ※Apple Siliconチップの場合は、macOS(Apple Silicon)を選択するほうが性能上良いが、どちらでも動かすことは可能。</p></li>
 <li><p>ダウンロードしたファイルを開き、Juliaアプリケーションをアプリケーションフォルダに移動する。</p></li>
 <li><p>PATHを通すために、ターミナルを開き下記を実行する。<br />
-※Julia-1.6の部分やbashrcの部分は、適宜ダウンロードしたJuliaのバージョンに置き換えたり使用しているシェルに合わせて変更すること。</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;export PATH=&quot;/Applications/Julia-1.6.app/Contents/Resources/julia/bin:$PATH&quot;&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc
+※Julia-1.xの部分やbashrcの部分は、適宜ダウンロードしたJuliaのバージョンに置き換えたり使用しているシェルに合わせて変更すること。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;export PATH=&quot;/Applications/Julia-1.x.app/Contents/Resources/julia/bin:$PATH&quot;&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc
 </pre></div>
 </div>
 <p>Mac OSの場合、(いつからだったか)標準のシェルがbashからzshに変更されているので、zshを使う場合は、<code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code>ではなく<code class="docutils literal notranslate"><span class="pre">~/.zshrc</span></code>に追記すること。</p>
@@ -585,15 +585,15 @@ Juliaをインストールしてターミナル(VS code経由など含む)ない
 <ol class="arabic">
 <li><p>Julia言語の<a class="reference external" href="https://julialang.org/downloads/">公式ページ</a>から、Linux用のtar.gzファイル(長期サポート(LTS)のv1.6か最新版)をダウンロードする。<br />
 ※ アーキテクチャに応じたものを選択すること。</p></li>
-<li><p>tar.gzを解凍すると<code class="docutils literal notranslate"><span class="pre">julia-1.9.0</span></code>というフォルダができる。この中の<code class="docutils literal notranslate"><span class="pre">julia-1.9.0/bin/julia</span></code>が実行ファイルなので、
+<li><p>tar.gzを解凍すると<code class="docutils literal notranslate"><span class="pre">julia-1.x.y</span></code>というフォルダができる。この中の<code class="docutils literal notranslate"><span class="pre">julia-1.x.y/bin/julia</span></code>が実行ファイルなので、
 この実行ファイルにPATHを通すために、ターミナルを開き下記のように実行する。</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;export PATH=&quot;/path/to/julia-1.9.0/bin:$PATH&quot;&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;export PATH=&quot;/path/to/julia-1.x.y/bin:$PATH&quot;&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>1.9.0の部分はダウンロードしたバージョンに依る。</p></li>
+<li><p>1.x.yの部分はダウンロードしたバージョンに依る。</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">/path/to/</span></code>は適宜ファイルの場所に置き換えること。とくにWSLの場合は、ダウンロードしたものもLinuxのホーム以下に置いておこう。<br />
-例えば、<code class="docutils literal notranslate"><span class="pre">/home/username/julia-1.9.0/bin/julia</span></code>というパスにjuliaの実行ファイル<code class="docutils literal notranslate"><span class="pre">julia</span></code>がある場合、<code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">PATH=/home/username/julia-1.9.0/bin</span></code>をホーム直下の隠しファイルである<code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code>等に追記する。bashrcとは、bashシェルが起動する際に読み込まれる設定ファイルであり、zchなど他のシェルを用いる場合は、それぞれのシェルに合わせた設定ファイルに追記すること。Ubuntuは(少なくともこれを執筆した当時は)デフォルトでbashを使っているので、bashrcに追記する。</p></li>
+例えば、<code class="docutils literal notranslate"><span class="pre">/home/username/julia-1.x.y/bin/julia</span></code>というパスにjuliaの実行ファイル<code class="docutils literal notranslate"><span class="pre">julia</span></code>がある場合、<code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">PATH=/home/username/julia-1.x.y/bin</span></code>をホーム直下の隠しファイルである<code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code>等に追記する。bashrcとは、bashシェルが起動する際に読み込まれる設定ファイルであり、zchなど他のシェルを用いる場合は、それぞれのシェルに合わせた設定ファイルに追記すること。Ubuntuは(少なくともこれを執筆した当時は)デフォルトでbashを使っているので、bashrcに追記する。</p></li>
 </ul>
 </li>
 <li><p>ターミナルで<code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">~/.bashrc</span></code>などを行い変更を反映したのち、<code class="docutils literal notranslate"><span class="pre">julia</span></code>と入力して、JuliaのREPL(対話環境)が起動することを確認する。</p></li>
