@@ -30,7 +30,7 @@
   <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -455,6 +455,34 @@ Triple(<span class="math notranslate nohighlight">\(A=3\)</span>)の効果を部
 </aside>
 <p>pairing Hamiltonianの場合は、軌道内でペアが占有する場合のみしか相互作用が働かないため、
 1p1h励起を2p2hにあわせて取り込んでもエネルギーを稼ぐことはできない。そこで、CCSDではなくCCDを考えれば良い。</p>
+<p>以降では、2p2hに対応するcluster operator<span class="math notranslate nohighlight">\(T_2\)</span>だけを考える。</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\hat{T} &amp; = \hat{T}_2 = \frac{1}{4} \sum_{abij} t^{ab}_{ij} a^\dagger_a a^\dagger_b a_i a_j \\
+\ket{\Psi_\mathrm{CCD}} &amp; = \exp(\hat{T}_2) \ket{\Phi_0} 
+\end{align*}
+\end{split}\]</div>
+<p>系のハミルトニアンは、reference stateのエネルギー<span class="math notranslate nohighlight">\(E_\mathrm{ref}=\bra{\Phi_0} \hat{H} \ket{\Phi_0}\)</span>を用いて、</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\hat{H} &amp;= \hat{H}_{NO} + E_\mathrm{ref} \\
+\hat{H}_{NO} &amp;= \sum_{ij} \bra{i} \hat{f} \ket{j} a^\dagger_i a_j
++ \frac{1}{4} \sum_{ijkl} \bra{ij} \hat{v} \ket{kl} a^\dagger_i a^\dagger_j a_k a_l
+\end{align*}
+\end{split}\]</div>
+<p>のように、正規順序化された(Normal ordered)項と参照状態エネルギーの和として表現できる。
+<span class="math notranslate nohighlight">\(E_\mathrm{CCD}=\bra{\Psi_\mathrm{CCD}} \hat{H} \ket{\Psi_\mathrm{CCD}}\)</span>が、CCDによるエネルギーの推定値となる。</p>
+<p><span class="math notranslate nohighlight">\(E_\mathrm{CCD}\)</span>を求めるためには、<span class="math notranslate nohighlight">\(\hat{T}_2\)</span>の係数<span class="math notranslate nohighlight">\(t^{ab}_{ij}\)</span>を求める必要がある。
+amplitude equationと呼ばれる方程式は、</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{align*}
+\bra{\Phi^{ab}_{ij}} \exp(-\hat{T}_2) \hat{H}_{NO} \exp(\hat{T}_2) \ket{\Phi_0} = 0
+\end{align*}
+\]</div>
+<p>となる。</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align*}
