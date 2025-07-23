@@ -463,17 +463,28 @@ Triple(<span class="math notranslate nohighlight">\(A=3\)</span>)の効果を部
 \ket{\Psi_\mathrm{CCD}} &amp; = \exp(\hat{T}_2) \ket{\Phi_0} 
 \end{align*}
 \end{split}\]</div>
-<p>系のハミルトニアンは、reference stateのエネルギー<span class="math notranslate nohighlight">\(E_\mathrm{ref}=\bra{\Phi_0} \hat{H} \ket{\Phi_0}\)</span>を用いて、</p>
+<p>系のハミルトニアンは、reference stateのエネルギー</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{align*}
+E_\mathrm{ref} &amp; =\bra{\Phi_0} \hat{H} \ket{\Phi_0} = 
+\sum_{i \le F} \langle i | \hat{h}_0 | i \rangle
++ \frac{1}{2} \sum_{ij \le F} \langle ij | \hat{v} | ij \rangle
+\end{align*}
+\]</div>
+<p>を用いて、</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align*}
 \hat{H} &amp;= \hat{H}_{NO} + E_\mathrm{ref} \\
-\hat{H}_{NO} &amp;= \sum_{ij} \bra{i} \hat{f} \ket{j} a^\dagger_i a_j
-+ \frac{1}{4} \sum_{ijkl} \bra{ij} \hat{v} \ket{kl} a^\dagger_i a^\dagger_j a_k a_l
+\hat{H}_{NO} &amp;= \sum_{pq} \langle p | \hat{h}_0 | q \rangle :a^\dagger_p a_q: 
++ \frac{1}{4} \sum_{pqrs} \langle pq | \hat{v} | rs \rangle :a^\dagger_p a^\dagger_q a_r a_s: 
++ \sum_{pq, i \le F} \langle pi | \hat{v} | qi \rangle :a^\dagger_p a_q:
 \end{align*}
 \end{split}\]</div>
 <p>のように、正規順序化された(Normal ordered)項と参照状態エネルギーの和として表現できる。
 <span class="math notranslate nohighlight">\(E_\mathrm{CCD}=\bra{\Psi_\mathrm{CCD}} \hat{H} \ket{\Psi_\mathrm{CCD}}\)</span>が、CCDによるエネルギーの推定値となる。</p>
+<p>pairing Hamiltonianの場合は、particleとhole軌道がcoupleしないため、最後の一粒子エネルギーへの補正の項などが無視できるので、大幅に簡略化できる。</p>
 <p><span class="math notranslate nohighlight">\(E_\mathrm{CCD}\)</span>を求めるためには、<span class="math notranslate nohighlight">\(\hat{T}_2\)</span>の係数<span class="math notranslate nohighlight">\(t^{ab}_{ij}\)</span>を求める必要がある。
 amplitude equationと呼ばれる方程式は、</p>
 <div class="math notranslate nohighlight">
@@ -482,7 +493,7 @@ amplitude equationと呼ばれる方程式は、</p>
 \bra{\Phi^{ab}_{ij}} \exp(-\hat{T}_2) \hat{H}_{NO} \exp(\hat{T}_2) \ket{\Phi_0} = 0
 \end{align*}
 \]</div>
-<p>となる。</p>
+<p>となり、これを展開すると以下のような形になる。</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align*}
