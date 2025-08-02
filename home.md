@@ -66,8 +66,11 @@ CI, HF, BCS, MBPT, CC, IM-SRG, Quantum Computingといった多様な手法を�
 気になった方は[NuclearToolkit.jl](https://github.com/sotayoshida/nucleartoolkit.jl)をご覧ください。
 
 
-## 関連する講義資料
+## 関連する講義資料と参考文献
 
 - [計算物理春の学校2024: NuclearToolkit.jlによる原子核構造計算入門](https://sotayoshida.github.io/Lecture_CompPhys_SpSchool24/home.html)  
   カイラル核力から、IM-SRG, 殻模型, 代理モデルまでを扱った講義資料です。この講義のあとであれば、よりスムーズに理解できるかも。
-
+- Isaiah Shavitt and Rodney J. Bartlett, [Many-Body Methods in Chemistry and Physics: MBPT and Coupled-Cluster Theory](https://doi.org/10.1017/CBO9780511596834)  
+  多体摂動論とCoupled Clusterの教科書。
+- Justin G. Lietz, Samuel Novario, Gustav R. Jansen, Gaute Hagen & Morten Hjorth-Jensen, [Computational Nuclear Physics and Post Hartree-Fock Methods](https://link.springer.com/chapter/10.1007/978-3-319-53336-0_8), part of the book series: [Lecture Notes in Physics ((LNP,volume 936))](https://link.springer.com/book/10.1007/978-3-319-53336-0)
+- 手で解く量子化学1・2・3 著: 中井浩巳・吉川　武司(3巻のみ) [丸善出版](https://www.maruzen-publishing.co.jp/book/b10112338.html)
