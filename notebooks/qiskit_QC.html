@@ -837,6 +837,83 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 </div>
 </div>
 <p>また、制御ビットを指定して制御ユニタリ演算子を作成することもできる(例は、続く節で示す)。</p>
+<p>では、実時間発展演算子に現れる各項はどのような形で表現され、どのように回路にencodeされるのか。</p>
+<p>Pairing Hamiltonianの場合は、Jordan-Wigner変換の結果がシンプルなため、たかだか<span class="math notranslate nohighlight">\(I, Z_i, Z_iZ_j, X_iX_j, Y_iY_j\)</span>の項が現れるだけだが、
+一般のハミルトニアンの各項は、Pauli演算子<span class="math notranslate nohighlight">\(\{ I, X, Y, Z \}\)</span>の直積で表現される。</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{H}_i = c_i ( \sigma_1 \otimes \sigma_2 \otimes \cdots \otimes \sigma_n )
+\]</div>
+<p><span class="math notranslate nohighlight">\(n\)</span>量子ビットの系において、<span class="math notranslate nohighlight">\(c_i\)</span>は実数、<span class="math notranslate nohighlight">\(\sigma_j \in \{ I, X, Y, Z \}\)</span>は<span class="math notranslate nohighlight">\(j\)</span>番目の量子ビットに作用するPauli演算子を表す。</p>
+<p>実用に最も適しているかはさておき、はしご状のCNOTと各Pauli演算子に対応する基底変換で回路にエンコードすることができる。
+例として以下の2つを考えよう。<span class="math notranslate nohighlight">\(R_z(\theta) = \exp(-i \theta/2 Z)\)</span>と、係数に注意して、自前の実装とPauliEvolutionGateを用いた実装を比較してみる。</p>
+<ul class="simple">
+<li><p>(a). <span class="math notranslate nohighlight">\(\exp(-i \theta (Z_1 \otimes Z_2 \otimes Z_3))\)</span></p></li>
+<li><p>(b). <span class="math notranslate nohighlight">\(\exp(-i \theta (X_1 \otimes Y_2 \otimes Z_3))\)</span></p></li>
+</ul>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+<span class="n">qc_a</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">qc_a</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="n">qc_a</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">qc_a</span><span class="o">.</span><span class="n">rz</span><span class="p">(</span><span class="n">theta</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">qc_a</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="n">qc_a</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">U</span> <span class="o">=</span> <span class="n">SparsePauliOp</span><span class="p">([</span><span class="s2">&quot;ZZZ&quot;</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">])</span>
+<span class="n">U_a</span> <span class="o">=</span> <span class="n">PauliEvolutionGate</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">synthesis</span><span class="o">=</span><span class="n">SuzukiTrotter</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">reps</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">qc_a_paulievol</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">qc_a_paulievol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">U_a</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">qc_a_paulievol</span> <span class="o">=</span> <span class="n">qc_a_paulievol</span><span class="o">.</span><span class="n">decompose</span><span class="p">()</span>
+
+<span class="n">sv_a</span> <span class="o">=</span> <span class="n">Statevector</span><span class="o">.</span><span class="n">from_instruction</span><span class="p">(</span><span class="n">qc_a</span><span class="p">)</span>
+<span class="n">sv_a_paulievol</span> <span class="o">=</span> <span class="n">Statevector</span><span class="o">.</span><span class="n">from_instruction</span><span class="p">(</span><span class="n">qc_a_paulievol</span><span class="p">)</span>
+
+<span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+<span class="n">qc_b</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">qc_b</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="n">qc_b</span><span class="o">.</span><span class="n">sdg</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="n">qc_b</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">qc_b</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="n">qc_b</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">qc_b</span><span class="o">.</span><span class="n">rz</span><span class="p">(</span><span class="n">theta</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">qc_b</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="n">qc_b</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">qc_b</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="n">qc_b</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="n">qc_b</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">U</span> <span class="o">=</span> <span class="n">SparsePauliOp</span><span class="p">([</span><span class="s2">&quot;ZYX&quot;</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">])</span>
+<span class="n">U_b</span> <span class="o">=</span> <span class="n">PauliEvolutionGate</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">synthesis</span><span class="o">=</span><span class="n">SuzukiTrotter</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">reps</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">qc_b_paulievol</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">qc_b_paulievol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">U_b</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">qc_b_paulievol</span> <span class="o">=</span> <span class="n">qc_b_paulievol</span><span class="o">.</span><span class="n">decompose</span><span class="p">()</span>
+
+<span class="n">sv_b</span> <span class="o">=</span> <span class="n">Statevector</span><span class="o">.</span><span class="n">from_instruction</span><span class="p">(</span><span class="n">qc_b</span><span class="p">)</span>
+<span class="n">sv_b_paulievol</span> <span class="o">=</span> <span class="n">Statevector</span><span class="o">.</span><span class="n">from_instruction</span><span class="p">(</span><span class="n">qc_b_paulievol</span><span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">qc_a</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="s1">&#39;mpl&#39;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span> <span class="n">sv_a</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="s1">&#39;latex&#39;</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">qc_a_paulievol</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="s1">&#39;mpl&#39;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span><span class="n">sv_a_paulievol</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="s1">&#39;latex&#39;</span><span class="p">))</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">qc_b</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="s1">&#39;mpl&#39;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span> <span class="n">sv_b</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="s1">&#39;latex&#39;</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">qc_b_paulievol</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="s1">&#39;mpl&#39;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span> <span class="n">sv_b_paulievol</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="s1">&#39;latex&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/d04089c755785881850d2a9c97c91ffd6f3a80109932d5abe03530c1a40d44ab.png" src="../_images/d04089c755785881850d2a9c97c91ffd6f3a80109932d5abe03530c1a40d44ab.png" />
+<div class="output text_latex math notranslate nohighlight">
+\[(-0.9983409507 + 0.0575790423 i) |000\rangle\]</div>
+<img alt="../_images/dc97ff2eb19f47e659f43f59a1324e2cd335b3d192aa3c9ea226ba021dc8757e.png" src="../_images/dc97ff2eb19f47e659f43f59a1324e2cd335b3d192aa3c9ea226ba021dc8757e.png" />
+<div class="output text_latex math notranslate nohighlight">
+\[(-0.9983409507 + 0.0575790423 i) |000\rangle\]</div>
+<img alt="../_images/ea9de0a6e6dc6840666e41e4cf531ce0338be2ac15bf3dd75768cb5fd3986216.png" src="../_images/ea9de0a6e6dc6840666e41e4cf531ce0338be2ac15bf3dd75768cb5fd3986216.png" />
+<div class="output text_latex math notranslate nohighlight">
+\[-0.6742389741 |000\rangle+0.7385132401 |011\rangle\]</div>
+<img alt="../_images/484bf640ab6849119a6c31862a53478b1976d63f08e013879d485074c08d3974.png" src="../_images/484bf640ab6849119a6c31862a53478b1976d63f08e013879d485074c08d3974.png" />
+<div class="output text_latex math notranslate nohighlight">
+\[-0.6742389741 |000\rangle+0.7385132401 |011\rangle\]</div>
+</div>
+</div>
 </section>
 <section id="hadamard-test">
 <h2><span class="section-number">12.5. </span>Hadamard test<a class="headerlink" href="#hadamard-test" title="Link to this heading">#</a></h2>
