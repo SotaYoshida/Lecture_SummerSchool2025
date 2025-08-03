@@ -391,7 +391,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">12.1. Qiskitでの回路作成</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">12.2. ハミルトニアンの表現</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">12.3. 回路によるハミルトニアンの期待値の測定</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">12.4. 制御ユニタリ演算子の作成</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">12.4. 実時間発展演算子の作成</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hadamard-test">12.5. Hadamard test</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#qpe">12.6. 量子位相推定(QPE)</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">12.6.1. 簡単な例</a></li>
@@ -748,10 +748,10 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counts(ideal): {&#39;0011&#39;: 9397, &#39;0101&#39;: 343, &#39;1001&#39;: 107, &#39;0110&#39;: 105, &#39;1100&#39;: 3, &#39;1010&#39;: 45}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counts(ideal): {&#39;0011&#39;: 9474, &#39;0101&#39;: 325, &#39;0110&#39;: 84, &#39;1001&#39;: 84, &#39;1010&#39;: 32, &#39;1100&#39;: 1}
 </pre></div>
 </div>
-<img alt="../_images/1a3376146de46f2749778b99ed01ebbb6a86c42d7e6473a62ec68d7b6ad50d59.png" src="../_images/1a3376146de46f2749778b99ed01ebbb6a86c42d7e6473a62ec68d7b6ad50d59.png" />
+<img alt="../_images/8ccfad32b147519a36cfb12857b9e8a07c7a927bb05b7545490a70209aeb50bd.png" src="../_images/8ccfad32b147519a36cfb12857b9e8a07c7a927bb05b7545490a70209aeb50bd.png" />
 </div>
 </div>
 <p>ノイズありの場合</p>
@@ -775,7 +775,7 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2320d0718992e090a2ccf4dbc66d97ebcb9b9dcc5b858853700180feed20ef23.png" src="../_images/2320d0718992e090a2ccf4dbc66d97ebcb9b9dcc5b858853700180feed20ef23.png" />
+<img alt="../_images/a65cb3880226e10bb2ee3efe4d139e93668257fbfb0d55089262295dbdac94fc.png" src="../_images/a65cb3880226e10bb2ee3efe4d139e93668257fbfb0d55089262295dbdac94fc.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -805,17 +805,23 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>noisy_expval=2.076796875
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>noisy_expval=2.004130859375
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="id4">
-<h2><span class="section-number">12.4. </span>制御ユニタリ演算子の作成<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
-<p>controlled-U演算子を作成する。Qiskitには<code class="docutils literal notranslate"><span class="pre">PauliEvolutionGate</span></code>があり、これにより<span class="math notranslate nohighlight">\(U=e^{-i\hat{H}t}\)</span>などを実装できる。
+<h2><span class="section-number">12.4. </span>実時間発展演算子の作成<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>幾つかの量子アルゴリズムでは、Hamiltonianによる実時間発展<span class="math notranslate nohighlight">\(U(t) = e^{-iHt}\)</span>を用いることになる。</p>
+<p>Qiskitには<code class="docutils literal notranslate"><span class="pre">PauliEvolutionGate</span></code>があり、これにより実時間発展演算子を作成することができる。
 マイナス符号がdefaultなので、位相推定による期待値計算などの際にはそのことを考慮する。</p>
-<p>一般に演算子をexponentiateする際は、Trotter分解のところでerrorが生じる。</p>
+<p>演算子をexponentiateする際は、Suzuki-Trotter分解などを用いることになるが、一般にはこれは近似である。
+以下には、First-order Suzuki-Trotter分解を用いた例を示す。</p>
+<div class="math notranslate nohighlight">
+\[
+\exp\left( \sum_i i c_i \hat{H}_i \right) \approx \left( \prod_i \exp(i c_i \hat{H}_i/r) \right)^r
+\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.circuit.library</span><span class="w"> </span><span class="kn">import</span> <span class="n">PauliEvolutionGate</span>
@@ -830,10 +836,12 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 </div>
 </div>
 </div>
+<p>また、制御ビットを指定して制御ユニタリ演算子を作成することもできる(例は、続く節で示す)。</p>
 </section>
 <section id="hadamard-test">
 <h2><span class="section-number">12.5. </span>Hadamard test<a class="headerlink" href="#hadamard-test" title="Link to this heading">#</a></h2>
-<p>Hadamard testを実装する。</p>
+<p><a class="reference external" href="https://sotayoshida.github.io/Lecture_SummerSchool2025/notebooks/QuantumComputing.html#hadamard-test">9.5.2節</a>
+で紹介したHadamard testを実装する。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">ClassicalRegister</span><span class="p">,</span> <span class="n">QuantumRegister</span>
@@ -874,7 +882,7 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/80891d39f94b541fb8eda5ee0e7cd044b4e2e4fced63616a3215d40d6b822fcb.png" src="../_images/80891d39f94b541fb8eda5ee0e7cd044b4e2e4fced63616a3215d40d6b822fcb.png" />
+<img alt="../_images/d9fdc6b4681e3f0b0c03b4644fbc8f067e9bd86ebc51ae31cf425df472a39a2f.png" src="../_images/d9fdc6b4681e3f0b0c03b4644fbc8f067e9bd86ebc51ae31cf425df472a39a2f.png" />
 </div>
 </div>
 <p>測ってみよう</p>
@@ -894,7 +902,7 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>p0=0.99641, p1=0.00359
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>p0=0.99645, p1=0.00355
 </pre></div>
 </div>
 </div>
@@ -906,7 +914,7 @@ P(0) &amp; =  \left| \frac{1 + e^{iEt}}{2} \right|^2 = \frac{1 + \cos(Et)}{2} \\
 P(1) &amp; =  \left| \frac{1 - e^{iEt}}{2} \right|^2 = \frac{1 - \cos(Et)}{2} \\
 \end{align}
 \end{split}\]</div>
-<p>なので、</p>
+<p>なので、この結果からground stateのエネルギーを推定することができる。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Et</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">-</span> <span class="n">p1</span>
@@ -916,7 +924,7 @@ P(1) &amp; =  \left| \frac{1 - e^{iEt}}{2} \right|^2 = \frac{1 - \cos(Et)}{2} \\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>E: 1.1990503371980588 Egs_exact:  1.1898518351360725 diff. 0.009198502061986247
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>E: 1.1923437096925216 Egs_exact:  1.1898518351360725 diff. 0.0024918745564490585
 </pre></div>
 </div>
 </div>
@@ -1018,7 +1026,7 @@ E: 1.189868780810984 Egs_exact:  1.1898518351360725 diff. 1.6945674911506003e-05
     <span class="n">bit_ancilla</span> <span class="o">=</span> <span class="n">bitstr_from_idx</span><span class="p">[:</span><span class="n">n_ancilla</span><span class="p">]</span>
     <span class="n">estimated</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bit_ancilla</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">n_ancilla</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;idx&quot;</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="s2">&quot;estimated_theta&quot;</span><span class="p">,</span> <span class="n">estimated</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;theta_exact&quot;</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="s2">&quot;err 2pi/2^n&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="o">**</span><span class="n">n_ancilla</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;theta_exact&quot;</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="s2">&quot; 2pi/2^n&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="o">**</span><span class="n">n_ancilla</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1027,7 +1035,7 @@ E: 1.189868780810984 Egs_exact:  1.1898518351360725 diff. 1.6945674911506003e-05
 idx 129 estimated_theta 0.39269908169872414
 idx 137 estimated_theta 0.4172427743048944
 idx 121 estimated_theta 0.36815538909255385
-theta_exact 0.39269908169872414 err 2pi/2^n 0.006135923151542565
+theta_exact 0.39269908169872414  2pi/2^n 0.006135923151542565
 </pre></div>
 </div>
 </div>
@@ -1143,12 +1151,12 @@ theta_exact 0.39269908169872414 err 2pi/2^n 0.006135923151542565
 <span class="n">bit_ancilla</span> <span class="o">=</span> <span class="n">bitstr_from_idx</span><span class="p">[:</span><span class="n">n_ancilla</span><span class="p">]</span>
 <span class="n">theta</span><span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bit_ancilla</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">n_ancilla</span><span class="p">)</span> 
 <span class="n">lambda_t</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">time</span> 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;idx&quot;</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="s2">&quot;theta&quot;</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="s2">&quot;lambda=2pitheta/time&quot;</span><span class="p">,</span> <span class="n">lambda_t</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;idx&quot;</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="s2">&quot;theta&quot;</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="s2">&quot;lambda=2pitheta/time&quot;</span><span class="p">,</span> <span class="n">lambda_t</span><span class="p">,</span> <span class="s2">&quot; 2pi/2^n&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="o">**</span><span class="n">n_ancilla</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>idx 83 theta 0.625 lambda=2pitheta/time 3.9269908169872414
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>idx 83 theta 0.078125 lambda=2pitheta/time 3.977908039897935  2pi/2^n 0.02454369260617026
 </pre></div>
 </div>
 </div>
@@ -1248,7 +1256,7 @@ theta_exact 0.39269908169872414 err 2pi/2^n 0.006135923151542565
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/9e5c916626a97c9ff26bec48bcbc6de4582f9cc786eed8e2c4ce65368ffa08d9.png" src="../_images/9e5c916626a97c9ff26bec48bcbc6de4582f9cc786eed8e2c4ce65368ffa08d9.png" />
+<img alt="../_images/b4080bc49e10be6ddc1b61e094b622bb4bca71b0ebebd1ffe4a4d02790c57481.png" src="../_images/b4080bc49e10be6ddc1b61e094b622bb4bca71b0ebebd1ffe4a4d02790c57481.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1338,7 +1346,7 @@ theta_exact 0.39269908169872414 err 2pi/2^n 0.006135923151542565
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">12.1. Qiskitでの回路作成</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">12.2. ハミルトニアンの表現</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">12.3. 回路によるハミルトニアンの期待値の測定</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">12.4. 制御ユニタリ演算子の作成</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">12.4. 実時間発展演算子の作成</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hadamard-test">12.5. Hadamard test</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#qpe">12.6. 量子位相推定(QPE)</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">12.6.1. 簡単な例</a></li>

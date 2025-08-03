@@ -408,17 +408,17 @@
 <h1><span class="section-number">7. </span>In-medium Similarity Renormalization Group (IM-SRG)<a class="headerlink" href="#in-medium-similarity-renormalization-group-im-srg" title="Link to this heading">#</a></h1>
 <p>この章では、In-medium Similarity Renormalization Group(IM-SRG)法の概要と実装について説明する。</p>
 <p>IMSRG法は原子核の基底状態の第一原理計算手法(post-HF法の意味で)としてだけでなく、
-殻模型の有効相互作用(バレンス空間の有効核力)・有効演算子の導出にも用いられるなど、応用上も非常に重要な手法である。</p>
-<p>原子核分野では、HamiltonianのSoft化という文脈でSimilarity Renormalization Group(SRG)法が適用された後、
+殻模型の有効相互作用(バレンス空間の有効核力)・有効演算子の導出にも用いられるなど、応用上も非常に重要な手法である。
+原子核分野では、HamiltonianのSoft化という文脈でSimilarity Renormalization Group(SRG)法が適用された後、
 その拡張としてIMSRG法が提案された。</p>
-<p>SRGの基本的な考え方は、Hamiltonianのユニタリ変換である。
+<p>SRGの基本的な考え方は、Hamiltonianのユニタリ変換※である。
 元のHamiltonianを<span class="math notranslate nohighlight">\(H_0\)</span>、新しいHamiltonianを<span class="math notranslate nohighlight">\(H_s\)</span>とすると、</p>
 <div class="math notranslate nohighlight">
 \[
 H_s = U(s) H_0 U^\dagger(s)
 \]</div>
 <p>と変換していくことで、２体系・３体系の物理量を変えずに多体計算の収束性を改善するソフトなHamiltonianを得ることができる。
-ただし実用上はトリックがあり、induceされる多体力をすべて取り扱うことはできず、ユニタリ性は厳密には保たれない。</p>
+※ただし実用上はトリックがあり、induceされる多体力をすべて取り扱うことはできず、ユニタリ性は厳密には保たれない。</p>
 <section id="im-srg-flow-equation">
 <h2><span class="section-number">7.1. </span>IM-SRG flow equation<a class="headerlink" href="#im-srg-flow-equation" title="Link to this heading">#</a></h2>
 <div class="math notranslate nohighlight">
@@ -494,7 +494,6 @@ f_{ij}(s=0) &amp;= \delta_{ij} f_{ii} \\
 <p>を見れば明らかなように、<span class="math notranslate nohighlight">\(pqrs\)</span>成分の更新に、<span class="math notranslate nohighlight">\(ab\)</span>のsummationが含まれるため、naiveには<span class="math notranslate nohighlight">\(O(N^6)\)</span>の計算量がかかる。
 一方で、第2項は、<span class="math notranslate nohighlight">\(\eta^{(2)}_{pqab} \Gamma_{abrs}\)</span>と、行列-行列積の形をしているため、
 <span class="math notranslate nohighlight">\((1-n_a-n_b)\)</span>を表す対角行列(<span class="math notranslate nohighlight">\(ab\)</span>が<span class="math notranslate nohighlight">\(pp\)</span>か<span class="math notranslate nohighlight">\(hh\)</span>のときのみ有限の値を持つ)を用意しておけば、BLASを用いて効率よく計算できる。</p>
-<p>以下では、第3項を効率よく計算する方法について考えてみよう。</p>
 </section>
 <section id="id1">
 <h2><span class="section-number">7.5. </span>結果の解釈<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
