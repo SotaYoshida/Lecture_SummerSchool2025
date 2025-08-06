@@ -555,7 +555,7 @@ Alice と Bob は、量子もつれを共有している(もつれのある量�
 <p class="sidebar-title"></p>
 <p>より一般のHamiltonianの場合は、Jordan-Wigner変換やBravyi-Kitaev変換などにより、qubitにmappingすることになるが、その際に現れる演算子の数が多くなるため、計算コストが高くなる。</p>
 </aside>
-<p>Pairing Hamiltonianの場合は、たかだか<span class="math notranslate nohighlight">\(Z\)</span>が単一 or 2つのqubitに<span class="math notranslate nohighlight">\(XX\)</span>または<span class="math notranslate nohighlight">\(YY\)</span>が作用する演算子しか現れない。
+<p>Pairing Hamiltonianの場合は、JordanWigner変換を行ってもたかだか<span class="math notranslate nohighlight">\(Z\)</span>が単一 or 2つのqubitに<span class="math notranslate nohighlight">\(XX\)</span>または<span class="math notranslate nohighlight">\(YY\)</span>が作用する演算子しか現れない。
 そこで、必要な期待値(より正確にはZ基底(computational basis)での期待値)を計算するための関数を用意しておこう。</p>
 <p>通常、qubitの測定は<span class="math notranslate nohighlight">\(Z\)</span>基底で行われるため、<span class="math notranslate nohighlight">\(X,Y\)</span>の期待値を計算するためには、少し工夫が必要である。
 よくこのことを指して、&quot;basis rotation&quot;などと呼ぶこともあるが、文献によって同じことを別の名前で呼ぶことがあるので注意が必要である。
@@ -580,6 +580,8 @@ i &amp; -1
 \text{)}
 \end{align}
 \end{split}\]</div>
+<p>とすると、あとは任意のPauli Stringに対して、回路のbasis rotationをしてから <span class="math notranslate nohighlight">\(Z\)</span>を測れば良い。
+したがって、<span class="math notranslate nohighlight">\(IZIZZI\)</span>のようなPauli Stringの期待値を計算する下記のような関数だけ作っておけば良い。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">expec_Zstring</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">,</span> <span class="n">Qiskit_ordering</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">target_qubits</span><span class="o">=</span><span class="p">[],</span> <span class="n">ancilla_qubit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -622,7 +624,6 @@ i &amp; -1
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="c1">#import matplotlib.pyplot as plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumCircuit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.quantum_info</span><span class="w"> </span><span class="kn">import</span> <span class="n">Statevector</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_aer.primitives</span><span class="w"> </span><span class="kn">import</span> <span class="n">SamplerV2</span>
@@ -648,9 +649,6 @@ i &amp; -1
 <span class="n">qc</span> <span class="o">=</span> <span class="n">qc_state</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">state_vector</span> <span class="o">=</span> <span class="n">Statevector</span><span class="o">.</span><span class="n">from_instruction</span><span class="p">(</span><span class="n">qc</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">state_vector</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s1">&#39;latex&#39;</span><span class="p">))</span>
-
 <span class="n">qc</span><span class="o">.</span><span class="n">measure_all</span><span class="p">()</span>
 <span class="n">sampler</span> <span class="o">=</span> <span class="n">SamplerV2</span><span class="p">()</span>
 <span class="n">job</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">qc</span><span class="p">],</span> <span class="n">shots</span><span class="o">=</span><span class="mi">10</span><span class="o">**</span><span class="mi">5</span><span class="p">)</span>
@@ -658,17 +656,15 @@ i &amp; -1
 <span class="n">counts</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">meas</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
 <span class="n">counts</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;From statevector, a^*d + c^*b + b^*c + d^*a  =&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">d</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">*</span><span class="n">b</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">*</span><span class="n">c</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">*</span><span class="n">a</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&lt;X0X1&gt; =&quot;</span><span class="p">,</span> <span class="n">expec_Zstring</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;From shot measurement of &lt;X0X1&gt; =&quot;</span><span class="p">,</span> <span class="n">expec_Zstring</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output text_latex math notranslate nohighlight">
 \[0.622908812 |00\rangle+0.7566270503 |01\rangle+0.1263208434 |10\rangle+0.1534378151 |11\rangle\]</div>
-<div class="output text_latex math notranslate nohighlight">
-\[0.8296472605 |00\rangle-0.080417605 |01\rangle+0.5498886019 |10\rangle-0.0533006333 |11\rangle\]</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>From statevector, a^*d + c^*b + b^*c + d^*a  = (0.3823110686155987+0j)
-&lt;X0X1&gt; = 0.38196
+&lt;X0X1&gt; = 0.38258
 </pre></div>
 </div>
 </div>
@@ -677,7 +673,6 @@ i &amp; -1
 <section id="id6">
 <h2><span class="section-number">9.5. </span>量子コンピュータを用いた量子多体系の計算<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
 <p>代表的な量子系に対するアルゴリズムについて説明する。</p>
-<p>適宜、回路図を描きながら説明する。回路図を描くときには上位ビット(ビット列の左側)が上に来るようできるだけ統一して描いたつもりだが、Qiskitではビット列の右側が上に来るように描かれるのでそれに引っ張られて誤りがあるかもしれない。</p>
 <section id="vqe-variational-quantum-eigensolver">
 <h3><span class="section-number">9.5.1. </span>VQE (Variational Quantum Eigensolver)<a class="headerlink" href="#vqe-variational-quantum-eigensolver" title="Link to this heading">#</a></h3>
 <aside class="margin sidebar">
@@ -815,8 +810,7 @@ U \ket{\psi} &amp; = e^{i\hat{H}t} \ket{\psi} = e^{iEt} \ket{\psi}
 &amp; = \frac{1}{2^{n}} \sum_{k=0}^{2^{n}-1} \sum_{x=0}^{2^{n}-1} e^{ -\frac{2\pi ik}{2^n}(x-2^n \theta) } \ket{x} \otimes \ket{\psi} 
 \end{align}
 \end{split}\]</div>
-<p>仮に<span class="math notranslate nohighlight">\(2^n \theta\)</span>が整数となるような <span class="math notranslate nohighlight">\(\theta\)</span>であったとすると、ancillaの値<span class="math notranslate nohighlight">\(x\)</span>を測定することで<span class="math notranslate nohighlight">\(\theta\)</span>を推定できることがわかる。
-また、<span class="math notranslate nohighlight">\(2^n \theta\)</span>が整数でない場合も、<span class="math notranslate nohighlight">\(x\)</span>の測定結果は<span class="math notranslate nohighlight">\(2^n \theta\)</span>に近い値が高い確率で得られることが期待できるので、<span class="math notranslate nohighlight">\(2\pi/2^n\)</span>の精度で<span class="math notranslate nohighlight">\(\theta\)</span>を推定できる。</p>
+<p>仮に<span class="math notranslate nohighlight">\(2^n \theta\)</span>が整数となるような <span class="math notranslate nohighlight">\(\theta\)</span>であったとすると、ancillaの値 <span class="math notranslate nohighlight">\(x\)</span> (bitstring) を測定することで<span class="math notranslate nohighlight">\(\theta\)</span>を推定できることがわかる。また、<span class="math notranslate nohighlight">\(2^n \theta\)</span>が整数でない場合も、<span class="math notranslate nohighlight">\(x\)</span>の測定結果は<span class="math notranslate nohighlight">\(2^n \theta\)</span>に近い値が高い確率で得られることが期待できるので、<span class="math notranslate nohighlight">\(2\pi/2^n\)</span>の精度で<span class="math notranslate nohighlight">\(\theta\)</span>を推定できる。</p>
 <p>各ancilla qubitがレジスターになっており、位相の二進小数での各桁を担っている。
 したがって、ancilla qubitを1つ追加するごとに、1bit分(10進数にして2)推定の精度を向上することができる。
 もちろん様々な注がつくとはいえ、QPEでは、<span class="math notranslate nohighlight">\(2\pi / 2^{n_a}\)</span>の精度で固有値推定が可能であり、

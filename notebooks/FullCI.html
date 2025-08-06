@@ -496,8 +496,7 @@ Int(default: Int64)を放り込むと64bitのビット列が返ってくるの�
 <p>上と同じ、軌道が5つ、粒子が2つ(2ペア)占有している状況でいうと、
 <span class="math notranslate nohighlight">\( \bra{11000} H \ket{11000} \)</span>, <span class="math notranslate nohighlight">\( \bra{11000} H \ket{10100} \)</span>、<span class="math notranslate nohighlight">\( \bra{11000} H \ket{10010} \)</span>などは非ゼロの値を持ちうるが、
 <span class="math notranslate nohighlight">\( \bra{11000} H \ket{00011} \)</span>, <span class="math notranslate nohighlight">\( \bra{10100} H \ket{01010}\)</span>などは0となる。</p>
-<p>ビット列のハミング距離を計算したければ、(必ずしも最適な実装ではないかもしれないが)Juliaでは
-排他的論理和(XOR)を取り、立っているビットの数をカウントすれば良い。</p>
+<p>ビット列のハミング距離を計算したければ、Juliaでは排他的論理和(XOR)を取り、立っているビットの数をカウントすれば良い。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">bra</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">24</span>
@@ -558,8 +557,7 @@ T &amp;
 <p>つまり、元の行列<span class="math notranslate nohighlight">\(H\)</span>の固有値問題を、iterationの回数のTridiagonal行列<span class="math notranslate nohighlight">\(T\)</span>の固有値問題にダウンサイズすることができる。
 殻模型計算の場合においても、(もちろん系や求めたい状態の数に依存するが)反復回数は典型的には数十から数百程度であり、
 比較的少ないiterationで固有値を求めることができる。</p>
-<p><span class="math notranslate nohighlight">\(H v_{k}\)</span>の計算では、<span class="math notranslate nohighlight">\(v_{k}\)</span>と<span class="math notranslate nohighlight">\(v_{k-1}\)</span>の直交化を行っているが、
-実際の計算では、数値誤差により<span class="math notranslate nohighlight">\(v_{k}\)</span>と<span class="math notranslate nohighlight">\(v_{k-2}\)</span>以前が直交していないことがある。
+<p>計算の過程で<span class="math notranslate nohighlight">\(v_{k}\)</span>と<span class="math notranslate nohighlight">\(v_{k-1}\)</span>は直交化されているが、数値誤差により<span class="math notranslate nohighlight">\(v_{k}\)</span>と<span class="math notranslate nohighlight">\(v_{k-2}\)</span>以前が直交していないことがある。
 このまま固有値問題を解くと、本来現れるべきでない偽の固有値が現れたり、興味のある固有値が収束しないことがある。</p>
 <p>そこで、Lanczos法では、定期的に直交化を行うことで、この問題を解決する。
 最も基本的な直交化法は以下のGram-Schmidt法である。</p>
@@ -577,7 +575,7 @@ v_{k} = v_k - \sum_{i=1}^{k-1} \frac{\langle v_k | v_i \rangle}{\langle v_i | v_
 <span class="math notranslate nohighlight">\(H\)</span>のすべての要素を持つ代わりに、非ゼロ要素だけを持つ行列を考える。</p>
 <p>Juliaには、<code class="docutils literal notranslate"><span class="pre">SparseArrays</span></code>パッケージが用意されており、スパース行列を扱うための関数が用意されているが、
 (筆者のJulia v1.0あたりの経験なので誤りがあるかもしれないが)performanceがあまり優れないためDictを使うことにする。
-ただし、Dictのキーに配列を用いると、ハッシュ計算のコストが余計にかかるため、ビット列を整数に変換してキーとすることにする。</p>
+ただし、Dictのキーに配列を用いると、余分にメモリを消費し、ハッシュ計算のコストが余計にかかるため、ビット列を整数に変換してキーとすることにする。</p>
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span><span class="n">hash_key2</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span><span class="o">::</span><span class="kt">UInt64</span>
 <span class="w">    </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">UInt64</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">32</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">  </span><span class="kt">UInt64</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">key</span>
@@ -598,8 +596,8 @@ v^{k+1}_i := H_{ij} v^{k}_j
 \end{align}
 \]</div>
 <p>を計算したいが、<span class="math notranslate nohighlight">\(H_{ij}\)</span>が大次元の行列だとすると、メモリには行列として載せたくない。
-ここで、<span class="math notranslate nohighlight">\(i,j\)</span>はそれぞれ配位に対応するラベルである。</p>
-<p>そこで、非ゼロ要素をもつindex<span class="math notranslate nohighlight">\({i,j}\)</span>を(上記の方法でUInt64に変換して)保持しておくと、行列ベクトル積は下記のようなコードで効率的に実装することができる。</p>
+ここで、<span class="math notranslate nohighlight">\(i,j\)</span>はそれぞれ配位に対応するインデックスである。</p>
+<p>そこで、非ゼロ要素をもつindex <span class="math notranslate nohighlight">\({i,j}\)</span> を(上記の方法でUInt64に変換して)保持しておくと、行列ベクトル積は下記のようなコードで省メモリで実装することができる。</p>
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span><span class="n">operate_H_on_vec!</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="n">Hamil_mat</span><span class="o">::</span><span class="kt">Dict</span><span class="p">{</span><span class="kt">UInt64</span><span class="p">,</span><span class="w"> </span><span class="kt">Float64</span><span class="p">},</span><span class="w"> </span><span class="n">v</span><span class="p">)</span>
 <span class="w">    </span><span class="n">w</span><span class="w"> </span><span class="o">.=</span><span class="w"> </span><span class="mf">0.0</span>
 <span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">nkey</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">keys</span><span class="p">(</span><span class="n">Hamil_mat</span><span class="p">)</span>

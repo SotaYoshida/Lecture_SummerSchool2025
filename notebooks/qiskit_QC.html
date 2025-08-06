@@ -810,6 +810,8 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 </div>
 </div>
 </div>
+<p>ノイズの影響で粒子数を破る配位が生成されていたり、エネルギー推定がうまく行っていない事がわかる。
+このような場合は、error mitigationを行ったり、post-selectionで粒子数を保存するような配位で期待値を計算するなどの工夫が必要になる。</p>
 </section>
 <section id="id4">
 <h2><span class="section-number">12.4. </span>実時間発展演算子の作成<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
@@ -845,8 +847,8 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 \hat{H}_i = c_i ( \sigma_1 \otimes \sigma_2 \otimes \cdots \otimes \sigma_n )
 \]</div>
 <p><span class="math notranslate nohighlight">\(n\)</span>量子ビットの系において、<span class="math notranslate nohighlight">\(c_i\)</span>は実数、<span class="math notranslate nohighlight">\(\sigma_j \in \{ I, X, Y, Z \}\)</span>は<span class="math notranslate nohighlight">\(j\)</span>番目の量子ビットに作用するPauli演算子を表す。</p>
-<p>実用に最も適しているかはさておき、はしご状のCNOTと各Pauli演算子に対応する基底変換で回路にエンコードすることができる。
-例として以下の2つを考えよう。<span class="math notranslate nohighlight">\(R_z(\theta) = \exp(-i \theta/2 Z)\)</span>と、係数に注意して、自前の実装とPauliEvolutionGateを用いた実装を比較してみる。</p>
+<p>これらの演算は、はしご状のCNOTと各Pauli演算子に対応する基底変換で系統的にエンコードできる。例として以下の2つを考えよう。
+<span class="math notranslate nohighlight">\(R_z(\theta) = \exp(-i \theta/2 Z)\)</span>と、係数に注意して、自前の実装とPauliEvolutionGateを用いた実装を比較してみる。</p>
 <ul class="simple">
 <li><p>(a). <span class="math notranslate nohighlight">\(\exp(-i \theta (Z_1 \otimes Z_2 \otimes Z_3))\)</span></p></li>
 <li><p>(b). <span class="math notranslate nohighlight">\(\exp(-i \theta (X_1 \otimes Y_2 \otimes Z_3))\)</span></p></li>
@@ -1120,7 +1122,7 @@ theta_exact 0.39269908169872414  2pi/2^n 0.006135923151542565
 </div>
 <p>推定したい位相が(たまたま)<span class="math notranslate nohighlight">\(2\pi/2^m\)</span>のときは,<span class="math notranslate nohighlight">\(m\)</span>個のancillaを用意すれば、理想的には位相を厳密に推定できる。
 それ以外の場合は<span class="math notranslate nohighlight">\(2\pi/2^n\)</span>の精度で推定することになる。
-さらに実機で測る場合はノイズの影響もあり古典計算機で行うような倍精度で推定することは困難である。</p>
+さらに実機で測る場合はノイズの影響もあり古典計算機で行うような倍精度で推定することは現状、困難である。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># shot measurement</span>
