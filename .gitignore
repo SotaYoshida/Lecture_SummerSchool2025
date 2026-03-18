@@ -9,5 +9,9 @@ myenv
 
 notebooks/Observable_DMD.ipynb
 notebooks/noisy_simulations.ipynb
-
+notebooks/dev_QuantumKrylov.ipynb
+notebooks/fig1c.ipynb
+notebooks/norm_QKrylov_check.ipynb
 reference_*
+
+venv
