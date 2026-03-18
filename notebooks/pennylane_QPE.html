@@ -16,33 +16,30 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
-  <!-- So that users can add custom icons -->
-  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../_static/documentation_options.js?v=1cf7f4d9"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
@@ -70,7 +67,6 @@
     <link rel="prev" title="10. pennylaneを用いたVQE計算" href="pennylane_VQE.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="ja"/>
-  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -78,16 +74,27 @@
 
   
   
-  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">本文へスキップ</a></div>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>トップに戻る</button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -95,6 +102,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -102,11 +110,11 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
-  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="バージョン警告"></aside>
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
@@ -119,8 +127,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -150,17 +157,21 @@
     
     
     <img src="../_static/logo_Lecture.png" class="logo__image only-light" alt="Julia言語による原子核構造計算入門 - Home"/>
-    <img src="../_static/logo_Lecture.png" class="logo__image only-dark pst-js-only" alt="Julia言語による原子核構造計算入門 - Home"/>
+    <script>document.write(`<img src="../_static/logo_Lecture.png" class="logo__image only-dark" alt="Julia言語による原子核構造計算入門 - Home"/>`);</script>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">検索</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">検索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -204,14 +215,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -355,16 +361,24 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="ライト"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="ダーク"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
+  </button>
+`);
+</script>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -408,13 +422,13 @@
 まずは、ancilla qubitが1つの場合としてHadamard testを実装し、その後、QPEへと拡張する。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">o_np</span> <span class="c1">#pennylaneのnumpyと被らないように</span>
-<span class="kn">import</span> <span class="nn">itertools</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">pennylane</span> <span class="k">as</span> <span class="nn">qml</span> 
-<span class="kn">from</span> <span class="nn">pennylane</span> <span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
-<span class="kn">from</span> <span class="nn">pennylane.templates</span> <span class="kn">import</span> <span class="n">QuantumPhaseEstimation</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">o_np</span> <span class="c1">#pennylaneのnumpyと被らないように</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">combinations</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pennylane</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qml</span> 
+<span class="kn">from</span><span class="w"> </span><span class="nn">pennylane</span><span class="w"> </span><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pennylane.templates</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumPhaseEstimation</span>
 </pre></div>
 </div>
 </div>
@@ -450,8 +464,8 @@ ansatz(状態作成)部分は<span class="math notranslate nohighlight">\(N_\mat
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">PairingHamiltonian</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">Nocc</span><span class="p">,</span> <span class="n">gval</span><span class="p">,</span> <span class="n">delta_eps</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">PairingHamiltonian</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">Nocc</span><span class="p">,</span> <span class="n">gval</span><span class="p">,</span> <span class="n">delta_eps</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Norb</span> <span class="o">=</span> <span class="n">Norb</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Nocc</span> <span class="o">=</span> <span class="n">Nocc</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delta_eps</span> <span class="o">=</span> <span class="n">delta_eps</span>
@@ -460,18 +474,18 @@ ansatz(状態作成)部分は<span class="math notranslate nohighlight">\(N_\mat
         <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_epsilon</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Hmat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_Hmat</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">make_basis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_basis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">basis</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">occ</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Norb</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nocc</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">occ</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">basis</span>
     
-    <span class="k">def</span> <span class="nf">eval_epsilon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">eval_epsilon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_eps</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Norb</span><span class="p">)</span> <span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span>
     
-    <span class="k">def</span> <span class="nf">eval_Hmat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">eval_Hmat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Hmat</span> <span class="o">=</span> <span class="n">o_np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">bra_idx</span><span class="p">,</span> <span class="n">bra</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="p">):</span>
@@ -489,7 +503,7 @@ ansatz(状態作成)部分は<span class="math notranslate nohighlight">\(N_\mat
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Hmat</span>
 
-<span class="k">def</span> <span class="nf">tuple_to_bitstring</span><span class="p">(</span><span class="n">tup</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">rev</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tuple_to_bitstring</span><span class="p">(</span><span class="n">tup</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">rev</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">bitint</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tup</span><span class="p">:</span>
         <span class="n">bitint</span> <span class="o">+=</span> <span class="mi">2</span><span class="o">**</span><span class="n">i</span>
@@ -499,7 +513,7 @@ ansatz(状態作成)部分は<span class="math notranslate nohighlight">\(N_\mat
         <span class="n">bitstring</span> <span class="o">=</span> <span class="s2">&quot;|&quot;</span><span class="o">+</span><span class="nb">format</span><span class="p">(</span><span class="n">bitint</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;0</span><span class="si">{</span><span class="n">Norb</span><span class="si">}</span><span class="s1">b&#39;</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;&gt;&quot;</span>        
     <span class="k">return</span> <span class="n">bitstring</span>
 
-<span class="k">def</span> <span class="nf">ij_tuple_to_AdagA_str</span><span class="p">(</span><span class="n">tuple_in</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ij_tuple_to_AdagA_str</span><span class="p">(</span><span class="n">tuple_in</span><span class="p">):</span>
     <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">tuple_in</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">^ </span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">&quot;</span>
 
@@ -596,14 +610,14 @@ e^{\frac{igt}{2r} (X_pX_q+Y_pY_q)}
 <div class="math notranslate nohighlight" id="equation-suzukitrotter-1">
 <span class="eqno">(11.1)<a class="headerlink" href="#equation-suzukitrotter-1" title="Link to this equation">#</a></span>\[
 \begin{align}
-e^{iHt} &amp; = \left( e^{i h_j t /r} \right)^r + \mathcal{O}(m^2t^2/r)
+e^{iHt} &amp; = \left( \prod^1_{j=m} e^{ih_jt/r} \right)^r + \mathcal{O}(m^2t^2/r)
 \end{align}
 \]</div>
 <p>Second-order:</p>
 <div class="math notranslate nohighlight" id="equation-suzukitrotter-2">
 <span class="eqno">(11.2)<a class="headerlink" href="#equation-suzukitrotter-2" title="Link to this equation">#</a></span>\[
 \begin{align}
-e^{iHt} &amp; = \left( e^{i h_j t /2r}  \prod^1_{j=m} e^{ih_jt/2r} \right)^r + \mathcal{O}(m^3t^3/r^2)
+e^{iHt} &amp; = \left( \prod^1_{j=m} e^{ih_jt/2r} \prod^m_{j=1} e^{ih_jt/2r} \right)^r + \mathcal{O}(m^3t^3/r^2)
 \end{align}
 \]</div>
 </div>
@@ -631,7 +645,7 @@ e^{-iH_\epsilon t } &amp;
 <span class="n">dev</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;default.qubit&quot;</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="n">n_ancilla</span><span class="o">+</span><span class="n">Hamil</span><span class="o">.</span><span class="n">Norb</span><span class="p">)</span>
 
 <span class="nd">@qml</span><span class="o">.</span><span class="n">qnode</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">circuit_HadamardTest</span><span class="p">(</span><span class="n">H_qubit</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">circuit_HadamardTest</span><span class="p">(</span><span class="n">H_qubit</span><span class="p">):</span>
     <span class="n">q_ancilla</span> <span class="o">=</span> <span class="n">Norb</span>
     <span class="c1"># State preparation</span>
     <span class="k">if</span> <span class="n">method_state</span> <span class="o">==</span> <span class="s2">&quot;HF&quot;</span><span class="p">:</span>
@@ -773,14 +787,14 @@ initial state ansatz trotter_step 100 time_step 1.0e-04 E  1.189850696 error 1.1
 <p>pennylaneの<a class="reference external" href="https://pennylane.ai/qml/demos/tutorial_qpe">Intro to Quantum Phase Estimation</a>も参考にしてみよう。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">float_from_binary</span><span class="p">(</span><span class="n">binary</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">float_from_binary</span><span class="p">(</span><span class="n">binary</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">binary</span><span class="p">[</span><span class="mi">2</span><span class="p">:])])</span>
 
 <span class="n">n_ancilla</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">dev</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;default.qubit&quot;</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="n">n_ancilla</span><span class="o">+</span><span class="n">Hamil</span><span class="o">.</span><span class="n">Norb</span><span class="p">)</span>
 
 <span class="nd">@qml</span><span class="o">.</span><span class="n">qnode</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">circuit_QPE</span><span class="p">(</span><span class="n">H_qubit</span><span class="p">,</span> <span class="n">method_state</span><span class="o">=</span><span class="s2">&quot;ansatz&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">circuit_QPE</span><span class="p">(</span><span class="n">H_qubit</span><span class="p">,</span> <span class="n">method_state</span><span class="o">=</span><span class="s2">&quot;ansatz&quot;</span><span class="p">):</span>
     <span class="n">ancilla_wires</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">Norb</span><span class="p">,</span> <span class="n">Norb</span><span class="o">+</span><span class="n">n_ancilla</span><span class="p">))</span>
     <span class="c1"># State preparation</span>
     <span class="k">if</span> <span class="n">method_state</span> <span class="o">==</span> <span class="s2">&quot;HF&quot;</span> <span class="ow">or</span> <span class="n">method_state</span> <span class="o">==</span> <span class="s2">&quot;ansatz&quot;</span><span class="p">:</span>
@@ -896,7 +910,7 @@ initial state ansatz trotter_step 100 time_step 1.0e-04 E  1.189850696 error 1.1
 <div class="prev-next-area">
     <a class="left-prev"
        href="pennylane_VQE.html"
-       title="前のページ">
+       title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">前へ</p>
@@ -905,7 +919,7 @@ initial state ansatz trotter_step 100 time_step 1.0e-04 E  1.189850696 error 1.1
     </a>
     <a class="right-next"
        href="qiskit_QC.html"
-       title="次ページ">
+       title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">次へ</p>
         <p class="prev-next-title"><span class="section-number">12. </span>Qiskitを用いた量子計算</p>
@@ -919,8 +933,7 @@ initial state ansatz trotter_step 100 time_step 1.0e-04 E  1.189850696 error 1.1
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -973,8 +986,8 @@ initial state ansatz trotter_step 100 time_step 1.0e-04 E  1.189850696 error 1.1
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

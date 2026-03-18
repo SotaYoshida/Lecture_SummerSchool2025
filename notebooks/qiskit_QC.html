@@ -16,33 +16,30 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
-  <!-- So that users can add custom icons -->
-  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../_static/documentation_options.js?v=1cf7f4d9"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
@@ -70,7 +67,6 @@
     <link rel="prev" title="11. pennylaneを用いたQPE計算" href="pennylane_QPE.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="ja"/>
-  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -78,16 +74,27 @@
 
   
   
-  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">本文へスキップ</a></div>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>トップに戻る</button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -95,6 +102,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -102,11 +110,11 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
-  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="バージョン警告"></aside>
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
@@ -119,8 +127,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -150,17 +157,21 @@
     
     
     <img src="../_static/logo_Lecture.png" class="logo__image only-light" alt="Julia言語による原子核構造計算入門 - Home"/>
-    <img src="../_static/logo_Lecture.png" class="logo__image only-dark pst-js-only" alt="Julia言語による原子核構造計算入門 - Home"/>
+    <script>document.write(`<img src="../_static/logo_Lecture.png" class="logo__image only-dark" alt="Julia言語による原子核構造計算入門 - Home"/>`);</script>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">検索</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">検索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -204,14 +215,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -355,16 +361,24 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="ライト"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="ダーク"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
+  </button>
+`);
+</script>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -396,6 +410,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#qpe">12.6. 量子位相推定(QPE)</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">12.6.1. 簡単な例</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pairing-hamilaonitnqpe">12.6.2. Pairing HamilaonitnのQPE計算</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#statevector">12.6.3. Statevector</a></li>
 </ul>
 </li>
 </ul>
@@ -425,15 +440,15 @@
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#必要に応じて...</span>
 <span class="c1">#!pip install qiskit</span>
 <span class="c1">#!pip install pylatexenc # for circuit drawing</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">itertools</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">qiskit</span> <span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">transpile</span>
-<span class="kn">from</span> <span class="nn">qiskit.visualization</span> <span class="kn">import</span> <span class="n">plot_histogram</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">combinations</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">transpile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.visualization</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_histogram</span>
 
-<span class="k">class</span> <span class="nc">PairingHamiltonian</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">Nocc</span><span class="p">,</span> <span class="n">gval</span><span class="p">,</span> <span class="n">delta_eps</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PairingHamiltonian</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">Nocc</span><span class="p">,</span> <span class="n">gval</span><span class="p">,</span> <span class="n">delta_eps</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Norb</span> <span class="o">=</span> <span class="n">Norb</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Nocc</span> <span class="o">=</span> <span class="n">Nocc</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delta_eps</span> <span class="o">=</span> <span class="n">delta_eps</span>
@@ -442,18 +457,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_epsilon</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Hmat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_Hmat</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">make_basis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_basis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">basis</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">occ</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Norb</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nocc</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">occ</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">basis</span>
     
-    <span class="k">def</span> <span class="nf">eval_epsilon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">eval_epsilon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_eps</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Norb</span><span class="p">)</span> <span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span>
     
-    <span class="k">def</span> <span class="nf">eval_Hmat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">eval_Hmat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Hmat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">bra_idx</span><span class="p">,</span> <span class="n">bra</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="p">):</span>
@@ -471,7 +486,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Hmat</span>
 
-<span class="k">def</span> <span class="nf">tuple_to_bitstring</span><span class="p">(</span><span class="n">tup</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">rev</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tuple_to_bitstring</span><span class="p">(</span><span class="n">tup</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">rev</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">bitint</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tup</span><span class="p">:</span>
         <span class="n">bitint</span> <span class="o">+=</span> <span class="mi">2</span><span class="o">**</span><span class="n">i</span>
@@ -481,7 +496,7 @@
         <span class="n">bitstring</span> <span class="o">=</span> <span class="s2">&quot;|&quot;</span><span class="o">+</span><span class="nb">format</span><span class="p">(</span><span class="n">bitint</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;0</span><span class="si">{</span><span class="n">Norb</span><span class="si">}</span><span class="s1">b&#39;</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;&gt;&quot;</span>        
     <span class="k">return</span> <span class="n">bitstring</span>
 
-<span class="k">def</span> <span class="nf">cG1</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="n">c_qubit</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cG1</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="n">c_qubit</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
     <span class="n">theta_4</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">/</span> <span class="mi">4</span> 
     <span class="n">circ</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">ry</span><span class="p">(</span><span class="n">theta_4</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
@@ -494,7 +509,7 @@
     <span class="n">circ</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="n">c_qubit</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">cG1_gate</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cG1_gate</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
     <span class="n">circ</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">G</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;cG1&quot;</span>   
@@ -502,7 +517,7 @@
     <span class="n">circ</span> <span class="o">=</span> <span class="n">circ</span><span class="o">.</span><span class="n">control</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> 
     <span class="k">return</span> <span class="n">circ</span>
 
-<span class="k">def</span> <span class="nf">G</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">G</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
     <span class="n">theta_2</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">/</span> <span class="mi">2</span> 
     <span class="n">circ</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">ry</span><span class="p">(</span><span class="n">theta_2</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
@@ -511,7 +526,7 @@
     <span class="n">circ</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>  
 
-<span class="k">def</span> <span class="nf">G_gate</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">G_gate</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
     <span class="n">circ</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">G</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;G&quot;</span>    
@@ -564,7 +579,7 @@ gs prob [9.43255208e-01 3.31024447e-02 9.63810492e-03 9.63810492e-03
 <h2><span class="section-number">12.1. </span>Qiskitでの回路作成<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ansatz</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;FCI&quot;</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">ansatz</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;FCI&quot;</span><span class="p">):</span>
     <span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">Norb</span><span class="p">)</span>
     <span class="c1"># HF</span>
     <span class="n">qc</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -587,7 +602,7 @@ gs prob [9.43255208e-01 3.31024447e-02 9.63810492e-03 9.63810492e-03
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/5f50247ac1efaa40eb023479d29925a25f3bd4054d9d8fc153bb5d0ce32bc915.png" src="../_images/5f50247ac1efaa40eb023479d29925a25f3bd4054d9d8fc153bb5d0ce32bc915.png" />
+<img alt="../_images/2130213e882136cdcb6ebd291b3f1df7b36bc610ec8fde2fb082e52eb9bcc2f0.png" src="../_images/2130213e882136cdcb6ebd291b3f1df7b36bc610ec8fde2fb082e52eb9bcc2f0.png" />
 </div>
 </div>
 <p>次に、用意した回路から、各状態のstatevectorを計算してみよう。</p>
@@ -595,7 +610,7 @@ gs prob [9.43255208e-01 3.31024447e-02 9.63810492e-03 9.63810492e-03
 回路を作り直すか、<code class="docutils literal notranslate"><span class="pre">qc.remove_final_measurements()</span></code>などを実行しよう。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit.quantum_info</span> <span class="kn">import</span> <span class="n">Statevector</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.quantum_info</span><span class="w"> </span><span class="kn">import</span> <span class="n">Statevector</span>
 
 <span class="n">state_vector</span> <span class="o">=</span> <span class="n">Statevector</span><span class="o">.</span><span class="n">from_instruction</span><span class="p">(</span><span class="n">qc</span><span class="p">)</span>
 <span class="n">state_vector</span>
@@ -608,7 +623,7 @@ gs prob [9.43255208e-01 3.31024447e-02 9.63810492e-03 9.63810492e-03
              9.81735082e-02+0.j, 0.00000000e+00+0.j, 0.00000000e+00+0.j,
              9.81721942e-02+0.j, 6.36069907e-02+0.j, 0.00000000e+00+0.j,
              1.78892924e-02+0.j, 0.00000000e+00+0.j, 0.00000000e+00+0.j,
-             2.92244877e-19+0.j],
+             8.86822061e-18+0.j],
             dims=(2, 2, 2, 2))
 </pre></div>
 </div>
@@ -645,7 +660,7 @@ gs prob [9.43255208e-01 3.31024447e-02 9.63810492e-03 9.63810492e-03
 Qiskitでは、回路(qubit)の上(indexが若い方)から下をビット列の下位ビットから割り当てるので、<code class="docutils literal notranslate"><span class="pre">X</span></code>が作用するのは2番目のqubitになる。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit.quantum_info</span> <span class="kn">import</span> <span class="n">SparsePauliOp</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.quantum_info</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparsePauliOp</span>
 
 <span class="n">SPEs</span> <span class="o">=</span> <span class="n">Hamil</span><span class="o">.</span><span class="n">epsilon</span>
 
@@ -707,7 +722,7 @@ Qiskitでは、回路(qubit)の上(indexが若い方)から下をビット列の
 QuantumComputingの章などで実装したような、pauli stringに対応した各項の期待値を計算してくれる。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit.primitives</span> <span class="kn">import</span> <span class="n">StatevectorEstimator</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.primitives</span><span class="w"> </span><span class="kn">import</span> <span class="n">StatevectorEstimator</span>
 
 <span class="n">estimator</span> <span class="o">=</span> <span class="n">StatevectorEstimator</span><span class="p">()</span>
 <span class="n">job</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">run</span><span class="p">([(</span><span class="n">qc</span><span class="p">,</span> <span class="n">hamiltonian_op</span><span class="p">,)])</span>
@@ -728,7 +743,7 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 <p>ノイズなしの場合のshot 測定</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit_aer.primitives</span> <span class="kn">import</span> <span class="n">SamplerV2</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_aer.primitives</span><span class="w"> </span><span class="kn">import</span> <span class="n">SamplerV2</span>
 <span class="n">sampler</span> <span class="o">=</span> <span class="n">SamplerV2</span><span class="p">()</span>
 
 <span class="n">qc</span> <span class="o">=</span> <span class="n">ansatz</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
@@ -748,18 +763,18 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counts(ideal): {&#39;0011&#39;: 9474, &#39;0101&#39;: 325, &#39;0110&#39;: 84, &#39;1001&#39;: 84, &#39;1010&#39;: 32, &#39;1100&#39;: 1}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counts(ideal): {&#39;0011&#39;: 9460, &#39;0101&#39;: 306, &#39;0110&#39;: 94, &#39;1010&#39;: 42, &#39;1001&#39;: 94, &#39;1100&#39;: 4}
 </pre></div>
 </div>
-<img alt="../_images/8ccfad32b147519a36cfb12857b9e8a07c7a927bb05b7545490a70209aeb50bd.png" src="../_images/8ccfad32b147519a36cfb12857b9e8a07c7a927bb05b7545490a70209aeb50bd.png" />
+<img alt="../_images/b99a8d3dcd24c808db98e786b6e647ffe8d230b3fb8270008a6807c421d36700.png" src="../_images/b99a8d3dcd24c808db98e786b6e647ffe8d230b3fb8270008a6807c421d36700.png" />
 </div>
 </div>
 <p>ノイズありの場合</p>
 <p>粒子数を保存しない結果が現れることを確認しよう。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit_ibm_runtime.fake_provider</span> <span class="kn">import</span> <span class="n">FakeQuebec</span>
-<span class="kn">from</span> <span class="nn">qiskit_aer</span> <span class="kn">import</span> <span class="n">AerSimulator</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_ibm_runtime.fake_provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeQuebec</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_aer</span><span class="w"> </span><span class="kn">import</span> <span class="n">AerSimulator</span>
 
 <span class="n">device_backend</span> <span class="o">=</span> <span class="n">FakeQuebec</span><span class="p">()</span>
 <span class="n">sim_quebec</span> <span class="o">=</span> <span class="n">AerSimulator</span><span class="o">.</span><span class="n">from_backend</span><span class="p">(</span><span class="n">device_backend</span><span class="p">)</span>
@@ -775,14 +790,14 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/a65cb3880226e10bb2ee3efe4d139e93668257fbfb0d55089262295dbdac94fc.png" src="../_images/a65cb3880226e10bb2ee3efe4d139e93668257fbfb0d55089262295dbdac94fc.png" />
+<img alt="../_images/4118b3d908240447b3acb509571f26dc95d0ecbc4745e64ce08eb972fb362f4e.png" src="../_images/4118b3d908240447b3acb509571f26dc95d0ecbc4745e64ce08eb972fb362f4e.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit_ibm_runtime.fake_provider</span> <span class="kn">import</span> <span class="n">FakeManilaV2</span>
-<span class="kn">from</span> <span class="nn">qiskit_aer.noise</span> <span class="kn">import</span> <span class="n">NoiseModel</span>
-<span class="kn">from</span> <span class="nn">qiskit_aer.primitives</span> <span class="kn">import</span> <span class="n">Estimator</span> <span class="k">as</span> <span class="n">AerEstimator</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_ibm_runtime.fake_provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeManilaV2</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_aer.noise</span><span class="w"> </span><span class="kn">import</span> <span class="n">NoiseModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_aer.primitives</span><span class="w"> </span><span class="kn">import</span> <span class="n">Estimator</span> <span class="k">as</span> <span class="n">AerEstimator</span>
 
 <span class="n">device</span> <span class="o">=</span> <span class="n">FakeManilaV2</span><span class="p">()</span>
 <span class="n">coupling_map</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">coupling_map</span>
@@ -805,7 +820,7 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>noisy_expval=2.004130859375
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>noisy_expval=2.0027050781249995
 </pre></div>
 </div>
 </div>
@@ -826,8 +841,8 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 \]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit.circuit.library</span> <span class="kn">import</span> <span class="n">PauliEvolutionGate</span>
-<span class="kn">from</span> <span class="nn">qiskit.synthesis</span> <span class="kn">import</span> <span class="n">SuzukiTrotter</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.circuit.library</span><span class="w"> </span><span class="kn">import</span> <span class="n">PauliEvolutionGate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.synthesis</span><span class="w"> </span><span class="kn">import</span> <span class="n">SuzukiTrotter</span>
 
 <span class="n">time</span> <span class="o">=</span> <span class="mf">1.e-1</span>
 <span class="n">trotter_steps</span> <span class="o">=</span> <span class="mi">30</span>
@@ -903,18 +918,18 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../_images/eec7e2f342c5c577338f34988dd0f8b4f2236eae713e172e85f667c847006887.png" src="../_images/eec7e2f342c5c577338f34988dd0f8b4f2236eae713e172e85f667c847006887.png" />
+<img alt="../_images/025e51a6c7c30bcc443c018b2d1ad44814ccf1c7d49178f85abee4562f1fe493.png" src="../_images/025e51a6c7c30bcc443c018b2d1ad44814ccf1c7d49178f85abee4562f1fe493.png" />
 <div class="output text_latex math notranslate nohighlight">
-\[(0.4092440785 + 0.9124249472 i) |000\rangle\]</div>
-<img alt="../_images/906abec51e52f17e78309a1da6c18b17fc94bc8b4975435fe63176ed3b83495c.png" src="../_images/906abec51e52f17e78309a1da6c18b17fc94bc8b4975435fe63176ed3b83495c.png" />
+\[(-0.9533858209 + 0.3017539999 i) |000\rangle\]</div>
+<img alt="../_images/cad04f805afba7d1da350f5fe991a235a7515c72aeb6c8f0da72fb34e8eb317f.png" src="../_images/cad04f805afba7d1da350f5fe991a235a7515c72aeb6c8f0da72fb34e8eb317f.png" />
 <div class="output text_latex math notranslate nohighlight">
-\[(0.4092440785 + 0.9124249472 i) |000\rangle\]</div>
-<img alt="../_images/052f411a96e5f67e0b0350081ff4e0b66ea33ffc062f00988e1ee4a46588030d.png" src="../_images/052f411a96e5f67e0b0350081ff4e0b66ea33ffc062f00988e1ee4a46588030d.png" />
+\[(-0.9533858209 + 0.3017539999 i) |000\rangle\]</div>
+<img alt="../_images/36b03732863711da84a7443354e15a3a8537b0232434db259f8973a896289b6d.png" src="../_images/36b03732863711da84a7443354e15a3a8537b0232434db259f8973a896289b6d.png" />
 <div class="output text_latex math notranslate nohighlight">
-\[-0.5096185437 |000\rangle+0.8604004532 |011\rangle\]</div>
-<img alt="../_images/4c5fce14c1b80e7ecebdb01b2c34813b44cdb10a4eab4625784b90605a15d43c.png" src="../_images/4c5fce14c1b80e7ecebdb01b2c34813b44cdb10a4eab4625784b90605a15d43c.png" />
+\[0.9489574669 |000\rangle-0.3154040678 |011\rangle\]</div>
+<img alt="../_images/457d962ed7cd793d8eed784e4aef4efdca0ddb848c13c627f04f827eae0d9c9f.png" src="../_images/457d962ed7cd793d8eed784e4aef4efdca0ddb848c13c627f04f827eae0d9c9f.png" />
 <div class="output text_latex math notranslate nohighlight">
-\[-0.5096185437 |000\rangle+0.8604004532 |011\rangle\]</div>
+\[0.9489574669 |000\rangle-0.3154040678 |011\rangle\]</div>
 </div>
 </div>
 </section>
@@ -924,7 +939,7 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 で紹介したHadamard testを実装する。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit</span> <span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">ClassicalRegister</span><span class="p">,</span> <span class="n">QuantumRegister</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">ClassicalRegister</span><span class="p">,</span> <span class="n">QuantumRegister</span>
 
 <span class="n">qr_Hadamard</span> <span class="o">=</span> <span class="n">QuantumRegister</span><span class="p">(</span><span class="n">Norb</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">cr_Hadamard</span> <span class="o">=</span> <span class="n">ClassicalRegister</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -944,7 +959,8 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 <span class="c1"># Hadamard on ancilla</span>
 <span class="n">qc_Hadamard</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 <span class="c1"># controlled-U</span>
-<span class="n">cU</span> <span class="o">=</span> <span class="n">U</span><span class="o">.</span><span class="n">to_gate</span><span class="p">()</span><span class="o">.</span><span class="n">control</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">U</span> <span class="o">=</span> <span class="n">PauliEvolutionGate</span><span class="p">(</span><span class="n">hamiltonian_op</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">synthesis</span><span class="o">=</span><span class="n">SuzukiTrotter</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">reps</span><span class="o">=</span><span class="n">trotter_steps</span><span class="p">))</span>
+<span class="n">cU</span> <span class="o">=</span> <span class="n">U</span><span class="o">.</span><span class="n">control</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">qc_Hadamard</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cU</span><span class="p">,</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
 <span class="c1"># Hadamard on ancilla and measurement</span>
 <span class="n">qc_Hadamard</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
@@ -962,7 +978,7 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/d9fdc6b4681e3f0b0c03b4644fbc8f067e9bd86ebc51ae31cf425df472a39a2f.png" src="../_images/d9fdc6b4681e3f0b0c03b4644fbc8f067e9bd86ebc51ae31cf425df472a39a2f.png" />
+<img alt="../_images/94e656f6070df0b959c33f65e5b66a3560873aa7ff9b81838a47aae3a516d0a9.png" src="../_images/94e656f6070df0b959c33f65e5b66a3560873aa7ff9b81838a47aae3a516d0a9.png" />
 </div>
 </div>
 <p>測ってみよう</p>
@@ -982,7 +998,7 @@ noisy simulatorを試したい場合などはtranspileが必要になる。</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>p0=0.99645, p1=0.00355
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>p0=0.99649, p1=0.00351
 </pre></div>
 </div>
 </div>
@@ -1004,7 +1020,7 @@ P(1) &amp; =  \left| \frac{1 - e^{iEt}}{2} \right|^2 = \frac{1 - \cos(Et)}{2} \\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>E: 1.1923437096925216 Egs_exact:  1.1898518351360725 diff. 0.0024918745564490585
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>E: 1.1855993261018105 Egs_exact:  1.1898518351360725 diff. -0.0042525090342619976
 </pre></div>
 </div>
 </div>
@@ -1032,8 +1048,8 @@ P(1) &amp; =  \left| \frac{1 - e^{iEt}}{2} \right|^2 = \frac{1 - \cos(Et)}{2} \\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>p0: (0.9964647046884773+6.2694458398210525e-19j) p1: (0.0035352953114963313-1.3214297198532016e-20j)
-E: 1.189868780810984 Egs_exact:  1.1898518351360725 diff. 1.6945674911506003e-05
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>p0: (0.9964647046884788+0j) p1: (0.003535295311496347+0j)
+E: 1.189868780810853 Egs_exact:  1.1898518351360725 diff. 1.6945674780499687e-05
 </pre></div>
 </div>
 </div>
@@ -1051,10 +1067,10 @@ E: 1.189868780810984 Egs_exact:  1.1898518351360725 diff. 1.6945674911506003e-05
 <span class="math notranslate nohighlight">\(\ket{\psi} = \ket{1}\)</span>を用意すれば、推定したい位相は<span class="math notranslate nohighlight">\(\phi/2\pi\)</span>になる。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit.circuit.library.standard_gates</span> <span class="kn">import</span> <span class="n">PhaseGate</span>
-<span class="kn">from</span> <span class="nn">qiskit.circuit.library</span> <span class="kn">import</span> <span class="n">QFT</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.circuit.library.standard_gates</span><span class="w"> </span><span class="kn">import</span> <span class="n">PhaseGate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.circuit.library</span><span class="w"> </span><span class="kn">import</span> <span class="n">QFT</span>
 
-<span class="k">def</span> <span class="nf">circuit_ex1</span><span class="p">(</span><span class="n">n_ancilla</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">measure</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">using_qiskit</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">circuit_ex1</span><span class="p">(</span><span class="n">n_ancilla</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">measure</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">using_qiskit</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">n_ancilla</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_ancilla</span><span class="p">)</span>
     <span class="n">register_ancilla</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="o">+</span><span class="n">n_ancilla</span><span class="p">)</span>
     <span class="n">register_target</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -1087,7 +1103,7 @@ E: 1.189868780810984 Egs_exact:  1.1898518351360725 diff. 1.6945674911506003e-05
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/263b6d4de841d0f42da8d8534ddde066c0a3ee10bc6484d97930ba6d01d131cc.png" src="../_images/263b6d4de841d0f42da8d8534ddde066c0a3ee10bc6484d97930ba6d01d131cc.png" />
+<img alt="../_images/0ade33c216679ab098b936350d0bfc9ff11229ccfb48cabf331f5ba39e26aaca.png" src="../_images/0ade33c216679ab098b936350d0bfc9ff11229ccfb48cabf331f5ba39e26aaca.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1111,10 +1127,10 @@ E: 1.189868780810984 Egs_exact:  1.1898518351360725 diff. 1.6945674911506003e-05
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>top3:  [129 137 121]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>top3:  [129 127 131]
 idx 129 estimated_theta 0.39269908169872414
-idx 137 estimated_theta 0.4172427743048944
-idx 121 estimated_theta 0.36815538909255385
+idx 127 estimated_theta 0.3865631585471816
+idx 131 estimated_theta 0.3988350048502667
 theta_exact 0.39269908169872414  2pi/2^n 0.006135923151542565
 </pre></div>
 </div>
@@ -1172,7 +1188,7 @@ theta_exact 0.39269908169872414  2pi/2^n 0.006135923151542565
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">make_QPE_circuit_ex2</span><span class="p">(</span><span class="n">n_ancilla</span><span class="p">,</span> <span class="n">n_psi</span><span class="p">,</span> <span class="n">unitary</span><span class="p">,</span> <span class="n">measure</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">make_QPE_circuit_ex2</span><span class="p">(</span><span class="n">n_ancilla</span><span class="p">,</span> <span class="n">n_psi</span><span class="p">,</span> <span class="n">unitary</span><span class="p">,</span> <span class="n">measure</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">qc_QPE</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">n_ancilla</span> <span class="o">+</span> <span class="n">n_psi</span><span class="p">,</span> <span class="n">n_ancilla</span><span class="p">)</span>
     <span class="n">register_ancilla</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_psi</span><span class="p">,</span> <span class="n">n_psi</span><span class="o">+</span><span class="n">n_ancilla</span><span class="p">)</span>
     <span class="n">register_target</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_psi</span><span class="p">)</span>
@@ -1208,7 +1224,7 @@ theta_exact 0.39269908169872414  2pi/2^n 0.006135923151542565
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/0f22632f1f4c7098db5c0a4087895346c24880cab64bfe4a51f78f48869d3e67.png" src="../_images/0f22632f1f4c7098db5c0a4087895346c24880cab64bfe4a51f78f48869d3e67.png" />
+<img alt="../_images/12c848a12cfcb5b0bddcd5a28996c7d392f7d26633a9352165e1a67de0ba90f2.png" src="../_images/12c848a12cfcb5b0bddcd5a28996c7d392f7d26633a9352165e1a67de0ba90f2.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1231,12 +1247,13 @@ theta_exact 0.39269908169872414  2pi/2^n 0.006135923151542565
 <span class="n">bit_ancilla</span> <span class="o">=</span> <span class="n">bitstr_from_idx</span><span class="p">[:</span><span class="n">n_ancilla</span><span class="p">]</span>
 <span class="n">theta</span><span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bit_ancilla</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">n_ancilla</span><span class="p">)</span> 
 <span class="n">lambda_t</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">time</span> 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;idx&quot;</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="s2">&quot;theta&quot;</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="s2">&quot;lambda=2pitheta/time&quot;</span><span class="p">,</span> <span class="n">lambda_t</span><span class="p">,</span> <span class="s2">&quot; 2pi/2^n&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="o">**</span><span class="n">n_ancilla</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;idx&quot;</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="s2">&quot;bit_ancilla&quot;</span><span class="p">,</span> <span class="n">bit_ancilla</span><span class="p">,</span> 
+      <span class="s2">&quot;theta&quot;</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="s2">&quot;lambda=2pitheta/time&quot;</span><span class="p">,</span> <span class="n">lambda_t</span><span class="p">,</span> <span class="s2">&quot; 2pi/2^n&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="o">**</span><span class="n">n_ancilla</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>idx 83 theta 0.078125 lambda=2pitheta/time 3.977908039897935  2pi/2^n 0.02454369260617026
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>idx 83 bit_ancilla 00010100 theta 0.078125 lambda=2pitheta/time 3.977908039897935  2pi/2^n 0.02454369260617026
 </pre></div>
 </div>
 </div>
@@ -1247,11 +1264,11 @@ theta_exact 0.39269908169872414  2pi/2^n 0.006135923151542565
 <p>次に、pairing Hamiltonianの場合を考える</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit.circuit.library</span> <span class="kn">import</span> <span class="n">QFT</span>
-<span class="kn">from</span> <span class="nn">qiskit.circuit.library</span> <span class="kn">import</span> <span class="n">PhaseEstimation</span> <span class="c1"># will be deprecated</span>
-<span class="kn">from</span> <span class="nn">qiskit.circuit.library</span> <span class="kn">import</span> <span class="n">phase_estimation</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.circuit.library</span><span class="w"> </span><span class="kn">import</span> <span class="n">QFT</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.circuit.library</span><span class="w"> </span><span class="kn">import</span> <span class="n">PhaseEstimation</span> <span class="c1"># will be deprecated</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.circuit.library</span><span class="w"> </span><span class="kn">import</span> <span class="n">phase_estimation</span>
 
-<span class="k">def</span> <span class="nf">state_preparation</span><span class="p">(</span><span class="n">qc</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;FCI&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">state_preparation</span><span class="p">(</span><span class="n">qc</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;FCI&quot;</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">Norb</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;This function is only for Norb=4&quot;</span><span class="p">)</span>
     <span class="c1"># HF</span>
@@ -1266,7 +1283,7 @@ theta_exact 0.39269908169872414  2pi/2^n 0.006135923151542565
         <span class="n">qc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cG1_gate</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]),</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">qc</span>
 
-<span class="k">def</span> <span class="nf">make_QPE_circuit</span><span class="p">(</span><span class="n">n_ancilla</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">params_psi</span><span class="p">,</span> <span class="n">measure</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_QPE_circuit</span><span class="p">(</span><span class="n">n_ancilla</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">params_psi</span><span class="p">,</span> <span class="n">measure</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="n">qc_QPE</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">n_ancilla</span> <span class="o">+</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">n_ancilla</span><span class="p">)</span>
     <span class="n">register_ancilla</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">Norb</span><span class="p">,</span> <span class="n">Norb</span><span class="o">+</span><span class="n">n_ancilla</span><span class="p">)</span>
     <span class="n">register_target</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">Norb</span><span class="p">)</span>
@@ -1303,14 +1320,14 @@ theta_exact 0.39269908169872414  2pi/2^n 0.006135923151542565
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/38de8753e1f868e85096c66c68a18c10020de306cf82f0076bd927869f2a4e41.png" src="../_images/38de8753e1f868e85096c66c68a18c10020de306cf82f0076bd927869f2a4e41.png" />
+<img alt="../_images/29a888c5d1e0bd34cfcab0dafcd25e343dac89870f6acbf7656d448db62baa6b.png" src="../_images/29a888c5d1e0bd34cfcab0dafcd25e343dac89870f6acbf7656d448db62baa6b.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params_psi</span> <span class="o">=</span> <span class="n">params_exact</span>
-<span class="n">n_ancilla</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">time</span> <span class="o">=</span> <span class="o">-</span> <span class="mf">1.e-1</span>
+<span class="n">n_ancilla</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">time</span> <span class="o">=</span> <span class="o">-</span> <span class="mf">1.0</span>
 <span class="n">trotter_steps</span> <span class="o">=</span> <span class="mi">20</span>
 </pre></div>
 </div>
@@ -1336,20 +1353,75 @@ theta_exact 0.39269908169872414  2pi/2^n 0.006135923151542565
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/b4080bc49e10be6ddc1b61e094b622bb4bca71b0ebebd1ffe4a4d02790c57481.png" src="../_images/b4080bc49e10be6ddc1b61e094b622bb4bca71b0ebebd1ffe4a4d02790c57481.png" />
+<img alt="../_images/8006855ad7f27506c04b3c0676d532ef13356465a976c12403706431e35e4da6.png" src="../_images/8006855ad7f27506c04b3c0676d532ef13356465a976c12403706431e35e4da6.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">float_from_bitstr</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">bitstr</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">bitstr</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">n_ancilla</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="o">-</span><span class="n">time</span>
- 
 <span class="n">E_estimated</span> <span class="o">=</span> <span class="n">float_from_bitstr</span><span class="p">(</span><span class="n">counts</span><span class="o">.</span><span class="n">most_frequent</span><span class="p">())</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;E_estimated: </span><span class="si">{</span><span class="n">E_estimated</span><span class="si">:</span><span class="s2">.8f</span><span class="si">}</span><span class="s2"> Egs_exact: </span><span class="si">{</span><span class="n">Egs_exact</span><span class="si">:</span><span class="s2">.8f</span><span class="si">}</span><span class="s2"> diff. </span><span class="si">{</span><span class="n">E_estimated</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Egs_exact</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>E_estimated: 1.16582540 Egs_exact: 1.18985184 diff. -2.40e-02
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>E_estimated: 1.17809725 Egs_exact: 1.18985184 diff. -1.18e-02
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="statevector">
+<h3><span class="section-number">12.6.3. </span>Statevector<a class="headerlink" href="#statevector" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qc_QPE</span> <span class="o">=</span> <span class="n">make_QPE_circuit</span><span class="p">(</span><span class="n">n_ancilla</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">params_psi</span><span class="p">,</span> <span class="n">measure</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">qc_QPE</span><span class="o">.</span><span class="n">save_statevector</span><span class="p">()</span>
+
+<span class="n">sim</span> <span class="o">=</span> <span class="n">AerSimulator</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;statevector&#39;</span><span class="p">)</span>
+<span class="n">tqc</span> <span class="o">=</span> <span class="n">transpile</span><span class="p">(</span><span class="n">qc_QPE</span><span class="p">,</span> <span class="n">sim</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;transpiled!&quot;</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tqc</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>transpiled!
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">psi_final</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_statevector</span><span class="p">(</span><span class="n">tqc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">probs</span> <span class="o">=</span> <span class="n">psi_final</span><span class="o">.</span><span class="n">probabilities_dict</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">Norb</span> <span class="o">+</span> <span class="n">n_ancilla</span><span class="p">))</span>
+<span class="n">list_probs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">probs</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">bitstring_whole</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">list_probs</span><span class="p">:</span>
+    
+    <span class="k">if</span> <span class="n">p</span> <span class="o">&lt;</span> <span class="mf">1e-3</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;bitstring whole: </span><span class="si">{</span><span class="n">bitstring_whole</span><span class="si">}</span><span class="s2"> prob.: </span><span class="si">{</span><span class="n">p</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>bitstring whole: 0011000011 prob.: 0.896477
+bitstring whole: 0011000101 prob.: 0.031468
+bitstring whole: 1011000011 prob.: 0.017672
+bitstring whole: 1101000011 prob.: 0.010790
+bitstring whole: 0011000110 prob.: 0.009044
+bitstring whole: 0011001001 prob.: 0.009044
+bitstring whole: 0011001010 prob.: 0.004527
+bitstring whole: 0111000011 prob.: 0.003867
+bitstring whole: 0101000011 prob.: 0.003025
+bitstring whole: 1111000011 prob.: 0.001652
+bitstring whole: 1001000011 prob.: 0.001404
 </pre></div>
 </div>
 </div>
@@ -1390,7 +1462,7 @@ theta_exact 0.39269908169872414  2pi/2^n 0.006135923151542565
 <div class="prev-next-area">
     <a class="left-prev"
        href="pennylane_QPE.html"
-       title="前のページ">
+       title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">前へ</p>
@@ -1399,7 +1471,7 @@ theta_exact 0.39269908169872414  2pi/2^n 0.006135923151542565
     </a>
     <a class="right-next"
        href="ucc.html"
-       title="次ページ">
+       title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">次へ</p>
         <p class="prev-next-title"><span class="section-number">13. </span>Unitary Coupled Cluster (UCC) for pairing Hamiltonians</p>
@@ -1413,8 +1485,7 @@ theta_exact 0.39269908169872414  2pi/2^n 0.006135923151542565
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -1431,6 +1502,7 @@ theta_exact 0.39269908169872414  2pi/2^n 0.006135923151542565
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#qpe">12.6. 量子位相推定(QPE)</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">12.6.1. 簡単な例</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pairing-hamilaonitnqpe">12.6.2. Pairing HamilaonitnのQPE計算</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#statevector">12.6.3. Statevector</a></li>
 </ul>
 </li>
 </ul>
@@ -1474,8 +1546,8 @@ theta_exact 0.39269908169872414  2pi/2^n 0.006135923151542565
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

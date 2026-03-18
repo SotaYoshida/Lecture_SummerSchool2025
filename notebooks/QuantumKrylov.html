@@ -16,33 +16,30 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
-  <!-- So that users can add custom icons -->
-  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../_static/documentation_options.js?v=1cf7f4d9"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
@@ -70,7 +67,6 @@
     <link rel="prev" title="14. pytketを用いたVQE計算" href="pytket_VQE.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="ja"/>
-  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -78,16 +74,27 @@
 
   
   
-  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">本文へスキップ</a></div>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>トップに戻る</button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -95,6 +102,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -102,11 +110,11 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
-  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="バージョン警告"></aside>
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
@@ -119,8 +127,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -150,17 +157,21 @@
     
     
     <img src="../_static/logo_Lecture.png" class="logo__image only-light" alt="Julia言語による原子核構造計算入門 - Home"/>
-    <img src="../_static/logo_Lecture.png" class="logo__image only-dark pst-js-only" alt="Julia言語による原子核構造計算入門 - Home"/>
+    <script>document.write(`<img src="../_static/logo_Lecture.png" class="logo__image only-dark" alt="Julia言語による原子核構造計算入門 - Home"/>`);</script>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">検索</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">検索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -204,14 +215,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -355,16 +361,24 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="ライト"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="ダーク"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
+  </button>
+`);
+</script>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -450,20 +464,21 @@ N_{kl} &amp; = \langle \Phi_k \ket{\Phi_l} = \bra{\Phi_0} e^{-i(t_l-t_k)H} \ket{
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy</span>
-<span class="kn">import</span> <span class="nn">itertools</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">qiskit</span> <span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">transpile</span>
-<span class="kn">from</span> <span class="nn">qiskit.circuit.library</span> <span class="kn">import</span> <span class="n">PauliEvolutionGate</span><span class="p">,</span> <span class="n">PauliGate</span>
-<span class="kn">from</span> <span class="nn">qiskit.quantum_info</span> <span class="kn">import</span> <span class="n">SparsePauliOp</span><span class="p">,</span> <span class="n">Statevector</span>
-<span class="kn">from</span> <span class="nn">qiskit.synthesis</span> <span class="kn">import</span> <span class="n">SuzukiTrotter</span>
-<span class="kn">from</span> <span class="nn">qiskit.visualization</span> <span class="kn">import</span> <span class="n">plot_histogram</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">combinations</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">transpile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.circuit.library</span><span class="w"> </span><span class="kn">import</span> <span class="n">PauliEvolutionGate</span><span class="p">,</span> <span class="n">PauliGate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.quantum_info</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparsePauliOp</span><span class="p">,</span> <span class="n">Statevector</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.synthesis</span><span class="w"> </span><span class="kn">import</span> <span class="n">SuzukiTrotter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.visualization</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_histogram</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 
-<span class="k">class</span> <span class="nc">PairingHamiltonian</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">Nocc</span><span class="p">,</span> <span class="n">gval</span><span class="p">,</span> <span class="n">delta_eps</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PairingHamiltonian</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">Nocc</span><span class="p">,</span> <span class="n">gval</span><span class="p">,</span> <span class="n">delta_eps</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Norb</span> <span class="o">=</span> <span class="n">Norb</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Nocc</span> <span class="o">=</span> <span class="n">Nocc</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delta_eps</span> <span class="o">=</span> <span class="n">delta_eps</span>
@@ -472,18 +487,18 @@ N_{kl} &amp; = \langle \Phi_k \ket{\Phi_l} = \bra{\Phi_0} e^{-i(t_l-t_k)H} \ket{
         <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_epsilon</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Hmat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_Hmat</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">make_basis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_basis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">basis</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">occ</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Norb</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nocc</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">occ</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">basis</span>
     
-    <span class="k">def</span> <span class="nf">eval_epsilon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">eval_epsilon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_eps</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Norb</span><span class="p">)</span> <span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span>
     
-    <span class="k">def</span> <span class="nf">eval_Hmat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">eval_Hmat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Hmat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">bra_idx</span><span class="p">,</span> <span class="n">bra</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="p">):</span>
@@ -501,7 +516,7 @@ N_{kl} &amp; = \langle \Phi_k \ket{\Phi_l} = \bra{\Phi_0} e^{-i(t_l-t_k)H} \ket{
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Hmat</span>
 
-<span class="k">def</span> <span class="nf">tuple_to_bitstring</span><span class="p">(</span><span class="n">tup</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">rev</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tuple_to_bitstring</span><span class="p">(</span><span class="n">tup</span><span class="p">,</span> <span class="n">Norb</span><span class="p">,</span> <span class="n">rev</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">bitint</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tup</span><span class="p">:</span>
         <span class="n">bitint</span> <span class="o">+=</span> <span class="mi">2</span><span class="o">**</span><span class="n">i</span>
@@ -511,7 +526,7 @@ N_{kl} &amp; = \langle \Phi_k \ket{\Phi_l} = \bra{\Phi_0} e^{-i(t_l-t_k)H} \ket{
         <span class="n">bitstring</span> <span class="o">=</span> <span class="s2">&quot;|&quot;</span><span class="o">+</span><span class="nb">format</span><span class="p">(</span><span class="n">bitint</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;0</span><span class="si">{</span><span class="n">Norb</span><span class="si">}</span><span class="s1">b&#39;</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;&gt;&quot;</span>        
     <span class="k">return</span> <span class="n">bitstring</span>
 
-<span class="k">def</span> <span class="nf">cG1</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="n">c_qubit</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cG1</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="n">c_qubit</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
     <span class="n">theta_4</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">/</span> <span class="mi">4</span> 
     <span class="n">circ</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">ry</span><span class="p">(</span><span class="n">theta_4</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
@@ -524,7 +539,7 @@ N_{kl} &amp; = \langle \Phi_k \ket{\Phi_l} = \bra{\Phi_0} e^{-i(t_l-t_k)H} \ket{
     <span class="n">circ</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="n">c_qubit</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">cG1_gate</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cG1_gate</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
     <span class="n">circ</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">G</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;cG1&quot;</span>   
@@ -532,7 +547,7 @@ N_{kl} &amp; = \langle \Phi_k \ket{\Phi_l} = \bra{\Phi_0} e^{-i(t_l-t_k)H} \ket{
     <span class="n">circ</span> <span class="o">=</span> <span class="n">circ</span><span class="o">.</span><span class="n">control</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> 
     <span class="k">return</span> <span class="n">circ</span>
 
-<span class="k">def</span> <span class="nf">G</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">G</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
     <span class="n">theta_2</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">/</span> <span class="mi">2</span> 
     <span class="n">circ</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">ry</span><span class="p">(</span><span class="n">theta_2</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
@@ -541,13 +556,13 @@ N_{kl} &amp; = \langle \Phi_k \ket{\Phi_l} = \bra{\Phi_0} e^{-i(t_l-t_k)H} \ket{
     <span class="n">circ</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>  
 
-<span class="k">def</span> <span class="nf">G_gate</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">G_gate</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
     <span class="n">circ</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">G</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
     <span class="n">circ</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;G&quot;</span>    
     <span class="k">return</span> <span class="n">circ</span><span class="o">.</span><span class="n">to_gate</span><span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">get_idx_ancilla_in_string</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">,</span> <span class="n">ancilla</span><span class="p">,</span> <span class="n">Qiskit_ordering</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_idx_ancilla_in_string</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">,</span> <span class="n">ancilla</span><span class="p">,</span> <span class="n">Qiskit_ordering</span><span class="p">):</span>
     <span class="n">idx_ancilla</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">ancilla</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">Qiskit_ordering</span><span class="p">:</span>
@@ -556,7 +571,7 @@ N_{kl} &amp; = \langle \Phi_k \ket{\Phi_l} = \bra{\Phi_0} e^{-i(t_l-t_k)H} \ket{
             <span class="n">idx_ancilla</span> <span class="o">=</span> <span class="n">ancilla</span>
     <span class="k">return</span> <span class="n">idx_ancilla</span>
 
-<span class="k">def</span> <span class="nf">expec_Zstring</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">,</span> <span class="n">Qiskit_ordering</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">target_qubits</span><span class="o">=</span><span class="p">[],</span> <span class="n">ancilla_qubit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">expec_Zstring</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">,</span> <span class="n">Qiskit_ordering</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">target_qubits</span><span class="o">=</span><span class="p">[],</span> <span class="n">ancilla_qubit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">exp_val</span> <span class="o">=</span> <span class="n">exp_val_p0</span> <span class="o">=</span> <span class="n">exp_val_p1</span> <span class="o">=</span> <span class="mf">0.0</span>
     <span class="n">n_shot</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
     <span class="n">n_qubit</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">])</span>
@@ -778,7 +793,7 @@ H &amp; = 0.123 Z_0Z_1
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/26c29589c83b8f7ffcda79b78242d3317324a2e64b0c52ab8b1d0c76d6a8f29c.png" src="../_images/26c29589c83b8f7ffcda79b78242d3317324a2e64b0c52ab8b1d0c76d6a8f29c.png" />
+<img alt="../_images/e9412bc5365673a248c9b6d8365a15fa5a3fdf57dfe87ec17ca0d9911b40cb50.png" src="../_images/e9412bc5365673a248c9b6d8365a15fa5a3fdf57dfe87ec17ca0d9911b40cb50.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -915,7 +930,7 @@ cos(t_i-t_j) 0.9985358702188959 sin(t_i-t_j) -0.05409358451972206
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/ff2c2ea3c5c6357df1785cb30423f3bfd01b9596e6896861f535ee0f8f2d67e4.png" src="../_images/ff2c2ea3c5c6357df1785cb30423f3bfd01b9596e6896861f535ee0f8f2d67e4.png" />
+<img alt="../_images/f925ca56b51fdfe9391a1eda05293029ab8b68ca6192cb3bc92a8ec5d28e3b1e.png" src="../_images/f925ca56b51fdfe9391a1eda05293029ab8b68ca6192cb3bc92a8ec5d28e3b1e.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -935,12 +950,12 @@ cos(t_i-t_j) 0.9985358702188959 sin(t_i-t_j) -0.05409358451972206
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/9feeaf89f73b4f2730436b186bf3445ae9c6eb6a503cac900218d1dec331acd9.png" src="../_images/9feeaf89f73b4f2730436b186bf3445ae9c6eb6a503cac900218d1dec331acd9.png" />
+<img alt="../_images/08fecb639a3f3a9bfe9597fc6e6100543aba122ca05a1b73d331f31532ca2218.png" src="../_images/08fecb639a3f3a9bfe9597fc6e6100543aba122ca05a1b73d331f31532ca2218.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit_aer.primitives</span> <span class="kn">import</span> <span class="n">SamplerV2</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_aer.primitives</span><span class="w"> </span><span class="kn">import</span> <span class="n">SamplerV2</span>
 <span class="n">sampler</span> <span class="o">=</span> <span class="n">SamplerV2</span><span class="p">()</span>
 <span class="n">num_shot</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">5</span>
 
@@ -962,8 +977,8 @@ cos(t_i-t_j) 0.9985358702188959 sin(t_i-t_j) -0.05409358451972206
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Estimated Re&lt;psi_i|psi_j&gt; =   0.99864  Exact:   0.99854 Error: 1.04e-04
-Estimated Im&lt;psi_i|psi_j&gt; =  -0.05926  Exact:  -0.05409 Error: 5.17e-03
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Estimated Re&lt;psi_i|psi_j&gt; =   0.99846  Exact:   0.99854 Error: 7.59e-05
+Estimated Im&lt;psi_i|psi_j&gt; =  -0.05182  Exact:  -0.05409 Error: 2.27e-03
 </pre></div>
 </div>
 </div>
@@ -987,7 +1002,7 @@ Estimated Im&lt;psi_i|psi_j&gt; =  -0.05926  Exact:  -0.05409 Error: 5.17e-03
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">additional_qc</span><span class="p">(</span><span class="n">qc_in</span><span class="p">,</span> <span class="n">pauli_str</span><span class="p">,</span> <span class="n">register_target</span><span class="p">,</span> <span class="n">Qiskit_order</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">additional_qc</span><span class="p">(</span><span class="n">qc_in</span><span class="p">,</span> <span class="n">pauli_str</span><span class="p">,</span> <span class="n">register_target</span><span class="p">,</span> <span class="n">Qiskit_order</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">pauli_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">pauli_str</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">Qiskit_order</span><span class="p">:</span>
         <span class="n">pauli_str</span> <span class="o">=</span> <span class="n">pauli_str</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -1002,7 +1017,7 @@ Estimated Im&lt;psi_i|psi_j&gt; =  -0.05926  Exact:  -0.05409 Error: 5.17e-03
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid Pauli string: &quot;</span><span class="p">,</span> <span class="n">pauli_str</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">get_idx_to_measure</span><span class="p">(</span><span class="n">pauli_str</span><span class="p">,</span> <span class="n">Qiskit_order</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_idx_to_measure</span><span class="p">(</span><span class="n">pauli_str</span><span class="p">,</span> <span class="n">Qiskit_order</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">idxs</span> <span class="o">=</span> <span class="p">[</span> <span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pauli_str</span><span class="p">)</span> <span class="k">if</span> <span class="n">p</span> <span class="o">!=</span> <span class="s2">&quot;I&quot;</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">Qiskit_order</span><span class="p">:</span>
         <span class="n">idxs</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">len</span><span class="p">(</span><span class="n">pauli_str</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">idxs</span><span class="p">]</span>
@@ -1024,17 +1039,17 @@ Estimated Im&lt;psi_i|psi_j&gt; =  -0.05926  Exact:  -0.05409 Error: 5.17e-03
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>XXII
 </pre></div>
 </div>
-<img alt="../_images/739604467c21238cfe72a817f562e095113cc95223bfea115aa766f69c21016d.png" src="../_images/739604467c21238cfe72a817f562e095113cc95223bfea115aa766f69c21016d.png" />
+<img alt="../_images/8b4820b135d462767c454953258a877deca36e20268c58aba5c5b78755aa9e3c.png" src="../_images/8b4820b135d462767c454953258a877deca36e20268c58aba5c5b78755aa9e3c.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>IYIY
 </pre></div>
 </div>
-<img alt="../_images/11a08a819dbb74ce53ee7c4a5f116231837a0e3364e5da3ea5e593e727d5fe84.png" src="../_images/11a08a819dbb74ce53ee7c4a5f116231837a0e3364e5da3ea5e593e727d5fe84.png" />
+<img alt="../_images/cc1e5aecaba7babac9e5d30477f9d3a63349809a35795b94ec3802bd95e35ca2.png" src="../_images/cc1e5aecaba7babac9e5d30477f9d3a63349809a35795b94ec3802bd95e35ca2.png" />
 </div>
 </div>
 <p>既にQiskitの章で作った、pairing Hamiltonianの状態作成回路などを用いて期待値計算が正しく出来ることを確認しておこう。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ansatz</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;FCI&quot;</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">ansatz</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;FCI&quot;</span><span class="p">):</span>
     <span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">Norb</span><span class="p">)</span>
     <span class="c1"># HF</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nocc</span><span class="p">):</span>
@@ -1102,22 +1117,22 @@ Estimated Im&lt;psi_i|psi_j&gt; =  -0.05926  Exact:  -0.05409 Error: 5.17e-03
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>IIII (5.34+0j) 1.0
 IIIZ (0.165+0j) -0.9719921725083537
-IIZI (-0.835+0j) -0.9138806897044238
-IZII (-1.835+0j) 0.9138801737253328
+IIZI (-0.835+0j) -0.9138806897044239
+IZII (-1.835+0j) 0.9138801737253329
 ZIII (-2.835+0j) 0.9719926884874447
-IIXX (-0.165+0j) 0.04821208188098893
-YYII (-0.165+0j) 0.04821177091461082
-IXIX (-0.165+0j) 0.19420741548699103
-YIYI (-0.165+0j) 0.1942049102344519
+IIXX (-0.165+0j) 0.048212081880989244
+YYII (-0.165+0j) 0.04821177091461068
+IXIX (-0.165+0j) 0.19420741548699116
+YIYI (-0.165+0j) 0.19420491023445183
 XIIX (-0.165+0j) 0.13006151287556628
-YIIY (-0.165+0j) 0.1300615128755664
-IXXI (-0.165+0j) 0.3556794042467488
-IYYI (-0.165+0j) 0.3556794042467488
-XIXI (-0.165+0j) 0.194204910234452
-IYIY (-0.165+0j) 0.1942074154869912
-XXII (-0.165+0j) 0.04821177091461088
-IIYY (-0.165+0j) 0.048212081880989174
-Esum (1.1898518352304355+0j) Egs_exact 1.1898518351360725
+YIIY (-0.165+0j) 0.13006151287556622
+IXXI (-0.165+0j) 0.35567940424674865
+IYYI (-0.165+0j) 0.35567940424674854
+XIXI (-0.165+0j) 0.19420491023445188
+IYIY (-0.165+0j) 0.19420741548699086
+XXII (-0.165+0j) 0.048211770914610645
+IIYY (-0.165+0j) 0.04821208188098913
+Esum (1.1898518352304353+0j) Egs_exact 1.1898518351360725
 </pre></div>
 </div>
 </div>
@@ -1185,23 +1200,23 @@ Esum (1.1898518352304355+0j) Egs_exact 1.1898518351360725
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>operator:  IIII coeff:  (5.34+0j) exp. val:  1.0
 operator:  IIIZ coeff:  (0.165+0j) exp. val:  -0.9719921725083537
-operator:  IIZI coeff:  (-0.835+0j) exp. val:  -0.9138806897044238
-operator:  IZII coeff:  (-1.835+0j) exp. val:  0.9138801737253328
+operator:  IIZI coeff:  (-0.835+0j) exp. val:  -0.9138806897044239
+operator:  IZII coeff:  (-1.835+0j) exp. val:  0.9138801737253329
 operator:  ZIII coeff:  (-2.835+0j) exp. val:  0.9719926884874447
-operator:  IIXX coeff:  (-0.165+0j) exp. val:  0.04821208188098893
-operator:  YYII coeff:  (-0.165+0j) exp. val:  0.04821177091461082
-operator:  IXIX coeff:  (-0.165+0j) exp. val:  0.19420741548699103
-operator:  YIYI coeff:  (-0.165+0j) exp. val:  0.1942049102344519
+operator:  IIXX coeff:  (-0.165+0j) exp. val:  0.048212081880989244
+operator:  YYII coeff:  (-0.165+0j) exp. val:  0.04821177091461068
+operator:  IXIX coeff:  (-0.165+0j) exp. val:  0.19420741548699116
+operator:  YIYI coeff:  (-0.165+0j) exp. val:  0.19420491023445183
 operator:  XIIX coeff:  (-0.165+0j) exp. val:  0.13006151287556628
-operator:  YIIY coeff:  (-0.165+0j) exp. val:  0.1300615128755664
-operator:  IXXI coeff:  (-0.165+0j) exp. val:  0.3556794042467488
-operator:  IYYI coeff:  (-0.165+0j) exp. val:  0.3556794042467488
-operator:  XIXI coeff:  (-0.165+0j) exp. val:  0.194204910234452
-operator:  IYIY coeff:  (-0.165+0j) exp. val:  0.1942074154869912
-operator:  XXII coeff:  (-0.165+0j) exp. val:  0.04821177091461088
-operator:  IIYY coeff:  (-0.165+0j) exp. val:  0.048212081880989174
-using statevector True Hsum (1.1898518352304355+0j)
-Hsum should be close to Egs_exact 1.1898518351360725 diff. (9.436296188880533e-11+0j)
+operator:  YIIY coeff:  (-0.165+0j) exp. val:  0.13006151287556622
+operator:  IXXI coeff:  (-0.165+0j) exp. val:  0.35567940424674865
+operator:  IYYI coeff:  (-0.165+0j) exp. val:  0.35567940424674854
+operator:  XIXI coeff:  (-0.165+0j) exp. val:  0.19420491023445188
+operator:  IYIY coeff:  (-0.165+0j) exp. val:  0.19420741548699086
+operator:  XXII coeff:  (-0.165+0j) exp. val:  0.048211770914610645
+operator:  IIYY coeff:  (-0.165+0j) exp. val:  0.04821208188098913
+using statevector True Hsum (1.1898518352304353+0j)
+Hsum should be close to Egs_exact 1.1898518351360725 diff. (9.43627398442004e-11+0j)
 </pre></div>
 </div>
 </div>
@@ -1281,24 +1296,24 @@ Hsum should be close to Egs_exact 1.1898518351360725 diff. (9.436296188880533e-1
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>operator:  IIII coeff:  (5.34+0j) exp. val:  0.9712139094394296
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>operator:  IIII coeff:  (5.34+0j) exp. val:  0.9712139094394295
 operator:  IIIZ coeff:  (0.165+0j) exp. val:  -0.9712139094394293
 operator:  IIZI coeff:  (-0.835+0j) exp. val:  -0.9712139094394294
 operator:  IZII coeff:  (-1.835+0j) exp. val:  0.9712139094394293
 operator:  ZIII coeff:  (-2.835+0j) exp. val:  0.9712139094394294
-operator:  IIXX coeff:  (-0.165+0j) exp. val:  -5.204170427930421e-18
-operator:  YYII coeff:  (-0.165+0j) exp. val:  -5.204170427930421e-18
-operator:  IXIX coeff:  (-0.165+0j) exp. val:  0.09817350815322773
-operator:  YIYI coeff:  (-0.165+0j) exp. val:  0.0981721941975748
-operator:  XIIX coeff:  (-0.165+0j) exp. val:  0.0636069906573104
-operator:  YIIY coeff:  (-0.165+0j) exp. val:  0.06360699065731032
+operator:  IIXX coeff:  (-0.165+0j) exp. val:  -6.938893903907228e-18
+operator:  YYII coeff:  (-0.165+0j) exp. val:  1.0408340855860843e-17
+operator:  IXIX coeff:  (-0.165+0j) exp. val:  0.09817350815322777
+operator:  YIYI coeff:  (-0.165+0j) exp. val:  0.09817219419757485
+operator:  XIIX coeff:  (-0.165+0j) exp. val:  0.06360699065731032
+operator:  YIIY coeff:  (-0.165+0j) exp. val:  0.06360699065731042
 operator:  IXXI coeff:  (-0.165+0j) exp. val:  0.18193913447081592
 operator:  IYYI coeff:  (-0.165+0j) exp. val:  0.18193913447081603
-operator:  XIXI coeff:  (-0.165+0j) exp. val:  0.09817219419757481
-operator:  IYIY coeff:  (-0.165+0j) exp. val:  0.0981735081532277
-operator:  XXII coeff:  (-0.165+0j) exp. val:  -3.469446951953614e-18
-operator:  IIYY coeff:  (-0.165+0j) exp. val:  -3.469446951953614e-18
-Re H_{ij} (1.1556023355807894+0j)
+operator:  XIXI coeff:  (-0.165+0j) exp. val:  0.09817219419757496
+operator:  IYIY coeff:  (-0.165+0j) exp. val:  0.09817350815322778
+operator:  XXII coeff:  (-0.165+0j) exp. val:  -1.214306433183765e-17
+operator:  IIYY coeff:  (-0.165+0j) exp. val:  -1.734723475976807e-18
+Re H_{ij} (1.1556023355807892+0j)
 </pre></div>
 </div>
 </div>
@@ -1329,11 +1344,387 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">make_U_and_cU</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">delta_t</span><span class="p">,</span> <span class="n">trotter_steps</span><span class="p">,</span> <span class="n">hamiltonian_op</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">Uprep</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># def make_U_and_cU(i, delta_t, trotter_steps, hamiltonian_op, ancilla_qubits, target_qubits, Uprep):</span>
+<span class="c1">#     Ntar = len(target_qubits)</span>
+<span class="c1">#     time = i * delta_t</span>
+<span class="c1">#     circuit_U = QuantumCircuit(Ntar)</span>
+<span class="c1">#     expiHt = PauliEvolutionGate(hamiltonian_op, time, synthesis=SuzukiTrotter(order=Trotter_order,reps=trotter_steps))</span>
+<span class="c1">#     circuit_U.append(expiHt, range(Ntar))</span>
+<span class="c1">#     qc_U = circuit_U.decompose().decompose()</span>
+    
+<span class="c1">#     qc_cU = QuantumCircuit(Ntar)</span>
+<span class="c1">#     qc_cU.append(Uprep, range(Ntar))</span>
+<span class="c1">#     qc_cU.append(expiHt, range(Ntar))</span>
+<span class="c1">#     qc_cU = qc_cU.decompose().decompose()</span>
+<span class="c1">#     qc_cU = qc_cU.to_gate().control(1)</span>
+
+<span class="c1">#     return qc_U, qc_cU</span>
+
+<span class="c1"># def make_overlap_qc(Ntar, gate_cUi, gate_cUj, ancilla_qubits, target_qubits, using_statevector):</span>
+<span class="c1">#     qc_re = QuantumCircuit(1+Ntar, 1)</span>
+<span class="c1">#     qc_re.h(0)</span>
+<span class="c1">#     qc_re.append(gate_cUi, ancilla_qubits + target_qubits)</span>
+<span class="c1">#     qc_re.x(0)</span>
+<span class="c1">#     qc_re.append(gate_cUj, ancilla_qubits+target_qubits)</span>
+<span class="c1">#     qc_re.h(0)</span>
+<span class="c1">#     if not using_statevector:</span>
+<span class="c1">#         qc_re.measure(0,0)</span>
+<span class="c1">#     qc_re = qc_re.decompose()</span>
+
+<span class="c1">#     # Overlap, Im part </span>
+<span class="c1">#     qc_im = QuantumCircuit(1+Ntar,1)</span>
+<span class="c1">#     qc_im.h(0)</span>
+<span class="c1">#     qc_im.append(gate_cUi, ancilla_qubits + target_qubits)</span>
+<span class="c1">#     qc_im.x(0)</span>
+<span class="c1">#     qc_im.append(gate_cUj, ancilla_qubits + target_qubits)</span>
+<span class="c1">#     qc_im.sdg(0)</span>
+<span class="c1">#     qc_im.h(0)</span>
+<span class="c1">#     if not using_statevector:</span>
+<span class="c1">#         qc_im.measure(0,0)</span>
+<span class="c1">#     qc_im = qc_im.decompose()</span>
+
+<span class="c1">#     return qc_re, qc_im</span>
+
+<span class="c1"># def measure_overlap(num_shot, Ntar, gate_cUi, gate_cUj, ancilla_qubits, target_qubits, sampler, using_statevector,</span>
+<span class="c1">#                     do_simulation=True):</span>
+<span class="c1">#     qc_re, qc_im = make_overlap_qc(Ntar, gate_cUi, gate_cUj, ancilla_qubits, target_qubits, using_statevector)</span>
+<span class="c1">#     if do_simulation:</span>
+<span class="c1">#         if using_statevector:</span>
+<span class="c1">#             results = [ Statevector.from_instruction(qc).probabilities_dict() for qc in [qc_re, qc_im]]</span>
+<span class="c1">#             prob_Re = results[0]</span>
+<span class="c1">#             prob_Im = results[1] </span>
+<span class="c1">#         else:</span>
+<span class="c1">#             job = sampler.run([qc_re, qc_im], shots=num_shot)</span>
+<span class="c1">#             results  = job.result()</span>
+<span class="c1">#             prob_Re = results[0].data.c.get_counts()</span>
+<span class="c1">#             prob_Im = results[1].data.c.get_counts()</span>
+
+<span class="c1">#         p0 = np.sum( [ count for bitstr, count in prob_Re.items() if bitstr[-1] == &#39;0&#39; ] ) / np.sum(list(prob_Re.values()))</span>
+<span class="c1">#         p1 = np.sum( [ count for bitstr, count in prob_Re.items() if bitstr[-1] == &#39;1&#39; ] ) / np.sum(list(prob_Re.values()))</span>
+<span class="c1">#         ReN = p0 - p1</span>
+
+<span class="c1">#         p0 = np.sum( [ count for bitstr, count in prob_Im.items() if bitstr[-1] == &#39;0&#39; ] ) / np.sum(list(prob_Im.values()))</span>
+<span class="c1">#         p1 = np.sum( [ count for bitstr, count in prob_Im.items() if bitstr[-1] == &#39;1&#39; ] ) / np.sum(list(prob_Im.values()))</span>
+<span class="c1">#         ImN = p0 - p1</span>
+
+<span class="c1">#         U_ij = ReN + 1j * ImN</span>
+<span class="c1">#         return U_ij</span>
+<span class="c1">#     else: #only resource estimation</span>
+<span class="c1">#         print(&quot;qc_re:&quot;, dict(qc_re.count_ops()))</span>
+<span class="c1">#         print(&quot;qc_im:&quot;, dict(qc_im.count_ops()))</span>
+<span class="c1">#         return None</span>
+
+<span class="c1"># def make_cU(Uprep, Ui, Ntar):</span>
+<span class="c1">#     circuit_cUi = QuantumCircuit(Ntar)</span>
+<span class="c1">#     circuit_cUi.append(Uprep, range(Ntar))</span>
+<span class="c1">#     circuit_cUi.append(Ui, range(Ntar))</span>
+<span class="c1">#     circuit_cUi = circuit_cUi.decompose().decompose()</span>
+<span class="c1">#     return circuit_cUi.to_gate().control(1)</span>
+
+<span class="c1"># def make_nonD_H_qc(op_string, Ntar, ancilla_qubits, target_qubits, gate_cUi, gate_cUj, qcs_re, qcs_im, using_statevector):</span>
+<span class="c1">#     # real part</span>
+<span class="c1">#     qc_reH_nonD = QuantumCircuit(1+Ntar)</span>
+<span class="c1">#     qc_reH_nonD.h(0)</span>
+<span class="c1">#     qc_reH_nonD.append(gate_cUi, ancilla_qubits + target_qubits)</span>
+<span class="c1">#     qc_reH_nonD.x(0)</span>
+<span class="c1">#     qc_reH_nonD.append(gate_cUj, ancilla_qubits + target_qubits)</span>
+<span class="c1">#     qc_reH_nonD.h(0)</span>
+<span class="c1">#     additional_qc(qc_reH_nonD, op_string, target_qubits)</span>
+<span class="c1">#     if not using_statevector:</span>
+<span class="c1">#         qc_reH_nonD.measure_all()</span>
+<span class="c1">#     qc_reH = qc_reH_nonD.decompose().decompose()</span>
+<span class="c1">#     qcs_re.append(qc_reH)</span>
+
+<span class="c1">#     # imaginary part</span>
+<span class="c1">#     qc_imH_nonD = QuantumCircuit(1+Ntar)</span>
+<span class="c1">#     qc_imH_nonD.h(0)</span>
+<span class="c1">#     qc_imH_nonD.append(gate_cUi, ancilla_qubits + target_qubits)</span>
+<span class="c1">#     qc_imH_nonD.x(0)</span>
+<span class="c1">#     qc_imH_nonD.append(gate_cUj, ancilla_qubits + target_qubits)</span>
+<span class="c1">#     qc_imH_nonD.sdg(0)</span>
+<span class="c1">#     qc_imH_nonD.h(0)</span>
+<span class="c1">#     additional_qc(qc_imH_nonD, op_string, target_qubits)</span>
+<span class="c1">#     if not using_statevector:</span>
+<span class="c1">#         qc_imH_nonD.measure_all()</span>
+<span class="c1">#     qc_imH = qc_imH_nonD.decompose().decompose()</span>
+<span class="c1">#     qcs_im.append(qc_imH)</span>
+
+<span class="c1">#     return None</span>
+
+<span class="c1"># def plot_convergence(ws, evals):</span>
+<span class="c1">#     cols = sns.color_palette(&quot;deep&quot;, n_colors=len(evals))</span>
+<span class="c1">#     fig = plt.figure(figsize=(8, 4))</span>
+<span class="c1">#     ax = fig.add_subplot(1, 1, 1)</span>
+<span class="c1">#     for it in range(len(ws)):</span>
+<span class="c1">#         x = it + 1</span>
+<span class="c1">#         for n in range(len(ws[it])):</span>
+<span class="c1">#             y = ws[it][n]</span>
+<span class="c1">#             ax.scatter(x, y, marker=&quot;D&quot;, color=cols[n])</span>
+<span class="c1">#     for n in range(len(evals)):</span>
+<span class="c1">#         ax.axhline(y=evals[n], color=&#39;gray&#39;, linestyle=&#39;dotted&#39;)</span>
+<span class="c1">#     ax.set_xlabel(&quot;iteration&quot;)</span>
+<span class="c1">#     ax.set_ylabel(&quot;overlap&quot;)</span>
+<span class="c1">#     ax.set_ylim(0, np.max(evals)*1.05)</span>
+<span class="c1">#     #plt.show()</span>
+<span class="c1">#     if using_statevector:</span>
+<span class="c1">#         fig.savefig(&quot;QKrylov_Norb&quot;+str(Norb)+&quot;Nocc&quot;+str(Nocc)+&quot;_statevector.pdf&quot;)</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         fig.savefig(&quot;QKrylov_Norb&quot;+str(Norb)+&quot;Nocc&quot;+str(Nocc)+&quot;_shot.pdf&quot;)</span>
+<span class="c1">#     plt.close()</span>
+
+<span class="c1"># def QuantumKrylov(Uprep: QuantumCircuit, # circuit to prepare a reference state</span>
+<span class="c1">#                  hamiltonian_op: SparsePauliOp, # Hamiltonian operator</span>
+<span class="c1">#                  sampler,</span>
+<span class="c1">#                  delta_t=0.01,</span>
+<span class="c1">#                  max_iterations=10,</span>
+<span class="c1">#                  trotter_steps=1, </span>
+<span class="c1">#                  Trotter_order=1,</span>
+<span class="c1">#                  num_shot=10**4, </span>
+<span class="c1">#                  ancilla_qubits=[], target_qubits=[],</span>
+<span class="c1">#                  using_statevector=False,</span>
+<span class="c1">#                  do_simulation=True,</span>
+<span class="c1">#                  ):</span>
+<span class="c1">#     Ntar = len(target_qubits)</span>
+<span class="c1">#     N = np.zeros((max_iterations, max_iterations), dtype=np.complex128)</span>
+<span class="c1">#     H = np.zeros((max_iterations, max_iterations), dtype=np.complex128)</span>
+<span class="c1">#     ws = []</span>
+<span class="c1">#     Unitaries = [ ]</span>
+<span class="c1">#     if True:</span>
+<span class="c1">#         Ui = PauliEvolutionGate(hamiltonian_op, delta_t, synthesis=SuzukiTrotter(order=Trotter_order,reps=trotter_steps))</span>
+<span class="c1">#         gate_cUi = make_cU(Uprep, Ui, Ntar)</span>
+<span class="c1">#         Uj = PauliEvolutionGate(hamiltonian_op, 2*delta_t, synthesis=SuzukiTrotter(order=Trotter_order,reps=trotter_steps))</span>
+<span class="c1">#         gate_cUj = make_cU(Uprep, Uj, Ntar)</span>
+
+<span class="c1">#         qc_Ui = QuantumCircuit(1+Ntar)</span>
+<span class="c1">#         qc_Ui.append(gate_cUi, range(Ntar+1))</span>
+<span class="c1">#         qc_Ui = qc_Ui.decompose(reps=5)</span>
+<span class="c1">#         print(&quot;Circuit for c-UiUp:&quot;, dict(qc_Ui.count_ops()))</span>
+<span class="c1">#         U_ij = measure_overlap(num_shot, Ntar, gate_cUi, gate_cUj, ancilla_qubits, target_qubits, sampler, using_statevector, do_simulation)</span>
+<span class="c1">#         num_of_Hamil_term = len(hamiltonian_op.paulis)</span>
+<span class="c1">#         print(&quot;num of Hamil term: &quot;, num_of_Hamil_term)</span>
+<span class="c1">#     if not(do_simulation):</span>
+<span class="c1">#         return None</span>
+    
+<span class="c1">#     for it in tqdm(range(max_iterations)):</span>
+<span class="c1">#         print(&quot;iteration: &quot;, it)</span>
+<span class="c1">#         ## make controlled U = exp(-iHδt * it)</span>
+<span class="c1">#         Ui = PauliEvolutionGate(hamiltonian_op, it*delta_t, synthesis=SuzukiTrotter(order=Trotter_order,reps=trotter_steps))</span>
+<span class="c1">#         gate_cUi = make_cU(Uprep, Ui, Ntar)</span>
+<span class="c1">#         Unitaries.append(gate_cUi)</span>
+<span class="c1">#         N[it, it] = 1.0</span>
+<span class="c1">#         ## evaluate overlap to previous states</span>
+<span class="c1">#         for j in range(it-1, -1, -1):</span>
+<span class="c1">#             gate_cUj = Unitaries[j]</span>
+<span class="c1">#             U_ij = measure_overlap(num_shot, Ntar, gate_cUi, gate_cUj, ancilla_qubits, target_qubits, sampler, using_statevector, do_simulation)</span>
+<span class="c1">#             N[it, j] = U_ij</span>
+<span class="c1">#             N[j, it] = np.conj(U_ij)</span>
+<span class="c1">#         ### evaluate H_ii no need ancilla qubit</span>
+<span class="c1">#         qcs = []  </span>
+<span class="c1">#         for idx_H in range(len(Hamil_paulis)):</span>
+<span class="c1">#             op_string = Hamil_paulis[idx_H].to_label()</span>
+<span class="c1">#             idx_relevant = get_idx_to_measure(op_string)</span>
+<span class="c1">#             qc_reH_D = QuantumCircuit(Ntar)</span>
+<span class="c1">#             qc_reH_D.append(Uprep, range(Ntar))</span>
+<span class="c1">#             qc_reH_D.append(Ui, range(Ntar))</span>
+<span class="c1">#             additional_qc(qc_reH_D, op_string, range(Ntar))</span>
+<span class="c1">#             if not(using_statevector):</span>
+<span class="c1">#                 qc_reH_D.measure_all()</span>
+<span class="c1">#             qc_reH_D = qc_reH_D.decompose().decompose()</span>
+<span class="c1">#             qcs.append(qc_reH_D)</span>
+<span class="c1">#         if using_statevector:</span>
+<span class="c1">#             results = [ Statevector.from_instruction(qc).probabilities_dict() for qc in qcs]</span>
+<span class="c1">#         else:</span>
+<span class="c1">#             job = sampler.run(qcs, shots=num_shot)</span>
+<span class="c1">#             results  = job.result()</span>
+
+<span class="c1">#         Hsum = 0.0</span>
+<span class="c1">#         for idx_H in range(len(Hamil_paulis)):</span>
+<span class="c1">#             op_string = Hamil_paulis[idx_H].to_label()</span>
+<span class="c1">#             idx_relevant = get_idx_to_measure(op_string)</span>
+<span class="c1">#             if using_statevector:</span>
+<span class="c1">#                 res = results[idx_H]</span>
+<span class="c1">#             else:</span>
+<span class="c1">#                 res = results[idx_H].data.meas.get_counts()</span>
+<span class="c1">#             expval, dummy, dummy_ = expec_Zstring(res, idx_relevant)</span>
+<span class="c1">#             Hsum += Hamil_coeffs[idx_H] * expval</span>
+<span class="c1">#             #print(&quot;operator: &quot;, op_string, &quot;coeff: &quot;, Hamil_coeffs[idx_H], &quot;exp. val: &quot;,  expval)</span>
+<span class="c1">#         #print(f&quot;H[{it},{it}] = {Hsum}&quot;)</span>
+<span class="c1">#         H[it, it] = Hsum</span>
+
+<span class="c1">#         ### evaluate H_ij ancilla qubit is needed</span>
+<span class="c1">#         for j in range(it-1, -1, -1):</span>
+<span class="c1">#             gate_cUj = Unitaries[j]</span>
+<span class="c1">#             qcs_re = []</span>
+<span class="c1">#             qcs_im = []</span>
+<span class="c1">#             for idx_H in range(len(Hamil_paulis)):</span>
+<span class="c1">#                 op_string = Hamil_paulis[idx_H].to_label()</span>
+<span class="c1">#                 make_nonD_H_qc(op_string, Ntar, ancilla_qubits, target_qubits, gate_cUi, gate_cUj, qcs_re, qcs_im, using_statevector)</span>
+<span class="c1">#             # Re part</span>
+<span class="c1">#             if using_statevector:</span>
+<span class="c1">#                 results = [ Statevector.from_instruction(qc).probabilities_dict() for qc in qcs_re]</span>
+<span class="c1">#             else:</span>
+<span class="c1">#                 job = sampler.run(qcs_re, shots=num_shot)</span>
+<span class="c1">#                 results  = job.result()</span>
+<span class="c1">#             Re_H_ij = 0.0</span>
+<span class="c1">#             for idx_H in range(len(Hamil_paulis)):</span>
+<span class="c1">#                 op_string = Hamil_paulis[idx_H].to_label()</span>
+<span class="c1">#                 idx_relevant = get_idx_to_measure(op_string)</span>
+<span class="c1">#                 if using_statevector:</span>
+<span class="c1">#                     res = results[idx_H]</span>
+<span class="c1">#                 else:</span>
+<span class="c1">#                     res = results[idx_H].data.meas.get_counts()</span>
+<span class="c1">#                 dummy_e, p0, p1 = expec_Zstring(res, idx_relevant, target_qubits=range(len(target_qubits)), ancilla_qubit=0)</span>
+<span class="c1">#                 expval = p0 - p1</span>
+<span class="c1">#                 Re_H_ij += Hamil_coeffs[idx_H] * expval</span>
+<span class="c1">#                 #print(&quot;operator: &quot;, op_string, &quot;coeff: &quot;, Hamil_coeffs[idx_H], &quot;exp. val: &quot;,  expval)</span>
+<span class="c1">#             print(f&quot;Re H[{it}, {j}]&quot;, Re_H_ij)</span>
+
+<span class="c1">#             # Im part</span>
+<span class="c1">#             if using_statevector:</span>
+<span class="c1">#                 results = [ Statevector.from_instruction(qc).probabilities_dict() for qc in qcs_im]</span>
+<span class="c1">#             else:</span>
+<span class="c1">#                 job = sampler.run(qcs_im, shots=num_shot)</span>
+<span class="c1">#                 results  = job.result() </span>
+<span class="c1">#             Im_H_ij = 0.0</span>
+<span class="c1">#             for idx_H in range(len(Hamil_paulis)):</span>
+<span class="c1">#                 op_string = Hamil_paulis[idx_H].to_label()</span>
+<span class="c1">#                 idx_relevant = get_idx_to_measure(op_string)</span>
+<span class="c1">#                 if using_statevector:</span>
+<span class="c1">#                     res = results[idx_H]</span>
+<span class="c1">#                 else:</span>
+<span class="c1">#                     res = results[idx_H].data.meas.get_counts()   </span>
+<span class="c1">#                 dummy_e, p0, p1 = expec_Zstring(res, idx_relevant, target_qubits=range(len(target_qubits)), ancilla_qubit=0)</span>
+<span class="c1">#                 expval = p0 - p1</span>
+<span class="c1">#                 Im_H_ij += Hamil_coeffs[idx_H] * expval</span>
+<span class="c1">#             print(&quot;Im H_{ij}&quot;, Im_H_ij)</span>
+
+<span class="c1">#             H[it, j] = Re_H_ij + 1j * Im_H_ij</span>
+<span class="c1">#             H[j, it] = Re_H_ij - 1j * Im_H_ij</span>
+
+<span class="c1">#         # solve generalized eigenvalue problem</span>
+<span class="c1">#         Nsub = N[:it+1, :it+1]</span>
+<span class="c1">#         Hsub = H[:it+1, :it+1]        </span>
+<span class="c1">#         lam, v = scipy.linalg.eigh(Nsub) </span>
+<span class="c1">#         # truncate orthogonal basis with small eigenvalues</span>
+<span class="c1">#         cols = [ i for i in range(it+1) if lam[i] &gt;= 1.e-9]</span>
+<span class="c1">#         r = len(cols)</span>
+<span class="c1">#         Ur = v[:,cols]</span>
+<span class="c1">#         sq_Sigma_inv = np.diag(lam[cols]**(-0.5))</span>
+
+<span class="c1">#         X = Ur @ sq_Sigma_inv @ Ur.conj().T</span>
+<span class="c1">#         Xdag = X.conj().T</span>
+<span class="c1">#         tildeH = X @ Hsub @ Xdag</span>
+<span class="c1">#         w, v = scipy.linalg.eigh(tildeH)</span>
+        
+<span class="c1">#         w_r = w[-r:]</span>
+<span class="c1">#         ws += [w_r]</span>
+
+<span class="c1">#         print(&quot;eigs of N: &quot;, lam, &quot;cond&quot;, np.linalg.cond(Nsub), &quot;r:&quot;, r)</span>
+<span class="c1">#         print(f&quot;w: {w_r}&quot;)</span>
+<span class="c1">#         print(&quot;&quot;)</span>
+<span class="c1">#     return H[:it+1,:it+1], N[:it+1,:it+1], ws</span>
+
+<span class="c1"># initial = &quot;exact&quot;</span>
+<span class="c1"># initial = &quot;&quot;</span>
+
+<span class="c1"># if initial == &quot;exact&quot;:</span>
+<span class="c1">#     Uprep = ansatz(params_exact) # exact ground state</span>
+<span class="c1"># else:</span>
+<span class="c1">#     np.random.seed(0)</span>
+<span class="c1">#     params_random = np.random.rand(5)</span>
+<span class="c1">#     Uprep = ansatz(params_random) # random state</span>
+
+<span class="c1"># Hamil_coeffs = hamiltonian_op.coeffs</span>
+<span class="c1"># Hamil_paulis = hamiltonian_op.paulis</span>
+<span class="c1"># dt = 1.23</span>
+
+<span class="c1"># using_statevector = True</span>
+<span class="c1"># #using_statevector = False</span>
+<span class="c1"># Hmat, Nmat, Ens = QuantumKrylov(Uprep, hamiltonian_op, sampler, delta_t=dt, max_iterations=min([10,len(evecs)]), trotter_steps=40, </span>
+<span class="c1">#                            num_shot=10**4, </span>
+<span class="c1">#                            ancilla_qubits=[0], target_qubits=list(range(1,Norb+1)),</span>
+<span class="c1">#                            using_statevector=using_statevector)</span>
+<span class="c1"># print(&quot;Eexact&quot;, evals)</span>
+<span class="c1"># plot_convergence(Ens, evals)</span>
+
+<span class="c1"># if initial == &quot;exact&quot;:</span>
+<span class="c1">#     print(&quot;&lt;Ψ0|Ψ1&gt;&quot;, np.exp(- 1j * Egs_exact * dt) , &quot;N[0,1]&quot;, Nmat[0,1])</span>
+<span class="c1">#     print(&quot;&lt;Ψ0|H|Ψ0&gt;&quot;, Egs_exact, &quot;H[0,0]&quot;, Hmat[0,0])</span>
+<span class="c1">#     print(&quot;&lt;Ψ0|H|Ψ1&gt;&quot;, np.exp(- 1j * Egs_exact * dt) * Egs_exact, &quot;H[0,1]&quot;, Hmat[0,1])</span>
+<span class="c1">#     print(&quot;&lt;Ψ0|Ψ2&gt;&quot;, np.exp(- 1j * Egs_exact * dt * 2), &quot;N[0,2]&quot;, Nmat[0,2])</span>
+<span class="c1">#     print(&quot;&lt;Ψ0|H|Ψ2&gt;&quot;, np.exp(- 1j * Egs_exact * dt * 2) * Egs_exact, &quot;H[0,2]&quot;, Hmat[0,2])</span>
+
+<span class="c1"># print(&quot;Nmat:&quot;)</span>
+<span class="c1"># for i in range(Nmat.shape[0]):</span>
+<span class="c1">#     print(&quot; &quot;.join([f&quot;{Nmat[i,j]:9.5f}&quot; for j in range(Nmat.shape[1])]))</span>
+<span class="c1"># print(&quot;Hmat:&quot;)</span>
+<span class="c1"># for i in range(Hmat.shape[0]):</span>
+<span class="c1">#     print(&quot; &quot;.join([f&quot;{Hmat[i,j]:9.5f}&quot; for j in range(Hmat.shape[1])]))</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># print(&quot;Nmat:&quot;)</span>
+<span class="c1"># for i in range(Nmat.shape[0]):</span>
+<span class="c1">#     print(&quot; &quot;.join([f&quot;{Nmat[i,j]:9.5f}&quot; for j in range(Nmat.shape[1])]))</span>
+
+<span class="c1"># Nhand = Nmat.copy()</span>
+<span class="c1"># Hhand = Hmat.copy()</span>
+<span class="c1"># for i in range(1, Nhand.shape[0]-1):</span>
+<span class="c1">#     for j in range(i+1, Nhand.shape[1]):</span>
+<span class="c1">#         # Assuming Toeplitz structure</span>
+<span class="c1">#         Hhand[j,i] = Hhand[i, j] = Hhand[i-1, j-1] </span>
+<span class="c1">#         Nhand[j,i] = Nhand[i, j] = Nhand[i-1, j-1]</span>
+
+<span class="c1"># print(&quot;Nmat:&quot;)</span>
+<span class="c1"># for i in range(Nmat.shape[0]):</span>
+<span class="c1">#     print(&quot; &quot;.join([f&quot;{Nhand[i,j]:9.5f}&quot; for j in range(Nmat.shape[1])]))</span>
+
+<span class="c1"># lam, v = scipy.linalg.eigh(Nhand)</span>
+<span class="c1"># # truncate orthogonal basis with small eigenvalues</span>
+<span class="c1"># cols = [ i for i in range(len(lam)) if lam[i] &gt;= 1.e-9]</span>
+<span class="c1"># r = len(cols)</span>
+<span class="c1"># Ur = v[:,cols]</span>
+<span class="c1"># sq_Sigma_inv = np.diag(lam[cols]**(-0.5))</span>
+
+<span class="c1"># X = Ur @ sq_Sigma_inv @ Ur.conj().T</span>
+<span class="c1"># Xdag = X.conj().T</span>
+<span class="c1"># tildeH = X @ Hhand @ Xdag</span>
+<span class="c1"># w, v = scipy.linalg.eigh(tildeH)</span>
+
+<span class="c1"># print(&quot;v&quot;, w)</span>
+<span class="c1"># print(&quot;Eexact&quot;, evals)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(N_\mathrm{orb}=4, N_\mathrm{occ}=2\)</span>の場合は次元が6なので、iterationが6になった時点で理想的には厳密解と一致するはずである。
+ちなみに、3番目の状態は縮退しているので、緑と赤のシンボルが近づいていくのは誤りではない。</p>
+<p><img alt="" src="../_images/QKrylov_Norb4Nocc2_statevector.png" /></p>
+<p>もう少しサイズの大きな<span class="math notranslate nohighlight">\(N_\mathrm{orb}=6, N_\mathrm{occ}=2\)</span>の場合の結果(次元=15)も示しておく。</p>
+<p><img alt="" src="../_images/QKrylov_Norb6Nocc2_statevector.png" /></p>
+<p>statevectorを用いた場合は上のように、厳密解へと収束する様子が見て取れるが、
+shotで測る場合は、ノイズなしのsimulator(shot errorのみ)でも、<span class="math notranslate nohighlight">\(H,N\)</span>の精度により疑似固有値が得られてしまう。
+<span class="math notranslate nohighlight">\(N_\mathrm{orb}=4, N_\mathrm{occ}=2\)</span>で、<span class="math notranslate nohighlight">\(10^4\)</span> shotで計算した結果を示しておく。</p>
+<p><img alt="" src="../_images/QKrylov_Norb4Nocc2_shot.png" /></p>
+<p>今の実装では、overlapを対角化し小さな固有値を捨てることで、一般化固有値問題をより安定的に解いているものの、それでもshot測定の場合は反復に対して計算が不安定になってしまう。実機のノイズがあると、overlapやHが悪条件になり計算がさらに不安定になることが予想されるため、応用の上ではさらなる検討が必要であろう。</p>
+</section>
+<section id="id3">
+<h2><span class="section-number">15.3. </span>関連する話題<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>multi-referenceによるQuantum Krylov法は、<a class="reference external" href="https://doi.org/10.1021/acs.jctc.9b01125">J. Chem. Theory Comput. 2020, 16, 2326</a>が参考になる。
+overlap行列の計算については、Hadamard test以外にも、上で述べた方法など制御ユニタリを必要としない方法も提案されていて、様々な進展があるようだ。</p>
+<p>また、回路等を工夫してIBM実機を用いてKrylov diagonalizationを達成した近年の発展なども非常に興味深い。<a class="reference external" href="https://www.nature.com/articles/s41467-025-59716-z">N. Yoshioka et al., Nature Comm. 16, 5014 (2025)</a></p>
+<p><strong>Hの測定回路を減らしたバージョン</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">make_U_and_cU</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">delta_t</span><span class="p">,</span> <span class="n">trotter_steps</span><span class="p">,</span> <span class="n">hamiltonian_op</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">Uprep</span><span class="p">):</span>
     <span class="n">Ntar</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">target_qubits</span><span class="p">)</span>
     <span class="n">time</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">delta_t</span>
     <span class="n">circuit_U</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">Ntar</span><span class="p">)</span>
-    <span class="n">expiHt</span> <span class="o">=</span> <span class="n">PauliEvolutionGate</span><span class="p">(</span><span class="n">hamiltonian_op</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">synthesis</span><span class="o">=</span><span class="n">SuzukiTrotter</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">reps</span><span class="o">=</span><span class="n">trotter_steps</span><span class="p">))</span>
+    <span class="n">expiHt</span> <span class="o">=</span> <span class="n">PauliEvolutionGate</span><span class="p">(</span><span class="n">hamiltonian_op</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">synthesis</span><span class="o">=</span><span class="n">SuzukiTrotter</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="n">Trotter_order</span><span class="p">,</span><span class="n">reps</span><span class="o">=</span><span class="n">trotter_steps</span><span class="p">))</span>
     <span class="n">circuit_U</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">expiHt</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ntar</span><span class="p">))</span>
     <span class="n">qc_U</span> <span class="o">=</span> <span class="n">circuit_U</span><span class="o">.</span><span class="n">decompose</span><span class="p">()</span><span class="o">.</span><span class="n">decompose</span><span class="p">()</span>
     
@@ -1345,7 +1736,7 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
 
     <span class="k">return</span> <span class="n">qc_U</span><span class="p">,</span> <span class="n">qc_cU</span>
 
-<span class="k">def</span> <span class="nf">make_overlap_qc</span><span class="p">(</span><span class="n">Ntar</span><span class="p">,</span> <span class="n">gate_cUi</span><span class="p">,</span> <span class="n">gate_cUj</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">using_statevector</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_overlap_qc</span><span class="p">(</span><span class="n">Ntar</span><span class="p">,</span> <span class="n">gate_cUi</span><span class="p">,</span> <span class="n">gate_cUj</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">using_statevector</span><span class="p">):</span>
     <span class="n">qc_re</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">Ntar</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">qc_re</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">qc_re</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gate_cUi</span><span class="p">,</span> <span class="n">ancilla_qubits</span> <span class="o">+</span> <span class="n">target_qubits</span><span class="p">)</span>
@@ -1370,7 +1761,7 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
 
     <span class="k">return</span> <span class="n">qc_re</span><span class="p">,</span> <span class="n">qc_im</span>
 
-<span class="k">def</span> <span class="nf">measure_overlap</span><span class="p">(</span><span class="n">num_shot</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">,</span> <span class="n">gate_cUi</span><span class="p">,</span> <span class="n">gate_cUj</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">sampler</span><span class="p">,</span> <span class="n">using_statevector</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">measure_overlap</span><span class="p">(</span><span class="n">num_shot</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">,</span> <span class="n">gate_cUi</span><span class="p">,</span> <span class="n">gate_cUj</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">sampler</span><span class="p">,</span> <span class="n">using_statevector</span><span class="p">,</span>
                     <span class="n">do_simulation</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">qc_re</span><span class="p">,</span> <span class="n">qc_im</span> <span class="o">=</span> <span class="n">make_overlap_qc</span><span class="p">(</span><span class="n">Ntar</span><span class="p">,</span> <span class="n">gate_cUi</span><span class="p">,</span> <span class="n">gate_cUj</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">using_statevector</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">do_simulation</span><span class="p">:</span>
@@ -1399,44 +1790,55 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;qc_im:&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">qc_im</span><span class="o">.</span><span class="n">count_ops</span><span class="p">()))</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-<span class="k">def</span> <span class="nf">make_cU</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="n">Ui</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_cU</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="n">Ui</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">):</span>
     <span class="n">circuit_cUi</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">Ntar</span><span class="p">)</span>
     <span class="n">circuit_cUi</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ntar</span><span class="p">))</span>
     <span class="n">circuit_cUi</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Ui</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ntar</span><span class="p">))</span>
     <span class="n">circuit_cUi</span> <span class="o">=</span> <span class="n">circuit_cUi</span><span class="o">.</span><span class="n">decompose</span><span class="p">()</span><span class="o">.</span><span class="n">decompose</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">circuit_cUi</span><span class="o">.</span><span class="n">to_gate</span><span class="p">()</span><span class="o">.</span><span class="n">control</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">make_nonD_H_qc</span><span class="p">(</span><span class="n">op_string</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">gate_cUi</span><span class="p">,</span> <span class="n">gate_cUj</span><span class="p">,</span> <span class="n">qcs_re</span><span class="p">,</span> <span class="n">qcs_im</span><span class="p">,</span> <span class="n">using_statevector</span><span class="p">):</span>
-    <span class="c1"># real part</span>
-    <span class="n">qc_reH_nonD</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">Ntar</span><span class="p">)</span>
-    <span class="n">qc_reH_nonD</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">qc_reH_nonD</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gate_cUi</span><span class="p">,</span> <span class="n">ancilla_qubits</span> <span class="o">+</span> <span class="n">target_qubits</span><span class="p">)</span>
-    <span class="n">qc_reH_nonD</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">qc_reH_nonD</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gate_cUj</span><span class="p">,</span> <span class="n">ancilla_qubits</span> <span class="o">+</span> <span class="n">target_qubits</span><span class="p">)</span>
-    <span class="n">qc_reH_nonD</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">additional_qc</span><span class="p">(</span><span class="n">qc_reH_nonD</span><span class="p">,</span> <span class="n">op_string</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">using_statevector</span><span class="p">:</span>
-        <span class="n">qc_reH_nonD</span><span class="o">.</span><span class="n">measure_all</span><span class="p">()</span>
-    <span class="n">qc_reH</span> <span class="o">=</span> <span class="n">qc_reH_nonD</span><span class="o">.</span><span class="n">decompose</span><span class="p">()</span><span class="o">.</span><span class="n">decompose</span><span class="p">()</span>
-    <span class="n">qcs_re</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">qc_reH</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_Circ_forNondiagH</span><span class="p">(</span><span class="n">term_types</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> 
+                   <span class="n">gate_cUi</span><span class="p">,</span> <span class="n">gate_cUj</span><span class="p">,</span> <span class="n">qcs_re</span><span class="p">,</span> <span class="n">qcs_im</span><span class="p">,</span> <span class="n">using_statevector</span><span class="p">):</span>
+    
+    <span class="k">for</span> <span class="n">idx_term</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">term_types</span><span class="p">)):</span>
+        <span class="n">term</span> <span class="o">=</span> <span class="n">term_types</span><span class="p">[</span><span class="n">idx_term</span><span class="p">]</span>
 
-    <span class="c1"># imaginary part</span>
-    <span class="n">qc_imH_nonD</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">Ntar</span><span class="p">)</span>
-    <span class="n">qc_imH_nonD</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">qc_imH_nonD</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gate_cUi</span><span class="p">,</span> <span class="n">ancilla_qubits</span> <span class="o">+</span> <span class="n">target_qubits</span><span class="p">)</span>
-    <span class="n">qc_imH_nonD</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">qc_imH_nonD</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gate_cUj</span><span class="p">,</span> <span class="n">ancilla_qubits</span> <span class="o">+</span> <span class="n">target_qubits</span><span class="p">)</span>
-    <span class="n">qc_imH_nonD</span><span class="o">.</span><span class="n">sdg</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">qc_imH_nonD</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">additional_qc</span><span class="p">(</span><span class="n">qc_imH_nonD</span><span class="p">,</span> <span class="n">op_string</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">using_statevector</span><span class="p">:</span>
-        <span class="n">qc_imH_nonD</span><span class="o">.</span><span class="n">measure_all</span><span class="p">()</span>
-    <span class="n">qc_imH</span> <span class="o">=</span> <span class="n">qc_imH_nonD</span><span class="o">.</span><span class="n">decompose</span><span class="p">()</span><span class="o">.</span><span class="n">decompose</span><span class="p">()</span>
-    <span class="n">qcs_im</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">qc_imH</span><span class="p">)</span>
+        <span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">Ntar</span><span class="p">)</span>
+        <span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">qc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gate_cUi</span><span class="p">,</span> <span class="n">ancilla_qubits</span> <span class="o">+</span> <span class="n">target_qubits</span><span class="p">)</span>
+        <span class="n">qc</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">qc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gate_cUj</span><span class="p">,</span> <span class="n">ancilla_qubits</span> <span class="o">+</span> <span class="n">target_qubits</span><span class="p">)</span>
+        <span class="n">qc_im</span> <span class="o">=</span> <span class="n">qc</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1"># copy here</span>
+        <span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">qc_im</span><span class="o">.</span><span class="n">sdg</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">qc_im</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">term</span> <span class="o">==</span> <span class="s2">&quot;IZ&quot;</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="n">term</span> <span class="o">==</span> <span class="s2">&quot;XX&quot;</span><span class="p">:</span>
+            <span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="n">target_qubits</span><span class="p">)</span>
+            <span class="n">qc_im</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="n">target_qubits</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">term</span> <span class="o">==</span> <span class="s2">&quot;YY&quot;</span><span class="p">:</span>
+            <span class="n">qc</span><span class="o">.</span><span class="n">sdg</span><span class="p">(</span><span class="n">target_qubits</span><span class="p">)</span>
+            <span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="n">target_qubits</span><span class="p">)</span>
+            <span class="n">qc_im</span><span class="o">.</span><span class="n">sdg</span><span class="p">(</span><span class="n">target_qubits</span><span class="p">)</span>
+            <span class="n">qc_im</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="n">target_qubits</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported term type: </span><span class="si">{</span><span class="n">term</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">using_statevector</span><span class="p">):</span>
+            <span class="n">qc</span><span class="o">.</span><span class="n">measure_all</span><span class="p">()</span>
+            <span class="n">qc_im</span><span class="o">.</span><span class="n">measure_all</span><span class="p">()</span>
+
+        <span class="n">qc</span> <span class="o">=</span> <span class="n">qc</span><span class="o">.</span><span class="n">decompose</span><span class="p">(</span><span class="n">reps</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="n">qcs_re</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">qc</span><span class="p">)</span>
+
+        <span class="n">qc_im</span> <span class="o">=</span> <span class="n">qc_im</span><span class="o">.</span><span class="n">decompose</span><span class="p">(</span><span class="n">reps</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="n">qcs_im</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">qc_im</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="kc">None</span>
 
-<span class="k">def</span> <span class="nf">plot_convergence</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">evals</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_convergence</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">evals</span><span class="p">):</span>
     <span class="n">cols</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;deep&quot;</span><span class="p">,</span> <span class="n">n_colors</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">evals</span><span class="p">))</span>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -1457,7 +1859,34 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
         <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;QKrylov_Norb&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">Norb</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;Nocc&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">Nocc</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_shot.pdf&quot;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">QuantumKrylov</span><span class="p">(</span><span class="n">Uprep</span><span class="p">:</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="c1"># circuit to prepare a reference state</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_idx_circuit</span><span class="p">(</span><span class="n">op_string</span><span class="p">,</span> <span class="n">term_types</span><span class="p">):</span>
+    <span class="n">idx_circuit</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">op_string</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="s1">&#39;Z&#39;</span><span class="p">}</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">(</span><span class="n">op_string</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;I&#39;</span><span class="p">}:</span>                            
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">term_types</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">term_types</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="s1">&#39;Z&#39;</span><span class="p">}</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">(</span><span class="n">term_types</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;I&#39;</span><span class="p">}:</span>
+                <span class="n">idx_circuit</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="n">idx_circuit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Corresponding circuit for </span><span class="si">{</span><span class="n">op_string</span><span class="si">}</span><span class="s2"> not found in term_types: </span><span class="si">{</span><span class="n">term_types</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">set</span><span class="p">(</span><span class="n">op_string</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">}</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">(</span><span class="n">op_string</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;X&#39;</span><span class="p">}:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">term_types</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">term_types</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">}</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">(</span><span class="n">term_types</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;X&#39;</span><span class="p">}:</span>
+                <span class="n">idx_circuit</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="n">idx_circuit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Corresponding circuit for </span><span class="si">{</span><span class="n">op_string</span><span class="si">}</span><span class="s2"> not found in term_types: </span><span class="si">{</span><span class="n">term_types</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">set</span><span class="p">(</span><span class="n">op_string</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">}</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">(</span><span class="n">op_string</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;Y&#39;</span><span class="p">}:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">term_types</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">term_types</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">}</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">(</span><span class="n">term_types</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;Y&#39;</span><span class="p">}:</span>
+                <span class="n">idx_circuit</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="n">idx_circuit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Corresponding circuit for </span><span class="si">{</span><span class="n">op_string</span><span class="si">}</span><span class="s2"> not found in term_types: </span><span class="si">{</span><span class="n">term_types</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected operator string: </span><span class="si">{</span><span class="n">op_string</span><span class="si">}</span><span class="s2">. Supported types are &#39;IZ&#39;, &#39;XX&#39;, &#39;YY&#39; for now.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">idx_circuit</span>            
+
+<span class="k">def</span><span class="w"> </span><span class="nf">QuantumKrylov</span><span class="p">(</span><span class="n">Uprep</span><span class="p">:</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="c1"># circuit to prepare a reference state</span>
                  <span class="n">hamiltonian_op</span><span class="p">:</span> <span class="n">SparsePauliOp</span><span class="p">,</span> <span class="c1"># Hamiltonian operator</span>
                  <span class="n">sampler</span><span class="p">,</span>
                  <span class="n">delta_t</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
@@ -1474,9 +1903,9 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
     <span class="n">ws</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">Unitaries</span> <span class="o">=</span> <span class="p">[</span> <span class="p">]</span>
     <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">Ui</span> <span class="o">=</span> <span class="n">PauliEvolutionGate</span><span class="p">(</span><span class="n">hamiltonian_op</span><span class="p">,</span> <span class="n">delta_t</span><span class="p">,</span> <span class="n">synthesis</span><span class="o">=</span><span class="n">SuzukiTrotter</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">reps</span><span class="o">=</span><span class="n">trotter_steps</span><span class="p">))</span>
+        <span class="n">Ui</span> <span class="o">=</span> <span class="n">PauliEvolutionGate</span><span class="p">(</span><span class="n">hamiltonian_op</span><span class="p">,</span> <span class="n">delta_t</span><span class="p">,</span> <span class="n">synthesis</span><span class="o">=</span><span class="n">SuzukiTrotter</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="n">Trotter_order</span><span class="p">,</span><span class="n">reps</span><span class="o">=</span><span class="n">trotter_steps</span><span class="p">))</span>
         <span class="n">gate_cUi</span> <span class="o">=</span> <span class="n">make_cU</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="n">Ui</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">)</span>
-        <span class="n">Uj</span> <span class="o">=</span> <span class="n">PauliEvolutionGate</span><span class="p">(</span><span class="n">hamiltonian_op</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">delta_t</span><span class="p">,</span> <span class="n">synthesis</span><span class="o">=</span><span class="n">SuzukiTrotter</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">reps</span><span class="o">=</span><span class="n">trotter_steps</span><span class="p">))</span>
+        <span class="n">Uj</span> <span class="o">=</span> <span class="n">PauliEvolutionGate</span><span class="p">(</span><span class="n">hamiltonian_op</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">delta_t</span><span class="p">,</span> <span class="n">synthesis</span><span class="o">=</span><span class="n">SuzukiTrotter</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="n">Trotter_order</span><span class="p">,</span><span class="n">reps</span><span class="o">=</span><span class="n">trotter_steps</span><span class="p">))</span>
         <span class="n">gate_cUj</span> <span class="o">=</span> <span class="n">make_cU</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="n">Uj</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">)</span>
 
         <span class="n">qc_Ui</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">Ntar</span><span class="p">)</span>
@@ -1489,10 +1918,10 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
     <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">do_simulation</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">None</span>
     
-    <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iterations</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">max_iterations</span><span class="p">)):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;iteration: &quot;</span><span class="p">,</span> <span class="n">it</span><span class="p">)</span>
         <span class="c1">## make controlled U = exp(-iHδt * it)</span>
-        <span class="n">Ui</span> <span class="o">=</span> <span class="n">PauliEvolutionGate</span><span class="p">(</span><span class="n">hamiltonian_op</span><span class="p">,</span> <span class="n">it</span><span class="o">*</span><span class="n">delta_t</span><span class="p">,</span> <span class="n">synthesis</span><span class="o">=</span><span class="n">SuzukiTrotter</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">reps</span><span class="o">=</span><span class="n">trotter_steps</span><span class="p">))</span>
+        <span class="n">Ui</span> <span class="o">=</span> <span class="n">PauliEvolutionGate</span><span class="p">(</span><span class="n">hamiltonian_op</span><span class="p">,</span> <span class="n">it</span><span class="o">*</span><span class="n">delta_t</span><span class="p">,</span> <span class="n">synthesis</span><span class="o">=</span><span class="n">SuzukiTrotter</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="n">Trotter_order</span><span class="p">,</span><span class="n">reps</span><span class="o">=</span><span class="n">trotter_steps</span><span class="p">))</span>
         <span class="n">gate_cUi</span> <span class="o">=</span> <span class="n">make_cU</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="n">Ui</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">)</span>
         <span class="n">Unitaries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gate_cUi</span><span class="p">)</span>
         <span class="n">N</span><span class="p">[</span><span class="n">it</span><span class="p">,</span> <span class="n">it</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
@@ -1502,19 +1931,29 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
             <span class="n">U_ij</span> <span class="o">=</span> <span class="n">measure_overlap</span><span class="p">(</span><span class="n">num_shot</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">,</span> <span class="n">gate_cUi</span><span class="p">,</span> <span class="n">gate_cUj</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">sampler</span><span class="p">,</span> <span class="n">using_statevector</span><span class="p">,</span> <span class="n">do_simulation</span><span class="p">)</span>
             <span class="n">N</span><span class="p">[</span><span class="n">it</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">U_ij</span>
             <span class="n">N</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">it</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">U_ij</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;N[</span><span class="si">{</span><span class="n">it</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="n">N</span><span class="p">[</span><span class="n">it</span><span class="p">,</span><span class="n">j</span><span class="p">])</span>
         <span class="c1">### evaluate H_ii no need ancilla qubit</span>
-        <span class="n">qcs</span> <span class="o">=</span> <span class="p">[]</span>  
-        <span class="k">for</span> <span class="n">idx_H</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Hamil_paulis</span><span class="p">)):</span>
-            <span class="n">op_string</span> <span class="o">=</span> <span class="n">Hamil_paulis</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span><span class="o">.</span><span class="n">to_label</span><span class="p">()</span>
-            <span class="n">idx_relevant</span> <span class="o">=</span> <span class="n">get_idx_to_measure</span><span class="p">(</span><span class="n">op_string</span><span class="p">)</span>
-            <span class="n">qc_reH_D</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">Ntar</span><span class="p">)</span>
-            <span class="n">qc_reH_D</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ntar</span><span class="p">))</span>
-            <span class="n">qc_reH_D</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Ui</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ntar</span><span class="p">))</span>
-            <span class="n">additional_qc</span><span class="p">(</span><span class="n">qc_reH_D</span><span class="p">,</span> <span class="n">op_string</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ntar</span><span class="p">))</span>
+        <span class="c1"># ansatz, ansatz+All-H, ansatz+All-SdagH</span>
+        <span class="n">qcs</span> <span class="o">=</span> <span class="p">[</span> <span class="p">]</span>
+        <span class="n">term_types</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span><span class="p">:</span><span class="s2">&quot;IZ&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="s2">&quot;XX&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="s2">&quot;YY&quot;</span><span class="p">}</span>  <span class="c1"># general case =&gt; &quot;XXYZ...&quot;</span>
+        <span class="k">for</span> <span class="n">idx_term</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">term_types</span><span class="p">)):</span>
+            <span class="n">term</span> <span class="o">=</span> <span class="n">term_types</span><span class="p">[</span><span class="n">idx_term</span><span class="p">]</span>
+            <span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">Ntar</span><span class="p">)</span>
+            <span class="n">qc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ntar</span><span class="p">))</span>
+            <span class="n">qc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Ui</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ntar</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">term</span> <span class="o">==</span> <span class="s2">&quot;IZ&quot;</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">elif</span> <span class="n">term</span> <span class="o">==</span> <span class="s2">&quot;XX&quot;</span><span class="p">:</span>
+                <span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">Ntar</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">term</span> <span class="o">==</span> <span class="s2">&quot;YY&quot;</span><span class="p">:</span>
+                <span class="n">qc</span><span class="o">.</span><span class="n">sdg</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">Ntar</span><span class="p">))</span>
+                <span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">Ntar</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported term type: </span><span class="si">{</span><span class="n">term</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">using_statevector</span><span class="p">):</span>
-                <span class="n">qc_reH_D</span><span class="o">.</span><span class="n">measure_all</span><span class="p">()</span>
-            <span class="n">qc_reH_D</span> <span class="o">=</span> <span class="n">qc_reH_D</span><span class="o">.</span><span class="n">decompose</span><span class="p">()</span><span class="o">.</span><span class="n">decompose</span><span class="p">()</span>
-            <span class="n">qcs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">qc_reH_D</span><span class="p">)</span>
+                <span class="n">qc</span><span class="o">.</span><span class="n">measure_all</span><span class="p">()</span>
+            <span class="n">qcs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">qc</span><span class="o">.</span><span class="n">decompose</span><span class="p">(</span><span class="n">reps</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
+                      
         <span class="k">if</span> <span class="n">using_statevector</span><span class="p">:</span>
             <span class="n">results</span> <span class="o">=</span> <span class="p">[</span> <span class="n">Statevector</span><span class="o">.</span><span class="n">from_instruction</span><span class="p">(</span><span class="n">qc</span><span class="p">)</span><span class="o">.</span><span class="n">probabilities_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">qc</span> <span class="ow">in</span> <span class="n">qcs</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1525,14 +1964,16 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
         <span class="k">for</span> <span class="n">idx_H</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Hamil_paulis</span><span class="p">)):</span>
             <span class="n">op_string</span> <span class="o">=</span> <span class="n">Hamil_paulis</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span><span class="o">.</span><span class="n">to_label</span><span class="p">()</span>
             <span class="n">idx_relevant</span> <span class="o">=</span> <span class="n">get_idx_to_measure</span><span class="p">(</span><span class="n">op_string</span><span class="p">)</span>
+
+            <span class="n">idx_circuit</span> <span class="o">=</span> <span class="n">get_idx_circuit</span><span class="p">(</span><span class="n">op_string</span><span class="p">,</span> <span class="n">term_types</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">using_statevector</span><span class="p">:</span>
-                <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">idx_circuit</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">meas</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">idx_circuit</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">meas</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
             <span class="n">expval</span><span class="p">,</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy_</span> <span class="o">=</span> <span class="n">expec_Zstring</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">)</span>
             <span class="n">Hsum</span> <span class="o">+=</span> <span class="n">Hamil_coeffs</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span> <span class="o">*</span> <span class="n">expval</span>
-            <span class="c1">##print(&quot;operator: &quot;, op_string, &quot;coeff: &quot;, Hamil_coeffs[idx_H], &quot;exp. val: &quot;,  expval)</span>
-        <span class="c1">#print(&quot;H[it, it]&quot;, it, Hsum)</span>
+            <span class="c1">#print(&quot;operator: &quot;, op_string, &quot;coeff: &quot;, Hamil_coeffs[idx_H], &quot;exp. val: &quot;,  expval)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;H[</span><span class="si">{</span><span class="n">it</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">it</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="n">Hsum</span><span class="p">)</span>
         <span class="n">H</span><span class="p">[</span><span class="n">it</span><span class="p">,</span> <span class="n">it</span><span class="p">]</span> <span class="o">=</span> <span class="n">Hsum</span>
 
         <span class="c1">### evaluate H_ij ancilla qubit is needed</span>
@@ -1540,48 +1981,40 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
             <span class="n">gate_cUj</span> <span class="o">=</span> <span class="n">Unitaries</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
             <span class="n">qcs_re</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">qcs_im</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">idx_H</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Hamil_paulis</span><span class="p">)):</span>
-                <span class="n">op_string</span> <span class="o">=</span> <span class="n">Hamil_paulis</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span><span class="o">.</span><span class="n">to_label</span><span class="p">()</span>
-                <span class="n">make_nonD_H_qc</span><span class="p">(</span><span class="n">op_string</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span> <span class="n">gate_cUi</span><span class="p">,</span> <span class="n">gate_cUj</span><span class="p">,</span> <span class="n">qcs_re</span><span class="p">,</span> <span class="n">qcs_im</span><span class="p">,</span> <span class="n">using_statevector</span><span class="p">)</span>
+            <span class="n">make_Circ_forNondiagH</span><span class="p">(</span><span class="n">term_types</span><span class="p">,</span> <span class="n">Ntar</span><span class="p">,</span> <span class="n">ancilla_qubits</span><span class="p">,</span> <span class="n">target_qubits</span><span class="p">,</span>
+                                  <span class="n">gate_cUi</span><span class="p">,</span> <span class="n">gate_cUj</span><span class="p">,</span> <span class="n">qcs_re</span><span class="p">,</span> <span class="n">qcs_im</span><span class="p">,</span> <span class="n">using_statevector</span><span class="p">)</span>
+
             <span class="c1"># Re part</span>
             <span class="k">if</span> <span class="n">using_statevector</span><span class="p">:</span>
-                <span class="n">results</span> <span class="o">=</span> <span class="p">[</span> <span class="n">Statevector</span><span class="o">.</span><span class="n">from_instruction</span><span class="p">(</span><span class="n">qc</span><span class="p">)</span><span class="o">.</span><span class="n">probabilities_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">qc</span> <span class="ow">in</span> <span class="n">qcs_re</span><span class="p">]</span>
+                <span class="n">results_Re</span> <span class="o">=</span> <span class="p">[</span> <span class="n">Statevector</span><span class="o">.</span><span class="n">from_instruction</span><span class="p">(</span><span class="n">qc</span><span class="p">)</span><span class="o">.</span><span class="n">probabilities_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">qc</span> <span class="ow">in</span> <span class="n">qcs_re</span><span class="p">]</span>
+                <span class="n">results_Im</span> <span class="o">=</span> <span class="p">[</span> <span class="n">Statevector</span><span class="o">.</span><span class="n">from_instruction</span><span class="p">(</span><span class="n">qc</span><span class="p">)</span><span class="o">.</span><span class="n">probabilities_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">qc</span> <span class="ow">in</span> <span class="n">qcs_im</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">job</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">qcs_re</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="n">num_shot</span><span class="p">)</span>
-                <span class="n">results</span>  <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
-            <span class="n">Re_H_ij</span> <span class="o">=</span> <span class="mf">0.0</span>
+                <span class="n">results_Re</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                <span class="n">job</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">qcs_im</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="n">num_shot</span><span class="p">)</span>
+                <span class="n">results_Im</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+
+            <span class="n">Re_H_ij</span> <span class="o">=</span> <span class="n">Im_H_ij</span> <span class="o">=</span> <span class="mf">0.0</span>
             <span class="k">for</span> <span class="n">idx_H</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Hamil_paulis</span><span class="p">)):</span>
                 <span class="n">op_string</span> <span class="o">=</span> <span class="n">Hamil_paulis</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span><span class="o">.</span><span class="n">to_label</span><span class="p">()</span>
+                <span class="n">idx_circuit</span> <span class="o">=</span> <span class="n">get_idx_circuit</span><span class="p">(</span><span class="n">op_string</span><span class="p">,</span> <span class="n">term_types</span><span class="p">)</span>
+
                 <span class="n">idx_relevant</span> <span class="o">=</span> <span class="n">get_idx_to_measure</span><span class="p">(</span><span class="n">op_string</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">using_statevector</span><span class="p">:</span>
-                    <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span>
+                    <span class="n">res_Re</span> <span class="o">=</span> <span class="n">results_Re</span><span class="p">[</span><span class="n">idx_circuit</span><span class="p">]</span>
+                    <span class="n">res_Im</span> <span class="o">=</span> <span class="n">results_Im</span><span class="p">[</span><span class="n">idx_circuit</span><span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">meas</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
-                <span class="n">dummy_e</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">expec_Zstring</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">,</span> <span class="n">target_qubits</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target_qubits</span><span class="p">)),</span> <span class="n">ancilla_qubit</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                    <span class="n">res_Re</span> <span class="o">=</span> <span class="n">results_Re</span><span class="p">[</span><span class="n">idx_circuit</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">meas</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+                    <span class="n">res_Im</span> <span class="o">=</span> <span class="n">results_Im</span><span class="p">[</span><span class="n">idx_circuit</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">meas</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+                <span class="n">dummy_e</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">expec_Zstring</span><span class="p">(</span><span class="n">res_Re</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">,</span> <span class="n">target_qubits</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target_qubits</span><span class="p">)),</span> <span class="n">ancilla_qubit</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
                 <span class="n">expval</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">-</span> <span class="n">p1</span>
                 <span class="n">Re_H_ij</span> <span class="o">+=</span> <span class="n">Hamil_coeffs</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span> <span class="o">*</span> <span class="n">expval</span>
-                <span class="c1">#print(&quot;operator: &quot;, op_string, &quot;coeff: &quot;, Hamil_coeffs[idx_H], &quot;exp. val: &quot;,  expval)</span>
-            <span class="c1">#print(&quot;Re H_{ij}&quot;, Re_H_ij)</span>
 
-            <span class="c1"># Im part</span>
-            <span class="k">if</span> <span class="n">using_statevector</span><span class="p">:</span>
-                <span class="n">results</span> <span class="o">=</span> <span class="p">[</span> <span class="n">Statevector</span><span class="o">.</span><span class="n">from_instruction</span><span class="p">(</span><span class="n">qc</span><span class="p">)</span><span class="o">.</span><span class="n">probabilities_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">qc</span> <span class="ow">in</span> <span class="n">qcs_im</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">job</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">qcs_im</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="n">num_shot</span><span class="p">)</span>
-                <span class="n">results</span>  <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span> 
-            <span class="n">Im_H_ij</span> <span class="o">=</span> <span class="mf">0.0</span>
-            <span class="k">for</span> <span class="n">idx_H</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Hamil_paulis</span><span class="p">)):</span>
-                <span class="n">op_string</span> <span class="o">=</span> <span class="n">Hamil_paulis</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span><span class="o">.</span><span class="n">to_label</span><span class="p">()</span>
-                <span class="n">idx_relevant</span> <span class="o">=</span> <span class="n">get_idx_to_measure</span><span class="p">(</span><span class="n">op_string</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">using_statevector</span><span class="p">:</span>
-                    <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">meas</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>   
-                <span class="n">dummy_e</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">expec_Zstring</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">,</span> <span class="n">target_qubits</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target_qubits</span><span class="p">)),</span> <span class="n">ancilla_qubit</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">dummy_e</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">expec_Zstring</span><span class="p">(</span><span class="n">res_Im</span><span class="p">,</span> <span class="n">idx_relevant</span><span class="p">,</span> <span class="n">target_qubits</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target_qubits</span><span class="p">)),</span> <span class="n">ancilla_qubit</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
                 <span class="n">expval</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">-</span> <span class="n">p1</span>
                 <span class="n">Im_H_ij</span> <span class="o">+=</span> <span class="n">Hamil_coeffs</span><span class="p">[</span><span class="n">idx_H</span><span class="p">]</span> <span class="o">*</span> <span class="n">expval</span>
-            <span class="c1">#print(&quot;Im H_{ij}&quot;, Im_H_ij)</span>
-
+                <span class="c1">#print(&quot;operator: &quot;, op_string, &quot;coeff: &quot;, Hamil_coeffs[idx_H], &quot;exp. val: &quot;,  expval)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;H[</span><span class="si">{</span><span class="n">it</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="n">Re_H_ij</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">Im_H_ij</span><span class="p">)</span>
             <span class="n">H</span><span class="p">[</span><span class="n">it</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">Re_H_ij</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">Im_H_ij</span>
             <span class="n">H</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">it</span><span class="p">]</span> <span class="o">=</span> <span class="n">Re_H_ij</span> <span class="o">-</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">Im_H_ij</span>
 
@@ -1590,7 +2023,7 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
         <span class="n">Hsub</span> <span class="o">=</span> <span class="n">H</span><span class="p">[:</span><span class="n">it</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="n">it</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>        
         <span class="n">lam</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">Nsub</span><span class="p">)</span> 
         <span class="c1"># truncate orthogonal basis with small eigenvalues</span>
-        <span class="n">cols</span> <span class="o">=</span> <span class="p">[</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">it</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">lam</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">1.e-6</span><span class="p">]</span>
+        <span class="n">cols</span> <span class="o">=</span> <span class="p">[</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">it</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">lam</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">1.e-9</span><span class="p">]</span>
         <span class="n">r</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span>
         <span class="n">Ur</span> <span class="o">=</span> <span class="n">v</span><span class="p">[:,</span><span class="n">cols</span><span class="p">]</span>
         <span class="n">sq_Sigma_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">lam</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>
@@ -1608,6 +2041,11 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">H</span><span class="p">[:</span><span class="n">it</span><span class="o">+</span><span class="mi">1</span><span class="p">,:</span><span class="n">it</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">N</span><span class="p">[:</span><span class="n">it</span><span class="o">+</span><span class="mi">1</span><span class="p">,:</span><span class="n">it</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">ws</span>
 
+<span class="n">using_statevector</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># False</span>
+<span class="n">Trotter_order</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span> <span class="n">trortter_steps</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="n">Trotter_order</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">trortter_steps</span> <span class="o">=</span> <span class="mi">40</span>
+<span class="n">sampler</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="n">initial</span> <span class="o">=</span> <span class="s2">&quot;exact&quot;</span>
 <span class="n">initial</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
@@ -1620,77 +2058,158 @@ H_{01} &amp; \equiv \langle \psi_0 | \hat{H} | \psi_1 \rangle = \bra{\Phi} \hat{
 
 <span class="n">Hamil_coeffs</span> <span class="o">=</span> <span class="n">hamiltonian_op</span><span class="o">.</span><span class="n">coeffs</span>
 <span class="n">Hamil_paulis</span> <span class="o">=</span> <span class="n">hamiltonian_op</span><span class="o">.</span><span class="n">paulis</span>
-<span class="n">dt</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">0.345</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">1.234</span>
 
-<span class="n">using_statevector</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="c1">#using_statevector = False</span>
-<span class="n">Hmat</span><span class="p">,</span> <span class="n">Nmat</span><span class="p">,</span> <span class="n">Ens</span> <span class="o">=</span> <span class="n">QuantumKrylov</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="n">hamiltonian_op</span><span class="p">,</span> <span class="n">sampler</span><span class="p">,</span> <span class="n">delta_t</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">max_iterations</span><span class="o">=</span><span class="nb">min</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">evecs</span><span class="p">)]),</span> <span class="n">trotter_steps</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> 
-                           <span class="n">num_shot</span><span class="o">=</span><span class="mi">10</span><span class="o">**</span><span class="mi">4</span><span class="p">,</span> 
-                           <span class="n">ancilla_qubits</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">target_qubits</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">Norb</span><span class="o">+</span><span class="mi">1</span><span class="p">)),</span>
-                           <span class="n">using_statevector</span><span class="o">=</span><span class="n">using_statevector</span><span class="p">)</span>
+
+<span class="n">Hmat</span><span class="p">,</span> <span class="n">Nmat</span><span class="p">,</span> <span class="n">Ens</span> <span class="o">=</span> <span class="n">QuantumKrylov</span><span class="p">(</span><span class="n">Uprep</span><span class="p">,</span> <span class="n">hamiltonian_op</span><span class="p">,</span> <span class="n">sampler</span><span class="p">,</span> <span class="n">delta_t</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> 
+                                <span class="n">max_iterations</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> 
+                                <span class="n">trotter_steps</span><span class="o">=</span><span class="n">trortter_steps</span><span class="p">,</span>
+                                <span class="n">ancilla_qubits</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">target_qubits</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">Norb</span><span class="o">+</span><span class="mi">1</span><span class="p">)),</span>
+                                <span class="n">using_statevector</span><span class="o">=</span><span class="n">using_statevector</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Eexact&quot;</span><span class="p">,</span> <span class="n">evals</span><span class="p">)</span>
-<span class="n">plot_convergence</span><span class="p">(</span><span class="n">Ens</span><span class="p">,</span> <span class="n">evals</span><span class="p">)</span>
 
-<span class="k">if</span> <span class="n">initial</span> <span class="o">==</span> <span class="s2">&quot;exact&quot;</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&lt;Ψ0|Ψ1&gt;&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">Egs_exact</span> <span class="o">*</span> <span class="n">dt</span><span class="p">)</span> <span class="p">,</span> <span class="s2">&quot;N[0,1]&quot;</span><span class="p">,</span> <span class="n">Nmat</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&lt;Ψ0|H|Ψ0&gt;&quot;</span><span class="p">,</span> <span class="n">Egs_exact</span><span class="p">,</span> <span class="s2">&quot;H[0,0]&quot;</span><span class="p">,</span> <span class="n">Hmat</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&lt;Ψ0|H|Ψ1&gt;&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">Egs_exact</span> <span class="o">*</span> <span class="n">dt</span><span class="p">)</span> <span class="o">*</span> <span class="n">Egs_exact</span><span class="p">,</span> <span class="s2">&quot;H[0,1]&quot;</span><span class="p">,</span> <span class="n">Hmat</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&lt;Ψ0|Ψ2&gt;&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">Egs_exact</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="mi">2</span><span class="p">),</span> <span class="s2">&quot;N[0,2]&quot;</span><span class="p">,</span> <span class="n">Nmat</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&lt;Ψ0|H|Ψ2&gt;&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">Egs_exact</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">Egs_exact</span><span class="p">,</span> <span class="s2">&quot;H[0,2]&quot;</span><span class="p">,</span> <span class="n">Hmat</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Nmat:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Nmat</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hmat:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Hmat</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-</details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Circuit for c-UiUp: {&#39;u&#39;: 11185, &#39;cx&#39;: 6280}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Circuit for c-UiUp: {&#39;u&#39;: 39105, &#39;cx&#39;: 21720}
 num of Hamil term:  17
-iteration:  0
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/6 [00:00&lt;?, ?it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration:  0
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 17%|█▋        | 1/6 [00:01&lt;00:05,  1.17s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>H[0, 0] (1.611274845675447+0j)
 eigs of N:  [1.] cond 1.0 r: 1
 w: [1.61127485]
 
 iteration:  1
-eigs of N:  [0.2458579 1.7541421] cond 7.134780216944254 r: 2
-w: [1.27321303 3.35359765]
+N[1, 0] (-0.02205787422925065+0.684044848669389j)
+H[1, 1] (1.6113755425167746+0j)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 33%|███▎      | 2/6 [01:03&lt;02:27, 36.97s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>H[1,0] (-0.27429739568458983+0.5443589163485355j)
+eigs of N:  [0.3155996 1.6844004] cond 5.337143606763782 r: 2
+w: [1.22663682 3.41188057]
 
 iteration:  2
-eigs of N:  [0.00826746 0.49858876 2.49314379] cond 301.5611013988385 r: 3
-w: [1.24902173 3.31208999 5.35070515]
+N[2, 1] (-0.023003707506494442+0.6840866153366303j)
+N[2, 0] (-0.840645843683734+0.3245200318034092j)
+H[2, 2] (1.611712704125866+0j)
+H[2,1] (-0.2756979095112377+0.5443975449090435j)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 50%|█████     | 3/6 [03:07&lt;03:50, 76.82s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>H[2,0] (-1.0453061009598457+0.7045661378227202j)
+eigs of N:  [0.01404922 0.48310804 2.50284273] cond 178.14813133123457 r: 3
+w: [1.21112679 3.3478967  6.7463286 ]
 
 iteration:  3
-eigs of N:  [1.29344560e-04 9.94465747e-03 6.17854557e-01 3.37207144e+00] cond 26070.45439089142 r: 4
-w: [1.21235523 3.30438719 5.34426495 8.04823827]
+N[3, 2] (-0.02484021806364589+0.6840705215050461j)
+N[3, 1] (-0.8415089439262474+0.32156774843884756j)
+N[3, 0] (-0.0912994834005122-0.8343352082690061j)
+H[3, 3] (1.6120094699157808+0j)
+H[3,2] (-0.27801311488626534+0.5441737547266671j)
+H[3,1] (-1.047147748265603+0.7003074541127555j)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 67%|██████▋   | 4/6 [06:17&lt;04:03, 121.71s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>H[3,0] (0.1902825478425333-1.073441171094444j)
+eigs of N:  [0.00787958 0.03117733 0.63485453 3.32608855] cond 422.1148260406033 r: 4
+w: [1.19286222 3.3066403  5.90774424 7.53783249]
 
 iteration:  4
-eigs of N:  [3.43778353e-05 2.59020054e-04 1.82356214e-02 8.07696117e-01
- 4.17377486e+00] cond 121408.89122291954 r: 5
-w: [1.20356938 3.3003931  5.34       6.28446185 8.23399773]
+N[4, 3] (-0.027578792561831378+0.6840557525047684j)
+N[4, 2] (-0.8425808791189628+0.31703613496159855j)
+N[4, 1] (-0.08571409149638098-0.8356925151576265j)
+N[4, 0] (0.6188257511702022-0.41245926149483925j)
+H[4, 4] (1.6117622126714968+0j)
+H[4,3] (-0.2815335748620287+0.5435340914884537j)
+H[4,2] (-1.0490655023351396+0.6946118726838197j)
+H[4,1] (0.19807674156556204-1.0746523765286686j)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 83%|████████▎ | 5/6 [10:31&lt;02:49, 169.22s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>H[4,0] (0.46415548786291233-0.7122906789336276j)
+eigs of N:  [2.31162508e-03 1.44724402e-02 4.04391377e-02 8.39601586e-01
+ 4.10317521e+00] cond 1775.0176051239803 r: 5
+w: [1.18985194 3.29649668 5.34       7.42853285 9.4450987 ]
 
 iteration:  5
-eigs of N:  [1.65876983e-05 1.25943366e-04 4.91424981e-04 2.29889501e-02
- 9.95820982e-01 4.98055611e+00] cond 300256.0107413335 r: 6
-w: [1.18985184 3.29649666 5.34       5.34       7.42853393 9.44511758]
+N[5, 4] (-0.031361364250796775+0.6840856167569126j)
+N[5, 3] (-0.8444005067938032+0.3100522030934049j)
+N[5, 2] (-0.07711874953831793-0.8374510373659039j)
+N[5, 1] (0.6233431403322208-0.4040209834358724j)
+N[5, 0] (0.3945672814475031+0.9033814324633849j)
+H[5, 5] (1.6117325948397814+0j)
+H[5,4] (-0.2847194686864231+0.542466670601386j)
+H[5,3] (-1.0516106370384422+0.6866162143131196j)
+H[5,2] (0.2078989634019971-1.0751399414715586j)
+H[5,1] (0.47140502480682817-0.703395206974318j)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 6/6 [15:46&lt;00:00, 157.75s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>H[5,0] (0.4806128383055382+1.4935442823877352j)
+eigs of N:  [1.42705988e-08 2.59549683e-03 1.64094847e-02 4.70779651e-02
+ 9.72900191e-01 4.96101685e+00] cond 347639003.8197853 r: 6
+w: [1.18985184 3.29649666 5.34       5.3400002  7.42853393 9.44511758]
 
 Eexact [1.18985184 3.29649666 5.34       5.34       7.42853393 9.44511758]
+Nmat:
+[[ 1.        +0.j         -0.02205787-0.68404485j -0.84064584-0.32452003j
+  -0.09129948+0.83433521j  0.61882575+0.41245926j  0.39456728-0.90338143j]
+ [-0.02205787+0.68404485j  1.        +0.j         -0.02300371-0.68408662j
+  -0.84150894-0.32156775j -0.08571409+0.83569252j  0.62334314+0.40402098j]
+ [-0.84064584+0.32452003j -0.02300371+0.68408662j  1.        +0.j
+  -0.02484022-0.68407052j -0.84258088-0.31703613j -0.07711875+0.83745104j]
+ [-0.09129948-0.83433521j -0.84150894+0.32156775j -0.02484022+0.68407052j
+   1.        +0.j         -0.02757879-0.68405575j -0.84440051-0.3100522j ]
+ [ 0.61882575-0.41245926j -0.08571409-0.83569252j -0.84258088+0.31703613j
+  -0.02757879+0.68405575j  1.        +0.j         -0.03136136-0.68408562j]
+ [ 0.39456728+0.90338143j  0.62334314-0.40402098j -0.07711875-0.83745104j
+  -0.84440051+0.3100522j  -0.03136136+0.68408562j  1.        +0.j        ]]
+Hmat:
+[[ 1.61127485+0.j         -0.2742974 -0.54435892j -1.0453061 -0.70456614j
+   0.19028255+1.07344117j  0.46415549+0.71229068j  0.48061284-1.49354428j]
+ [-0.2742974 +0.54435892j  1.61137554+0.j         -0.27569791-0.54439754j
+  -1.04714775-0.70030745j  0.19807674+1.07465238j  0.47140502+0.70339521j]
+ [-1.0453061 +0.70456614j -0.27569791+0.54439754j  1.6117127 +0.j
+  -0.27801311-0.54417375j -1.0490655 -0.69461187j  0.20789896+1.07513994j]
+ [ 0.19028255-1.07344117j -1.04714775+0.70030745j -0.27801311+0.54417375j
+   1.61200947+0.j         -0.28153357-0.54353409j -1.05161064-0.68661621j]
+ [ 0.46415549-0.71229068j  0.19807674-1.07465238j -1.0490655 +0.69461187j
+  -0.28153357+0.54353409j  1.61176221+0.j         -0.28471947-0.54246667j]
+ [ 0.48061284+1.49354428j  0.47140502-0.70339521j  0.20789896-1.07513994j
+  -1.05161064+0.68661621j -0.28471947+0.54246667j  1.61173259+0.j        ]]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
 </div>
-<p><span class="math notranslate nohighlight">\(N_\mathrm{orb}=4, N_\mathrm{occ}=2\)</span>の場合は次元が6なので、iterationが6になった時点で理想的には厳密解と一致するはずである。
-ちなみに、3番目の状態は縮退しているので、緑と赤のシンボルが近づいていくのは誤りではない。</p>
-<p><img alt="" src="../_images/QKrylov_Norb4Nocc2_statevector.png" /></p>
-<p>もう少しサイズの大きな<span class="math notranslate nohighlight">\(N_\mathrm{orb}=6, N_\mathrm{occ}=2\)</span>の場合の結果(次元=15)も示しておく。</p>
-<p><img alt="" src="../_images/QKrylov_Norb6Nocc2_statevector.png" /></p>
-<p>statevectorを用いた場合は上のように、厳密解へと収束する様子が見て取れるが、
-shotで測る場合は、ノイズなしのsimulator(shot errorのみ)でも、<span class="math notranslate nohighlight">\(H,N\)</span>の精度により疑似固有値が得られてしまう。
-<span class="math notranslate nohighlight">\(N_\mathrm{orb}=4, N_\mathrm{occ}=2\)</span>で、<span class="math notranslate nohighlight">\(10^4\)</span> shotで計算した結果を示しておく。</p>
-<p><img alt="" src="../_images/QKrylov_Norb4Nocc2_shot.png" /></p>
-<p>今の実装では、overlapを対角化し小さな固有値を捨てることで、一般化固有値問題をより安定的に解いているものの、それでもshot測定の場合は反復に対して計算が不安定になってしまう。実機のノイズがあると、overlapやHが悪条件になり計算がさらに不安定になることが予想されるため、応用の上ではさらなる検討が必要であろう。</p>
-</section>
-<section id="id3">
-<h2><span class="section-number">15.3. </span>関連する話題<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
-<p>multi-referenceによるQuantum Krylov法は、<a class="reference external" href="https://doi.org/10.1021/acs.jctc.9b01125">J. Chem. Theory Comput. 2020, 16, 2326</a>が参考になる。
-overlap行列の計算については、Hadamard test以外にも、上で述べた方法など制御ユニタリを必要としない方法も提案されていて、様々な進展があるようだ。</p>
-<p>また、回路等を工夫してIBM実機を用いてKrylov diagonalizationを達成した近年の発展なども非常に興味深い。<a class="reference external" href="https://www.nature.com/articles/s41467-025-59716-z">N. Yoshioka et al., Nature Comm. 16, 5014 (2025)</a></p>
 </section>
 </section>
 
@@ -1726,7 +2245,7 @@ overlap行列の計算については、Hadamard test以外にも、上で述べ
 <div class="prev-next-area">
     <a class="left-prev"
        href="pytket_VQE.html"
-       title="前のページ">
+       title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">前へ</p>
@@ -1735,7 +2254,7 @@ overlap行列の計算については、Hadamard test以外にも、上で述べ
     </a>
     <a class="right-next"
        href="Python_env.html"
-       title="次ページ">
+       title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">次へ</p>
         <p class="prev-next-title"><span class="section-number">16. </span>Python環境構築</p>
@@ -1749,8 +2268,7 @@ overlap行列の計算については、Hadamard test以外にも、上で述べ
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -1812,8 +2330,8 @@ overlap行列の計算については、Hadamard test以外にも、上で述べ
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>
